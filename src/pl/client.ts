@@ -1,9 +1,11 @@
-import pl from 'physics-lab-web-api';
+// @ts-expect-error
+import pl from 'plweb';
+
 import { config } from '../config';
 
 pl.setConfig({
   timeout: 10000,
-  consolelog: false,
+  consolelog: true,
   consoleResponse: false,
   consoleError: true,
   checkHttpsAgent: false
@@ -11,7 +13,7 @@ pl.setConfig({
 
 export async function createUser() {
   const user = new pl.User();
-  await user.auth.login(config.plUsername, config.plPassword);
+  await user.user.login(config.plUsername, config.plPassword);
   return user;
 }
 

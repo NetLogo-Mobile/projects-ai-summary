@@ -7,9 +7,6 @@ export interface SearchFilters {
   year?: number;
   yearFrom?: number;
   yearTo?: number;
-  minReadability?: number;
-  maxReadability?: number;
-  discipline?: string;
   limit?: number;
 }
 
@@ -71,7 +68,7 @@ export async function searchRecords(filters: SearchFilters): Promise<DataRecord[
         filters.keywords
           .map(
             () =>
-              '(name LIKE ? OR summary LIKE ? OR keyWords LIKE ? OR primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ? OR userName LIKE ?)'
+              '(name LIKE ? OR keyWords LIKE ? OR primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ? OR userName LIKE ? OR summary LIKE ?)'
           )
           .join(' OR ') +
         ')'
@@ -104,29 +101,35 @@ export async function searchRecords(filters: SearchFilters): Promise<DataRecord[
     params.push(filters.yearTo);
   }
 
-  if (typeof filters.minReadability === 'number') {
-    conditions.push('readability >= ?');
-    params.push(filters.minReadability);
-  }
-
-  if (typeof filters.maxReadability === 'number') {
-    conditions.push('readability <= ?');
-    params.push(filters.maxReadability);
-  }
-
-  if (filters.discipline) {
-    conditions.push('(primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ?)');
-    const wildcard = `%${filters.discipline}%`;
-    params.push(wildcard, wildcard);
-  }
-
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
   const limit = Math.min(Math.max(filters.limit ?? 10, 1), 20);
 
   params.push(limit);
 
-  return all<DataRecord>(
-    `SELECT * FROM data ${whereClause} ORDER BY year DESC, readability ASC LIMIT ?`,
-    params
-  );
+  // 如果有关键词，需要计算匹配优先级（summary 优先级最低）
+  // 使用 CASE 语句计算匹配分数：name > keyWords > discipline > userName > summary
+  const selectClause = filters.keywords && filters.keywords.length > 0
+    ? `*, CASE 
+        WHEN name LIKE ? THEN 1
+        WHEN keyWords LIKE ? THEN 2
+        WHEN primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ? THEN 3
+        WHEN userName LIKE ? THEN 4
+        WHEN summary LIKE ? THEN 5
+        ELSE 6
+      END AS matchPriority`
+    : '*';
+
+  let query = `SELECT ${selectClause} FROM data ${whereClause}`;
+
+  if (filters.keywords && filters.keywords.length > 0) {
+    const firstKeyword = `%${filters.keywords[0]}%`;
+    params.pop(); // 移除 limit
+    params.push(firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword);
+    query += ` ORDER BY matchPriority ASC, year DESC, readability ASC LIMIT ?`;
+    params.push(limit);
+  } else {
+    query += ` ORDER BY year DESC, readability ASC LIMIT ?`;
+  }
+
+  return all<DataRecord>(query, params);
 }

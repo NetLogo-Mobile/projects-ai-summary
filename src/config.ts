@@ -9,7 +9,7 @@ export const config = {
   discussionTag: process.env.PL_DISCUSSION_TAG ?? '精选',
   discussionId: process.env.PL_DISCUSSION_ID ?? '69a59f0eca7ceb749317ef7c',
   sparkApiPassword: process.env.SPARK_API_PASSWORD ?? '',
-  sparkModel: process.env.SPARK_MODEL ?? 'spark-max',
+  sparkModel: process.env.SPARK_MODEL ?? 'generalv3.5',
   sparkEndpoint:
     process.env.SPARK_ENDPOINT ?? 'https://spark-api-open.xf-yun.com/v1/chat/completions'
 };

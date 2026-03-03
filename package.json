@@ -16,6 +16,7 @@
     "dotenv": "^16.4.5",
     "node-cron": "^3.0.3",
     "physics-lab-web-api": "^0.4.1",
+    "plweb": "^0.2.1",
     "sql.js": "^1.8.0"
   },
   "devDependencies": {

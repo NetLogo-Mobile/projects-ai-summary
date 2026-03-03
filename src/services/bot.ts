@@ -1,4 +1,5 @@
-import { createBot } from '../pl/client';
+// @ts-expect-error
+import pl from 'plweb';
 import { config } from '../config';
 import { SearchFilters, searchRecords } from '../db/repository';
 
@@ -10,7 +11,7 @@ function parseNumber(value: string): number | undefined {
 function parseQuery(content: string): SearchFilters | null {
   const msg = content.trim();
 
-  // 1) 键值查询: #查询 关键词=电磁学,光学 作者=张三 年份=2024 难度=0.2-0.7 学科=理学 limit=8
+  // 1) 键值查询: #查询 关键词=电磁学,光学 作者=张三 年份=2024 limit=8
   if (msg.startsWith('#查询')) {
     const payload = msg.replace(/^#查询\s*/, '');
     const chunks = payload.split(/\s+/).map((x) => x.trim()).filter(Boolean);
@@ -32,20 +33,6 @@ function parseQuery(content: string): SearchFilters | null {
         const [from, to] = rawValue.split('-').map((v) => parseNumber(v.trim()));
         filters.yearFrom = from;
         filters.yearTo = to;
-      } else if (key === '难度') {
-        if (rawValue.includes('-')) {
-          const [minR, maxR] = rawValue.split('-').map((v) => parseNumber(v.trim()));
-          filters.minReadability = minR;
-          filters.maxReadability = maxR;
-        } else {
-          const val = parseNumber(rawValue);
-          if (typeof val === 'number') {
-            filters.minReadability = val;
-            filters.maxReadability = val;
-          }
-        }
-      } else if (key === '学科') {
-        filters.discipline = rawValue;
       } else if (key === 'limit') {
         filters.limit = parseNumber(rawValue);
       }
@@ -63,13 +50,13 @@ function parseQuery(content: string): SearchFilters | null {
         .map((x) => x.trim())
         .filter(Boolean)
         .slice(0, 6),
-      limit: 10
+      limit: 20
     };
   }
 
-  // 3) 新增快捷格式
+  // 3) 快捷格式: #查作者
   const authorMatch = msg.match(/^#查作者[:：](.+)$/);
-  if (authorMatch) return { author: authorMatch[1].trim(), limit: 10 };
+  if (authorMatch) return { author: authorMatch[1].trim(), limit: 20 };
 
   const yearMatch = msg.match(/^#查年份[:：](\d{4})(?:-(\d{4}))?$/);
   if (yearMatch) {
@@ -77,61 +64,126 @@ function parseQuery(content: string): SearchFilters | null {
       return {
         yearFrom: Number(yearMatch[1]),
         yearTo: Number(yearMatch[2]),
-        limit: 10
+        limit: 20
       };
     }
-    return { year: Number(yearMatch[1]), limit: 10 };
+    return { year: Number(yearMatch[1]), limit: 20 };
   }
 
-  const levelMatch = msg.match(/^#查难度[:：](\d(?:\.\d+)?)-(\d(?:\.\d+)?)$/);
-  if (levelMatch) {
-    return {
-      minReadability: Number(levelMatch[1]),
-      maxReadability: Number(levelMatch[2]),
-      limit: 10
-    };
+  // 4) 默认查询：没有#指定时，把内容作为关键词在所有字段搜索，最多20条结果
+  if (!msg.startsWith('#')) {
+    const keywords = msg
+      .split(/[，,\s]+/)
+      .map((x) => x.trim())
+      .filter(Boolean);
+    if (keywords.length > 0) {
+      return {
+        keywords,
+        limit: 20
+      };
+    }
   }
-
-  const disciplineMatch = msg.match(/^#查学科[:：](.+)$/);
-  if (disciplineMatch) return { discipline: disciplineMatch[1].trim(), limit: 10 };
 
   return null;
 }
 
 function helpMessage(): string {
   return [
-    '支持多种查询格式：',
-    '1) #查词: 电磁学,光学',
-    '2) #查作者: 用户名',
-    '3) #查年份: 2024 或 #查年份: 2021-2024',
-    '4) #查难度: 0.2-0.6',
-    '5) #查学科: 理学',
-    '6) #查询 关键词=电磁学,光学 作者=张三 年份范围=2021-2024 难度=0.2-0.8 学科=理学 limit=8'
+    '支持多种查询格式（最多返回20条结果）：',
+    '1) 直接输入关键词（例如：电磁学）',
+    '2) #查词: 电磁学,光学',
+    '3) #查作者: 用户名',
+    '4) #查年份: 2024 或 #查年份: 2021-2024',
+    '5) #查询 关键词=电磁学,光学 作者=张三 年份范围=2021-2024 limit=15'
   ].join('\n');
 }
 
 export async function runDiscussionBot(): Promise<void> {
-  const bot = createBot(async (msg: { Content: string }) => {
-    const filters = parseQuery(msg.Content);
-    if (!filters) return helpMessage();
+  const bot = new pl.Bot(
+    config.plUsername,
+    config.plPassword,
+    // processFn：处理消息的函数
+    async (msg: { Content: string }) => {
+      try {
+        const filters = parseQuery(msg.Content);
+        if (!filters) return helpMessage();
 
-    const rows = await searchRecords(filters);
-    if (rows.length === 0) {
-      return '未命中记录，请缩小条件或更换关键词。\n' + helpMessage();
+        const rows = await searchRecords(filters);
+        if (rows.length === 0) {
+          return '未命中记录，请缩小条件或更换关键词。\n' + helpMessage();
+        }
+
+        // 构建查询信息摘要
+        let queryInfo = '【查询内容】\n';
+        if (filters.keywords && filters.keywords.length > 0) {
+          queryInfo += `关键词: ${filters.keywords.join(', ')}\n`;
+        }
+        if (filters.author) {
+          queryInfo += `作者: ${filters.author}\n`;
+        }
+        if (filters.year) {
+          queryInfo += `年份: ${filters.year}\n`;
+        }
+        if (filters.yearFrom || filters.yearTo) {
+          queryInfo += `年份范围: ${filters.yearFrom ?? '不限'} - ${filters.yearTo ?? '不限'}\n`;
+        }
+        queryInfo += `\n【查询结果】(共${rows.length}条)\n`;
+
+        // 构建结果列表，包含摘要和关键词
+        const lines = rows.map((x) => {
+          const keywords = x.keyWords ? JSON.parse(x.keyWords).slice(0, 3).join(', ') : '';
+          const summary = x.summary ? x.summary.substring(0, 100) : '';
+          return `<discussion=${x.id}>${x.name}</discussion> | ${x.userName} | ${x.year}
+        📝 摘要: ${summary}${summary.length >= 50 ? '...' : ''}
+        🔑 关键词: ${keywords}`;
+        });
+
+        return `<size=28>${queryInfo}${lines.join('\n\n')}</size>`;
+      } catch (error) {
+        console.error('[Bot] 查询处理失败:', error instanceof Error ? error.message : String(error));
+        return '处理查询时出错，请稍后重试。';
+      }
+    },
+    // catched：捕获消息后的回调
+    (msg: any) => {
+      console.log(`[Bot] 捕获消息: ${msg.ID} 来自 ${msg.Nickname}: ${msg.Content.substring(0, 50)}`);
+    },
+    // replyed：成功回复后的回调
+    (msg: any) => {
+      console.log(`[Bot] 回复成功: ${msg.ID}`);
+    },
+    // finnished：任务队列清空后的回调
+    (finnish: Set<string>) => {
+      console.log(`[Bot] 本轮处理完成，已处理 ${finnish.size} 条消息`);
     }
+  );
 
-    const lines = rows.map(
-      (x) => `<discussion=${x.id}>${x.name}</discussion> | ${x.userName} | ${x.year} | 难度:${x.readability.toFixed(2)}`
-    );
-
-    return `<size=28>${lines.join('\n')}</size>`;
-  });
-
-  await bot.auth.login();
-  await bot.init(config.discussionId, 'Discussion', {
-    replyRequired: false,
-    readHistory: false
-  });
-
-  bot.start(20);
+  try {
+    console.log('[Bot] 初始化中...');
+    await bot.init(config.discussionId, 'Discussion', {
+      ignoreReplyToOters: true,
+      readHistory: true,
+      replyRequired: false
+    });
+    
+    console.log('[Bot] 启动机器人...');
+    // 开启轮询，间隔5秒检查一次新消息
+    const intervalId = setInterval(async () => {
+      try {
+        await bot.run();
+      } catch (error) {
+        console.error('[Bot] 运行出错:', error instanceof Error ? error.message : String(error));
+      }
+    }, 5000);
+    
+    // 保持进程运行
+    process.on('SIGINT', () => {
+      console.log('[Bot] 机器人停止');
+      clearInterval(intervalId);
+      process.exit(0);
+    });
+  } catch (error) {
+    console.error('[Bot] 启动失败:', error instanceof Error ? error.message : String(error));
+    throw error;
+  }
 }
