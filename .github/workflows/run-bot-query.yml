@@ -31,5 +31,6 @@ jobs:
         PL_DISCUSSION_ID: ${{ secrets.PL_DISCUSSION_ID }}
         PL_DISCUSSION_TAG: ${{ secrets.PL_DISCUSSION_TAG }}
         PL_DISCUSSION_TYPE: ${{ secrets.PL_DISCUSSION_TYPE }}
+        SPARK_API_PASSWORD: ${{ secrets.SPARK_API_PASSWORD }}
         DB_PATH: ./data.db
       run: npm run run-bot-once
