@@ -19,7 +19,6 @@ function readEnvList(name: string, fallback: string): string[] {
     .map(value => value.trim())
     .filter(Boolean);
 }
-
 const openaiApiKey = readEnv('OPENAI_API_KEY');
 const sparkApiPassword = readEnv('SPARK_API_PASSWORD');
 
@@ -30,6 +29,14 @@ export const config = {
   discussionTags: readEnvList('PL_DISCUSSION_TAG', '精选'),
   discussionId: readEnvWithDefault('PL_DISCUSSION_ID', '69a59f0eca7ceb749317ef7c'),
   discussionTypes: readEnvList('PL_DISCUSSION_TYPE', 'Discussion'),
+  
+  // 新增：同步相关配置
+  plBaseUrl: readEnvWithDefault('PL_BASE_URL', 'https://physics-api-cn.turtlesim.com'),
+  plAdminUsername: readEnvWithDefault('PL_ADMIN_USERNAME', ''),
+  plAdminPassword: readEnvWithDefault('PL_ADMIN_PASSWORD', ''),
+  syncCategory: readEnvWithDefault('PL_SYNC_CATEGORY', 'Discussion'),
+  syncSourceTag: readEnvWithDefault('PL_SYNC_SOURCE_TAG', '精选'),
+  syncTagWhitelist: readEnvList('PL_SYNC_TAG_WHITELIST', '数学,物理学,化学,生物学,地理学,天文学,计算机科学,医学,电气工程,历史学,哲学,文学,艺术学'),
   
   // 数据收集参数
   skip: parseInt(readEnvWithDefault('SKIP', '0'), 10),

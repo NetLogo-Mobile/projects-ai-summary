@@ -23,6 +23,16 @@ PL_PASSWORD=
 PL_DISCUSSION_ID=69a59f0eca7ceb749317ef7c
 PL_DISCUSSION_TAG=精选,知识库
 PL_DISCUSSION_TYPE=Discussion,Experiment
+PL_BASE_URL=https://physics-api-cn.turtlesim.com
+
+# 本地标签同步（管理员账号，可与上面的账号相同）
+PL_ADMIN_USERNAME=
+PL_ADMIN_PASSWORD=
+PL_SYNC_CATEGORY=Discussion
+PL_SYNC_SOURCE_TAG=精选
+PL_SYNC_TAG_WHITELIST=数学,物理学,化学,生物学,地理学,天文学,计算机科学,医学,电气工程,历史学,哲学,文学,艺术学
+# 可选：覆盖学科->讨论标签映射，JSON格式
+# PL_SYNC_DISCIPLINE_TAG_MAP={"理论物理学":["物理学"],"应用数学":["数学"]}
 
 # 数据收集
 SKIP=0
@@ -66,4 +76,5 @@ npm run run-bot            # 启动机器人（持续运行）
 npm run run-bot-once       # 运行一轮机器人
 npm run discipline-stats   # 统计学科分布
 npm run flexible-collect -- --tag "精选" --take -50  # 灵活收集
+npm run sync-selected-tags # 用本地数据库学科信息补齐精选作品讨论标签
 ```

@@ -12,8 +12,14 @@ pl.setConfig({
 });
 
 export async function createUser() {
+  return createUserWithCredentials(config.plUsername, config.plPassword);
+}
+
+export async function createUserWithCredentials(username: string, password: string) {
   const user = new pl.User();
-  await user.user.login(config.plUsername, config.plPassword);
+  user.username = username;
+  user.password = password;
+  await user.user.login();
   return user;
 }
 

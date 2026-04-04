@@ -34,6 +34,12 @@ export async function queryById(id: string): Promise<DataRecord[]> {
   return all<DataRecord>('SELECT * FROM data WHERE id = ?', [id]);
 }
 
+export async function queryByIds(ids: string[]): Promise<DataRecord[]> {
+  if (ids.length === 0) return [];
+  const placeholders = ids.map(() => '?').join(', ');
+  return all<DataRecord>(`SELECT * FROM data WHERE id IN (${placeholders})`, ids);
+}
+
 export async function insertOne(data: DataRecord): Promise<void> {
   await run(
     `INSERT INTO data (
