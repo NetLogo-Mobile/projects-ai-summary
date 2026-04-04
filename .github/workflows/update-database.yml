@@ -1,0 +1,57 @@
+name: 更新作品列表
+
+on:
+  schedule:
+    - cron: '0 0 */5 * *' 
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update-db:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.15.0'  
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Update database
+      env:
+        PL_USERNAME: ${{ secrets.PL_USERNAME }}
+        PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
+        PL_DISCUSSION_ID: ${{ secrets.PL_DISCUSSION_ID }}
+        PL_DISCUSSION_TAG: ${{ secrets.PL_DISCUSSION_TAG }}
+        PL_DISCUSSION_TYPE: ${{ secrets.PL_DISCUSSION_TYPE }}
+        # AI 提供商配置（选择其一）
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+        SPARK_API_PASSWORD: ${{ secrets.SPARK_API_PASSWORD }}
+        SPARK_MODEL: ${{ secrets.SPARK_MODEL }}
+        SPARK_ENDPOINT: ${{ secrets.SPARK_ENDPOINT }}
+        # 数据收集参数
+        SKIP: ${{ secrets.SKIP }}
+        TAKE: ${{ secrets.TAKE }}
+        DB_PATH: ./data.db
+      run: npm run update-db
+
+    - name: Set up Git
+      run: |
+        git config --global user.name 'pl-bot[bot]'
+        git config --global user.email 'noreply@github.com'
+        git add data.db
+        git commit -m "chore: 自动更新作品数据库"
+
+    - name: Push to repository
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: master

@@ -1,0 +1,35 @@
+name: 获取来自物实的物实查询请求
+
+on:
+  schedule:
+    - cron: '0 0-16 * * *' 
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  bot-query:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.15.0'  
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run bot once
+      env:
+        PL_USERNAME: ${{ secrets.PL_USERNAME }}
+        PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
+        PL_DISCUSSION_ID: ${{ secrets.PL_DISCUSSION_ID }}
+        PL_DISCUSSION_TAG: ${{ secrets.PL_DISCUSSION_TAG }}
+        PL_DISCUSSION_TYPE: ${{ secrets.PL_DISCUSSION_TYPE }}
+        DB_PATH: ./data.db
+      run: npm run run-bot-once
