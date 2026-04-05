@@ -7,6 +7,10 @@ on:
       - '.github/workflows/apply-database-patch.yml'
   workflow_dispatch:
 
+concurrency:
+  group: database-pipeline
+  cancel-in-progress: false
+
 jobs:
   apply-patch:
     if: github.actor != 'github-actions[bot]'
@@ -81,12 +85,6 @@ jobs:
             echo "No changes detected in tracked files, skipping commit."
             echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
           fi
-
-      - name: Rebase onto latest master
-        if: env.CHANGES_DETECTED == 'true'
-        run: |
-          git fetch origin master
-          git rebase origin/master
 
       - name: Push to repository
         if: env.CHANGES_DETECTED == 'true'
