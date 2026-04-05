@@ -4,6 +4,7 @@ import pl from 'plweb';
 import { config } from '../config';
 
 pl.setConfig({
+  baseURL: config.plBaseUrl,
   timeout: 10000,
   consolelog: true,
   consoleResponse: false,

@@ -7,6 +7,8 @@
     "build": "tsc -p tsconfig.json",
     "init": "node dist/index.js",
     "update-db": "node dist/scripts/updateDatabase.js",
+    "apply-db-patch": "node dist/scripts/applyDatabasePatch.js",
+    "export-cloudflare": "node dist/scripts/exportCloudflareSnapshot.js",
     "sync-selected-tags": "node dist/scripts/syncSelectedTags.js",
     "run-bot": "node dist/scripts/runBot.js",
     "run-bot-once": "node dist/scripts/runBotOnce.js",

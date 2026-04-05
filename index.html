@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PL Database Patch Console</title>
+    <style>
+      :root {
+        --bg: #f4efe7;
+        --panel: rgba(255, 252, 247, 0.92);
+        --ink: #1c1917;
+        --muted: #6b625a;
+        --accent: #0f766e;
+        --accent-soft: rgba(15, 118, 110, 0.12);
+        --line: rgba(28, 25, 23, 0.12);
+        --danger: #b42318;
+        --shadow: 0 20px 60px rgba(28, 25, 23, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(15, 118, 110, 0.14), transparent 36%),
+          radial-gradient(circle at top right, rgba(180, 131, 55, 0.14), transparent 30%),
+          linear-gradient(180deg, #f8f5ef 0%, #efe8dc 100%);
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - 32px));
+        margin: 24px auto;
+        display: grid;
+        gap: 16px;
+      }
+
+      .hero,
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(8px);
+      }
+
+      .hero {
+        padding: 24px 28px;
+      }
+
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: clamp(30px, 6vw, 52px);
+        line-height: 0.96;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p,
+      .meta {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 16px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        font-size: 14px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .search-grid,
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      input,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.84);
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 108px;
+        resize: vertical;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 18px;
+        font-weight: 700;
+        cursor: pointer;
+        background: #e7dfd4;
+        color: var(--ink);
+        transition: transform 140ms ease, background 140ms ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      button.primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      button.secondary {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .status {
+        min-height: 22px;
+        margin-top: 12px;
+        color: var(--muted);
+      }
+
+      .status.error {
+        color: var(--danger);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      tbody tr {
+        cursor: pointer;
+        transition: background 120ms ease;
+      }
+
+      tbody tr:hover,
+      tbody tr.active {
+        background: rgba(15, 118, 110, 0.08);
+      }
+
+      .patch-box {
+        background: #171412;
+        color: #f7f2ea;
+        border-radius: 20px;
+        padding: 18px;
+        min-height: 320px;
+        overflow: auto;
+        font-family: "IBM Plex Mono", "Cascadia Code", monospace;
+        white-space: pre-wrap;
+      }
+
+      .card-note {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          width: min(100vw - 16px, 1440px);
+          margin: 8px auto 24px;
+        }
+
+        .search-grid,
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <p class="meta" id="metaLine">Loading sql.js...</p>
+        <h1>Static Database Patch Console</h1>
+        <p>纯静态页面，浏览器直接读取 `data.db`，前端查询、编辑并生成可复制的补丁。</p>
+      </section>
+
+      <div class="layout">
+        <section class="panel">
+          <h2 class="section-title">Data Source</h2>
+          <div class="search-grid">
+            <div class="field full">
+              <label for="dbUrl">数据库 URL</label>
+              <input id="dbUrl" value="./data.db" />
+            </div>
+            <div class="field full">
+              <label for="dbFile">或上传本地 data.db</label>
+              <input id="dbFile" type="file" accept=".db,.sqlite,.sqlite3,application/octet-stream" />
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="primary" id="loadRemoteBtn">加载远程数据库</button>
+            <button id="loadLocalBtn">加载本地数据库</button>
+          </div>
+          <div class="status" id="loadStatus"></div>
+
+          <h2 class="section-title" style="margin-top: 24px">Search</h2>
+          <div class="search-grid">
+            <div class="field full">
+              <label for="keywords">关键词</label>
+              <input id="keywords" placeholder="例如：电磁学 光学" />
+            </div>
+            <div class="field">
+              <label for="author">作者</label>
+              <input id="author" />
+            </div>
+            <div class="field">
+              <label for="limit">限制</label>
+              <input id="limit" type="number" value="20" />
+            </div>
+            <div class="field">
+              <label for="year">年份</label>
+              <input id="year" type="number" />
+            </div>
+            <div class="field">
+              <label for="yearFrom">年份起</label>
+              <input id="yearFrom" type="number" />
+            </div>
+            <div class="field">
+              <label for="yearTo">年份止</label>
+              <input id="yearTo" type="number" />
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="primary" id="searchBtn">查询</button>
+            <button id="recentBtn">最近记录</button>
+          </div>
+          <div class="status" id="searchStatus"></div>
+
+          <div style="margin-top: 16px; overflow: auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>标题</th>
+                  <th>作者</th>
+                  <th>年份</th>
+                </tr>
+              </thead>
+              <tbody id="resultBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="section-title">Edit</h2>
+          <div class="form-grid">
+            <div class="field full">
+              <label for="recordId">ID</label>
+              <input id="recordId" readonly />
+            </div>
+            <div class="field full">
+              <label for="name">标题</label>
+              <input id="name" />
+            </div>
+            <div class="field">
+              <label for="contentLength">内容长度</label>
+              <input id="contentLength" type="number" />
+            </div>
+            <div class="field">
+              <label for="yearEdit">年份</label>
+              <input id="yearEdit" type="number" />
+            </div>
+            <div class="field">
+              <label for="userID">作者 ID</label>
+              <input id="userID" />
+            </div>
+            <div class="field">
+              <label for="userName">作者名</label>
+              <input id="userName" />
+            </div>
+            <div class="field">
+              <label for="editorID">编辑者 ID</label>
+              <input id="editorID" />
+            </div>
+            <div class="field">
+              <label for="editorName">编辑者名</label>
+              <input id="editorName" />
+            </div>
+            <div class="field">
+              <label for="readability">可读性</label>
+              <input id="readability" type="number" step="0.01" min="0" max="1" />
+            </div>
+            <div class="field full">
+              <label for="summary">摘要</label>
+              <textarea id="summary"></textarea>
+            </div>
+            <div class="field full">
+              <label for="primaryDiscipline">一级学科</label>
+              <textarea id="primaryDiscipline" placeholder="一行一个，或逗号分隔"></textarea>
+            </div>
+            <div class="field full">
+              <label for="secondaryDiscipline">二级学科</label>
+              <textarea id="secondaryDiscipline" placeholder="一行一个，或逗号分隔"></textarea>
+            </div>
+            <div class="field full">
+              <label for="keyWords">关键词</label>
+              <textarea id="keyWords" placeholder="一行一个，或逗号分隔"></textarea>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="primary" id="generatePatchBtn">生成补丁</button>
+            <button id="resetBtn">重置表单</button>
+          </div>
+          <div class="status" id="editStatus"></div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2 class="section-title">Patch</h2>
+        <p class="card-note">补丁目标文件：`home/database.patch.json`。这个静态页不会直接写文件，只负责生成并复制补丁文本。</p>
+        <div class="toolbar" style="margin-bottom: 14px">
+          <button class="secondary" id="copyPatchBtn">复制补丁</button>
+        </div>
+        <div class="status" id="patchStatus"></div>
+        <pre class="patch-box" id="patchPreview">{
+  "version": 1,
+  "generatedAt": "",
+  "operations": []
+}</pre>
+      </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+    <script>
+      const state = {
+        SQL: null,
+        db: null,
+        sourceLabel: "",
+        records: [],
+        originalById: new Map(),
+        selectedId: "",
+        patchOperation: null,
+      };
+
+      const ids = {
+        metaLine: document.getElementById("metaLine"),
+        loadStatus: document.getElementById("loadStatus"),
+        searchStatus: document.getElementById("searchStatus"),
+        editStatus: document.getElementById("editStatus"),
+        patchStatus: document.getElementById("patchStatus"),
+        resultBody: document.getElementById("resultBody"),
+        patchPreview: document.getElementById("patchPreview"),
+      };
+
+      const editFields = [
+        "recordId",
+        "name",
+        "contentLength",
+        "userID",
+        "userName",
+        "editorID",
+        "editorName",
+        "yearEdit",
+        "summary",
+        "primaryDiscipline",
+        "secondaryDiscipline",
+        "keyWords",
+        "readability",
+      ];
+
+      const recordFields = [
+        "id",
+        "name",
+        "contentLength",
+        "userID",
+        "userName",
+        "editorID",
+        "editorName",
+        "year",
+        "summary",
+        "primaryDiscipline",
+        "secondaryDiscipline",
+        "keyWords",
+        "readability",
+      ];
+
+      function setStatus(target, message, isError = false) {
+        target.textContent = message || "";
+        target.className = isError ? "status error" : "status";
+      }
+
+      function parseArrayField(value) {
+        if (Array.isArray(value)) {
+          return value.map((item) => String(item).trim()).filter(Boolean);
+        }
+        if (typeof value !== "string") return [];
+
+        const trimmed = value.trim();
+        if (!trimmed) return [];
+
+        try {
+          const parsed = JSON.parse(trimmed);
+          if (Array.isArray(parsed)) {
+            return parsed.map((item) => String(item).trim()).filter(Boolean);
+          }
+        } catch {
+          return trimmed
+            .split(/[\n,，；;|]/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+        }
+
+        return [];
+      }
+
+      function normalizeRecord(record) {
+        return {
+          id: String(record.id || "").trim(),
+          name: String(record.name || "").trim(),
+          contentLength: Number(record.contentLength || 0),
+          userID: String(record.userID || "").trim(),
+          userName: String(record.userName || "").trim(),
+          editorID: String(record.editorID || "").trim(),
+          editorName: String(record.editorName || "").trim(),
+          year: Number(record.year || 0),
+          summary: String(record.summary || "").trim(),
+          primaryDiscipline: parseArrayField(record.primaryDiscipline),
+          secondaryDiscipline: parseArrayField(record.secondaryDiscipline),
+          keyWords: parseArrayField(record.keyWords),
+          readability: Number(record.readability || 0),
+        };
+      }
+
+      function toPatchRecord(record) {
+        return {
+          id: record.id,
+          name: record.name,
+          contentLength: record.contentLength,
+          userID: record.userID,
+          userName: record.userName,
+          editorID: record.editorID,
+          editorName: record.editorName,
+          year: record.year,
+          summary: record.summary,
+          primaryDiscipline: JSON.stringify(record.primaryDiscipline),
+          secondaryDiscipline: JSON.stringify(record.secondaryDiscipline),
+          keyWords: JSON.stringify(record.keyWords),
+          readability: record.readability,
+        };
+      }
+
+      function diffRecord(current, next) {
+        if (!current) return { ...next };
+
+        const diff = {};
+        for (const field of recordFields) {
+          if (current[field] !== next[field]) {
+            diff[field] = next[field];
+          }
+        }
+        return diff;
+      }
+
+      function textareaValue(id) {
+        return document.getElementById(id).value
+          .split(/[\n,，；;|]/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function collectRecord() {
+        return normalizeRecord({
+          id: document.getElementById("recordId").value,
+          name: document.getElementById("name").value,
+          contentLength: document.getElementById("contentLength").value,
+          userID: document.getElementById("userID").value,
+          userName: document.getElementById("userName").value,
+          editorID: document.getElementById("editorID").value,
+          editorName: document.getElementById("editorName").value,
+          year: document.getElementById("yearEdit").value,
+          summary: document.getElementById("summary").value,
+          primaryDiscipline: textareaValue("primaryDiscipline"),
+          secondaryDiscipline: textareaValue("secondaryDiscipline"),
+          keyWords: textareaValue("keyWords"),
+          readability: document.getElementById("readability").value,
+        });
+      }
+
+      function fillForm(record) {
+        state.selectedId = record.id;
+        document.getElementById("recordId").value = record.id || "";
+        document.getElementById("name").value = record.name || "";
+        document.getElementById("contentLength").value = record.contentLength ?? 0;
+        document.getElementById("userID").value = record.userID || "";
+        document.getElementById("userName").value = record.userName || "";
+        document.getElementById("editorID").value = record.editorID || "";
+        document.getElementById("editorName").value = record.editorName || "";
+        document.getElementById("yearEdit").value = record.year ?? 0;
+        document.getElementById("summary").value = record.summary || "";
+        document.getElementById("primaryDiscipline").value = (record.primaryDiscipline || []).join("\n");
+        document.getElementById("secondaryDiscipline").value = (record.secondaryDiscipline || []).join("\n");
+        document.getElementById("keyWords").value = (record.keyWords || []).join("\n");
+        document.getElementById("readability").value = record.readability ?? 0;
+        setStatus(ids.editStatus, `已载入记录 ${record.id}`);
+      }
+
+      function tokenizeKeywords(value) {
+        return String(value || "")
+          .split(/[,\s|，；;]+/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function includesIgnoreCase(value, query) {
+        return String(value || "").toLowerCase().includes(String(query || "").toLowerCase());
+      }
+
+      function matchPriority(record, keyword) {
+        if (!keyword) return 99;
+        if (includesIgnoreCase(record.name, keyword)) return 1;
+        if (record.keyWords.some((value) => includesIgnoreCase(value, keyword))) return 2;
+        if (
+          record.primaryDiscipline.some((value) => includesIgnoreCase(value, keyword)) ||
+          record.secondaryDiscipline.some((value) => includesIgnoreCase(value, keyword))
+        ) {
+          return 3;
+        }
+        if (includesIgnoreCase(record.userName, keyword)) return 4;
+        if (includesIgnoreCase(record.summary, keyword)) return 5;
+        return 6;
+      }
+
+      function renderResults(records) {
+        ids.resultBody.innerHTML = "";
+        for (const record of records) {
+          const row = document.createElement("tr");
+          if (record.id === state.selectedId) row.classList.add("active");
+          row.innerHTML = `
+            <td>${record.id}</td>
+            <td>${record.name || ""}</td>
+            <td>${record.userName || ""}</td>
+            <td>${record.year || ""}</td>
+          `;
+          row.addEventListener("click", () => {
+            fillForm(record);
+            renderResults(records);
+          });
+          ids.resultBody.appendChild(row);
+        }
+      }
+
+      function runSearch(mode) {
+        if (!state.records.length) {
+          setStatus(ids.searchStatus, "请先加载数据库", true);
+          return;
+        }
+
+        const keywords = tokenizeKeywords(document.getElementById("keywords").value);
+        const author = document.getElementById("author").value.trim();
+        const year = Number(document.getElementById("year").value);
+        const yearFrom = Number(document.getElementById("yearFrom").value);
+        const yearTo = Number(document.getElementById("yearTo").value);
+        const limit = Math.min(Math.max(Number(document.getElementById("limit").value || 20), 1), 200);
+
+        let records = [...state.records];
+        if (mode !== "recent") {
+          records = records.filter((record) => {
+            if (
+              keywords.length &&
+              !keywords.some((keyword) =>
+                [
+                  record.name,
+                  record.summary,
+                  record.userName,
+                  ...record.keyWords,
+                  ...record.primaryDiscipline,
+                  ...record.secondaryDiscipline,
+                ].some((value) => includesIgnoreCase(value, keyword)),
+              )
+            ) {
+              return false;
+            }
+
+            if (
+              author &&
+              !includesIgnoreCase(record.userName, author) &&
+              !includesIgnoreCase(record.editorName, author)
+            ) {
+              return false;
+            }
+
+            if (Number.isFinite(year) && year > 0 && record.year !== year) return false;
+            if (Number.isFinite(yearFrom) && yearFrom > 0 && record.year < yearFrom) return false;
+            if (Number.isFinite(yearTo) && yearTo > 0 && record.year > yearTo) return false;
+            return true;
+          });
+        }
+
+        records.sort((left, right) => {
+          if (mode !== "recent") {
+            const leftPriority = matchPriority(left, keywords[0]);
+            const rightPriority = matchPriority(right, keywords[0]);
+            if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+          }
+          if (left.year !== right.year) return right.year - left.year;
+          return left.readability - right.readability;
+        });
+
+        const sliced = records.slice(0, limit);
+        renderResults(sliced);
+        setStatus(ids.searchStatus, `已显示 ${sliced.length} / ${records.length} 条记录`);
+      }
+
+      async function loadSqlJs() {
+        state.SQL = await initSqlJs({
+          locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${file}`,
+        });
+      }
+
+      function importDatabase(bytes, sourceLabel) {
+        if (state.db) {
+          state.db.close();
+        }
+
+        state.db = new state.SQL.Database(new Uint8Array(bytes));
+        state.sourceLabel = sourceLabel;
+
+        const result = state.db.exec(`
+          SELECT id, name, contentLength, userID, userName, editorID, editorName,
+                 year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability
+          FROM data
+        `);
+
+        const rows = (result[0]?.values || []).map((row) => {
+          const raw = Object.fromEntries(result[0].columns.map((column, index) => [column, row[index]]));
+          return normalizeRecord(raw);
+        });
+
+        state.records = rows;
+        state.originalById = new Map(rows.map((record) => [record.id, toPatchRecord(record)]));
+
+        ids.metaLine.textContent = `Source: ${sourceLabel} | Records: ${rows.length}`;
+        setStatus(ids.loadStatus, `数据库已加载，共 ${rows.length} 条记录`);
+        runSearch("recent");
+      }
+
+      async function loadRemoteDatabase() {
+        setStatus(ids.loadStatus, "正在加载远程数据库...");
+        const url = document.getElementById("dbUrl").value.trim() || "./data.db";
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`无法加载数据库: ${response.status} ${response.statusText}`);
+        }
+        const bytes = await response.arrayBuffer();
+        importDatabase(bytes, url);
+      }
+
+      async function loadLocalDatabase() {
+        const file = document.getElementById("dbFile").files[0];
+        if (!file) {
+          throw new Error("请先选择本地数据库文件");
+        }
+        setStatus(ids.loadStatus, "正在读取本地数据库...");
+        const bytes = await file.arrayBuffer();
+        importDatabase(bytes, file.name);
+      }
+
+      function generatePatch() {
+        const record = collectRecord();
+        if (!record.id) {
+          setStatus(ids.editStatus, "请先选中一条记录", true);
+          return;
+        }
+
+        const patchRecord = toPatchRecord(record);
+        const current = state.originalById.get(record.id) || null;
+        const operation = {
+          operation: "upsert",
+          id: record.id,
+          updatedAt: new Date().toISOString(),
+          record: patchRecord,
+          diff: diffRecord(current, patchRecord),
+        };
+
+        state.patchOperation = operation;
+        ids.patchPreview.textContent = JSON.stringify(
+          {
+            version: 1,
+            generatedAt: new Date().toISOString(),
+            operations: [operation],
+          },
+          null,
+          2,
+        );
+        setStatus(ids.patchStatus, `已生成 ${record.id} 的补丁`);
+      }
+
+      async function copyPatch() {
+        const text = ids.patchPreview.textContent || "";
+        if (!text.trim()) {
+          setStatus(ids.patchStatus, "没有可复制的补丁", true);
+          return;
+        }
+
+        await navigator.clipboard.writeText(text);
+        setStatus(ids.patchStatus, "补丁已复制到剪贴板");
+      }
+
+      function resetForm() {
+        for (const id of editFields) {
+          document.getElementById(id).value = "";
+        }
+        state.selectedId = "";
+        setStatus(ids.editStatus, "表单已重置");
+      }
+
+      document.getElementById("loadRemoteBtn").addEventListener("click", () => {
+        loadRemoteDatabase().catch((error) => setStatus(ids.loadStatus, error.message, true));
+      });
+
+      document.getElementById("loadLocalBtn").addEventListener("click", () => {
+        loadLocalDatabase().catch((error) => setStatus(ids.loadStatus, error.message, true));
+      });
+
+      document.getElementById("searchBtn").addEventListener("click", () => runSearch("search"));
+      document.getElementById("recentBtn").addEventListener("click", () => runSearch("recent"));
+      document.getElementById("generatePatchBtn").addEventListener("click", generatePatch);
+      document.getElementById("copyPatchBtn").addEventListener("click", () => {
+        copyPatch().catch((error) => setStatus(ids.patchStatus, error.message, true));
+      });
+      document.getElementById("resetBtn").addEventListener("click", resetForm);
+
+      (async () => {
+        try {
+          await loadSqlJs();
+          ids.metaLine.textContent = "sql.js loaded, trying ./data.db ...";
+          await loadRemoteDatabase();
+        } catch (error) {
+          ids.metaLine.textContent = "sql.js loaded. Remote data.db unavailable, please upload a local file.";
+          setStatus(ids.loadStatus, error.message, true);
+        }
+      })();
+    </script>
+  </body>
+</html>

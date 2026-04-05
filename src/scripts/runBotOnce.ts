@@ -1,7 +1,8 @@
 import { assertEnv } from '../config';
 import { initDatabase } from '../db/client';
 import { initTable } from '../db/repository';
-import { runDiscussionBotOnce } from '../services/bot';
+import { runDiscussionBotOnce } from '../services/discussionBot';
+import { runWithRunLogger } from '../services/runLogger';
 
 async function main() {
   assertEnv();
@@ -10,7 +11,7 @@ async function main() {
   await runDiscussionBotOnce();
 }
 
-main().catch((e) => {
+runWithRunLogger('run-bot-once', main).catch((e) => {
   console.error(e);
   process.exit(1);
 });

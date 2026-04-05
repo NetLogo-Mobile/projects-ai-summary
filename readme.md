@@ -1,23 +1,52 @@
-# Physics-Lab-Search-Engine
+﻿# Physics-Lab-Search-Engine
 
-基于 `physics-lab-web-api` + SQLite + OpenAI/讯飞星火/Groq 的作品收录与查询机器人。
+基于 `physics-lab-web-api` + SQLite + OpenAI / Spark / Groq 的作品收录、查询和补丁同步工具。
+
+## GitHub Pages Static Admin
+
+仓库根目录的 `index.html` 是纯静态管理页。
+
+它的工作方式：
+
+- 页面通过 CDN 加载 `sql.js`
+- 浏览器直接读取 `./data.db`
+- 如果远程 `data.db` 不可访问，可以手动上传本地 `.db` 文件
+- 查询、编辑、生成补丁都在浏览器里完成
+- 页面只负责复制补丁文本，不直接写本地文件
+- 复制出来的补丁仍兼容 `npm run apply-db-patch`
+
+推荐部署方式：
+
+1. GitHub Pages 发布源使用分支根目录
+2. 确保发布分支里有 `index.html`、`.nojekyll`、`data.db`
+3. 打开页面后查询和编辑记录
+4. 复制生成的补丁
+5. 将补丁内容粘贴到 `home/database.patch.json`
+6. 运行 CI 或 `npm run apply-db-patch`
 
 ## Bot 查询命令
 
-```
-#查词: 电磁学,光学
+```bash
+#查词: 电磁学 光学
 #查作者: 用户名
 #查年份: 2024
 #查年份: 2021-2024
-#查查询 关键词=电磁学,光学 作者=张三 limit=8
+#查询 关键词=电磁学|光学 作者=张三 年份范围=2021-2024 limit=8
 ```
 
-## 环境变量配置
+## Cloudflare Query API
 
-创建 `.env` 文件：
+导出 Cloudflare Worker 使用的静态快照：
+
+```bash
+npm run export-cloudflare
+```
+
+部署说明见 [cloudflare/README.md](./cloudflare/README.md)。
+
+## 环境变量
 
 ```env
-# 物实平台
 PL_USERNAME=
 PL_PASSWORD=
 PL_DISCUSSION_ID=69a59f0eca7ceb749317ef7c
@@ -25,61 +54,60 @@ PL_DISCUSSION_TAG=精选,知识库
 PL_DISCUSSION_TYPE=Discussion,Experiment
 PL_BASE_URL=https://physics-api-cn.turtlesim.com
 
-# 本地标签同步（管理员账号，可与上面的账号相同）
 PL_ADMIN_USERNAME=
 PL_ADMIN_PASSWORD=
 PL_SYNC_CATEGORY=Discussion
 PL_SYNC_SOURCE_TAG=精选
 PL_SYNC_TAG_WHITELIST=数学,物理学,化学,生物学,地理学,天文学,计算机科学,医学,电气工程,历史学,哲学,文学,艺术学
-# 可选：覆盖学科->讨论标签映射，JSON格式
-# PL_SYNC_DISCIPLINE_TAG_MAP={"理论物理学":["物理学"],"应用数学":["数学"]}
 
-# 数据收集
 SKIP=0
 TAKE=-100
 DB_PATH=./data.db
+DB_PATCH_FILE=./home/database.patch.json
+CLOUDFLARE_EXPORT_FILE=./cloudflare/data/records.mjs
+LOG_DIR=./logs
 
-# AI 服务（选择其一）
-OPENAI_API_KEY=your_key
+OPENAI_API_KEY=
 OPENAI_MODEL=gpt-4o-mini
-# OPENAI_BASE_URL=https://your-provider.com/v1
 
-# 或使用讯飞星火
-SPARK_API_PASSWORD=your_password
+SPARK_API_PASSWORD=
 SPARK_MODEL=generalv3.5
 SPARK_ENDPOINT=https://spark-api-open.xf-yun.com/v1/chat/completions
 
-# 用于 bot 查询时的关键词模糊扩展
-GROQ_API_KEY=your_groq_key
+GROQ_API_KEY=
 GROQ_MODEL=openai/gpt-oss-120B
-# GROQ_BASE_URL=https://api.groq.com/openai/v1
+GROQ_CHAT_MODEL=openai/gpt-oss-120B
+GROQ_CHAT_MAX_TOKENS=120
+
+PL_LOG_SUMMARY_ID=
+PL_LOG_SUMMARY_CATEGORY=Discussion
+PL_LOG_SUMMARY_USERNAME=
+PL_LOG_SUMMARY_PASSWORD=
+PL_LOG_SUMMARY_MAX_CHARS=18000
 ```
 
-## GitHub Actions 工作流
+## GitHub Actions
 
-两个自动化任务在 `.github/workflows/`：
+工作流位于 `.github/workflows/`：
 
-**run-bot-query.yml**（每小时 0-16 时）
-- 执行 `npm run run-bot-once`
-- 需要 Secrets: PL_USERNAME, PL_PASSWORD, PL_DISCUSSION_*
+- `run-bot-query.yml`
+  - 执行 `npm run run-bot-once`
+- `update-database.yml`
+  - 执行 `npm run apply-db-patch`
+  - 执行 `npm run update-db`
+  - 执行 `npm run export-cloudflare`
 
-**update-database.yml**（每 5 天）
-- 执行 `npm run update-db` 并提交数据
-- 需要上述 Secrets + AI 配置
-
-在 GitHub Settings → Secrets and variables → Actions 中添加相应的 Secrets。
-
-> 注意：工作流里如果某个 Secret 未设置，GitHub Actions 会把它注入为空字符串（不是 `undefined`）。
-> 本项目会把空字符串视为“未配置”，因此请确保至少设置 `OPENAI_API_KEY` 或 `SPARK_API_PASSWORD` 其中之一。
-> 另外请务必使用 `PL_USERNAME` / `PL_PASSWORD` 这两个名称，不要误用系统自带的 `USERNAME` / `PASSWORD` 环境变量。
+请在 GitHub `Settings -> Secrets and variables -> Actions` 中配置对应 Secrets。
 
 ## 本地命令
 
 ```bash
-npm run update-db          # 更新数据库
-npm run run-bot            # 启动机器人（持续运行）
-npm run run-bot-once       # 运行一轮机器人
-npm run discipline-stats   # 统计学科分布
-npm run flexible-collect -- --tag "精选" --take -50  # 灵活收集
-npm run sync-selected-tags # 用本地数据库学科信息补齐精选作品讨论标签
+npm run update-db
+npm run apply-db-patch
+npm run export-cloudflare
+npm run run-bot
+npm run run-bot-once
+npm run discipline-stats
+npm run flexible-collect -- --tag "精选" --take -50
+npm run sync-selected-tags
 ```

@@ -37,5 +37,12 @@ jobs:
         GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         GROQ_MODEL: ${{ secrets.GROQ_MODEL }}
         GROQ_BASE_URL: ${{ secrets.GROQ_BASE_URL }}
+        GROQ_CHAT_MODEL: ${{ secrets.GROQ_CHAT_MODEL }}
+        GROQ_CHAT_MAX_TOKENS: ${{ secrets.GROQ_CHAT_MAX_TOKENS }}
+        LOG_DIR: ./logs
+        PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
+        PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
+        PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
+        PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
         DB_PATH: ./data.db
       run: npm run run-bot-once

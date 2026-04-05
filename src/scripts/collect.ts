@@ -2,6 +2,7 @@ import { assertEnv, config } from '../config';
 import { initDatabase } from '../db/client';
 import { initTable } from '../db/repository';
 import { collectByTagWithOptions } from '../services/collector';
+import { runWithRunLogger } from '../services/runLogger';
 
 function parseArgs(): { tag: string; type: string; skip: number; model?: string; take: number } {
   const args: string[] = process.argv.slice(2);
@@ -73,7 +74,7 @@ async function main() {
   console.log('[flexible-collect] 完成!', result);
 }
 
-main().catch((e) => {
+runWithRunLogger('flexible-collect', main).catch((e) => {
   console.error(e);
   process.exit(1);
 });

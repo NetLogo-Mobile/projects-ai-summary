@@ -1,66 +1,93 @@
-name: 更新作品列表
+﻿name: Update Database
 
 on:
   schedule:
-    - cron: '0 0 */5 * *' 
-  workflow_dispatch:  # 允许手动触发
+    - cron: '0 0 */5 * *'
+  workflow_dispatch:
 
 jobs:
   update-db:
     runs-on: ubuntu-latest
     environment: pl-search
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.15.0'
 
-    - name: Install Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20.15.0'  
+      - name: Install dependencies
+        run: npm install
 
-    - name: Install dependencies
-      run: npm install
+      - name: Build project
+        run: npm run build
 
-    - name: Build project
-      run: npm run build
+      - name: Apply database patch
+        env:
+          DB_PATH: ./data.db
+          DB_PATCH_FILE: ./home/database.patch.json
+          LOG_DIR: ./logs
+          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
+          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
+          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
+          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
+        run: npm run apply-db-patch
 
-    - name: Update database
-      env:
-        PL_USERNAME: ${{ secrets.PL_USERNAME }}
-        PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
-        PL_DISCUSSION_ID: ${{ secrets.PL_DISCUSSION_ID }}
-        PL_DISCUSSION_TAG: ${{ secrets.PL_DISCUSSION_TAG }}
-        PL_DISCUSSION_TYPE: ${{ secrets.PL_DISCUSSION_TYPE }}
-        # AI 提供商配置（选择其一）
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-        SPARK_API_PASSWORD: ${{ secrets.SPARK_API_PASSWORD }}
-        SPARK_MODEL: ${{ secrets.SPARK_MODEL }}
-        SPARK_ENDPOINT: ${{ secrets.SPARK_ENDPOINT }}
-        # 数据收集参数
-        SKIP: ${{ secrets.SKIP }}
-        TAKE: ${{ secrets.TAKE }}
-        DB_PATH: ./data.db
-      run: npm run update-db
+      - name: Update database
+        env:
+          PL_USERNAME: ${{ secrets.PL_USERNAME }}
+          PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
+          PL_DISCUSSION_ID: ${{ secrets.PL_DISCUSSION_ID }}
+          PL_DISCUSSION_TAG: ${{ secrets.PL_DISCUSSION_TAG }}
+          PL_DISCUSSION_TYPE: ${{ secrets.PL_DISCUSSION_TYPE }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          SPARK_API_PASSWORD: ${{ secrets.SPARK_API_PASSWORD }}
+          SPARK_MODEL: ${{ secrets.SPARK_MODEL }}
+          SPARK_ENDPOINT: ${{ secrets.SPARK_ENDPOINT }}
+          SKIP: ${{ secrets.SKIP }}
+          TAKE: ${{ secrets.TAKE }}
+          DB_PATH: ./data.db
+        run: npm run update-db
 
-    - name: Check for changes and commit if needed
-      run: |
-        git config --global user.name 'pl-bot[bot]'
-        git config --global user.email 'noreply@github.com'
-        git add data.db
-        # Only commit if there are actual changes
-        if ! git diff --cached --quiet; then
-          git commit -m "chore: 自动更新作品数据库"
-          echo "CHANGES_DETECTED=true" >> $GITHUB_ENV
-        else
-          echo "No changes detected in data.db, skipping commit."
-          echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
-        fi
+      - name: Export Cloudflare snapshot
+        env:
+          DB_PATH: ./data.db
+          CLOUDFLARE_EXPORT_FILE: ./cloudflare/data/records.mjs
+          LOG_DIR: ./logs
+          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
+          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
+          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
+          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
+        run: npm run export-cloudflare
 
-    - name: Push to repository
-      uses: ad-m/github-push-action@master
-      if: env.CHANGES_DETECTED == 'true'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: master
+      - name: Deploy Cloudflare Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        working-directory: ./cloudflare
+        run: npx wrangler deploy --config wrangler.toml
+
+      - name: Check for changes and commit if needed
+        run: |
+          git config --global user.name 'pl-bot[bot]'
+          git config --global user.email 'noreply@github.com'
+          git add data.db
+          git add cloudflare/data/records.mjs
+          git add home/database.patch.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update database snapshot"
+            echo "CHANGES_DETECTED=true" >> $GITHUB_ENV
+          else
+            echo "No changes detected in tracked files, skipping commit."
+            echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Push to repository
+        if: env.CHANGES_DETECTED == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master

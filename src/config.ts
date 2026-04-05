@@ -19,6 +19,15 @@ function readEnvList(name: string, fallback: string): string[] {
     .map(value => value.trim())
     .filter(Boolean);
 }
+
+function readEnvInt(name: string, fallback: number): number {
+  const raw = readEnv(name);
+  if (!raw) return fallback;
+
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 const openaiApiKey = readEnv('OPENAI_API_KEY');
 const sparkApiPassword = readEnv('SPARK_API_PASSWORD');
 
@@ -26,6 +35,8 @@ const groqApiKey = readEnv('GROQ_API_KEY');
 
 export const config = {
   databasePath: readEnvWithDefault('DB_PATH', './data.db'),
+  dbPatchFile: readEnvWithDefault('DB_PATCH_FILE', './home/database.patch.json'),
+  cloudflareExportFile: readEnvWithDefault('CLOUDFLARE_EXPORT_FILE', './cloudflare/data/records.mjs'),
   plUsername: readEnvWithDefault('PL_USERNAME', ''),
   plPassword: readEnvWithDefault('PL_PASSWORD', ''),
   discussionTags: readEnvList('PL_DISCUSSION_TAG', '精选'),
@@ -41,8 +52,8 @@ export const config = {
   syncTagWhitelist: readEnvList('PL_SYNC_TAG_WHITELIST', '数学,物理学,化学,生物学,地理学,天文学,计算机科学,医学,电气工程,历史学,哲学,文学,艺术学'),
   
   // 数据收集参数
-  skip: parseInt(readEnvWithDefault('SKIP', '0'), 10),
-  take: parseInt(readEnvWithDefault('TAKE', '-100'), 10),
+  skip: readEnvInt('SKIP', 0),
+  take: readEnvInt('TAKE', -100),
   
   // AI 服务配置（自动选择 OpenAI 或 Spark）
   // 优先使用 OpenAI，若无则使用 Spark
@@ -62,6 +73,14 @@ export const config = {
   groqApiKey: groqApiKey ?? '',
   groqModel: readEnvWithDefault('GROQ_MODEL', 'llama-3.1-8b-instant'),
   groqBaseUrl: readEnvWithDefault('GROQ_BASE_URL', 'https://api.groq.com/openai/v1'),
+  groqChatModel: readEnv('GROQ_CHAT_MODEL') ?? readEnvWithDefault('GROQ_MODEL', 'openai/gpt-oss-120b'),
+  groqChatMaxTokens: readEnvInt('GROQ_CHAT_MAX_TOKENS', 120),
+  logDirectory: readEnvWithDefault('LOG_DIR', './logs'),
+  logSummaryId: readEnvWithDefault('PL_LOG_SUMMARY_ID', ''),
+  logSummaryCategory: readEnvWithDefault('PL_LOG_SUMMARY_CATEGORY', 'Discussion'),
+  logSummaryUsername: readEnvWithDefault('PL_LOG_SUMMARY_USERNAME', ''),
+  logSummaryPassword: readEnvWithDefault('PL_LOG_SUMMARY_PASSWORD', ''),
+  logSummaryMaxChars: readEnvInt('PL_LOG_SUMMARY_MAX_CHARS', 18000),
 
   // 向后兼容（保留旧参数访问）
   get discussionTag() { return this.discussionTags[0]; },

@@ -1,6 +1,7 @@
 import { initDatabase } from '../db/client';
 import { initTable } from '../db/repository';
 import { syncDisciplineTagsToSelectedWorks } from '../services/tagSync';
+import { runWithRunLogger } from '../services/runLogger';
 
 async function main() {
   await initDatabase();
@@ -16,7 +17,7 @@ async function main() {
   await Promise.all(skipValues.map(skip => syncDisciplineTagsToSelectedWorks(skip)));
 }
 
-main().catch((error) => {
+runWithRunLogger('sync-selected-tags', main).catch((error) => {
   console.error(error);
   process.exit(1);
 });

@@ -2,6 +2,7 @@ import { initDatabase } from '../db/client';
 import { initTable, searchRecords } from '../db/repository';
 import { DataRecord } from '../types/data';
 import { all } from '../db/client';
+import { runWithRunLogger } from '../services/runLogger';
 
 interface DisciplineStats {
   primary: Map<string, number>;
@@ -111,5 +112,8 @@ async function main() {
 }
 
 if (require.main === module) {
-  main();
+  runWithRunLogger('discipline-stats', main).catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 }

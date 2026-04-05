@@ -2,6 +2,7 @@ import { assertEnv, config } from '../config';
 import { initDatabase } from '../db/client';
 import { initTable } from '../db/repository';
 import { collectByTagWithOptions } from '../services/collector';
+import { runWithRunLogger } from '../services/runLogger';
 
 async function main() {
   assertEnv();
@@ -25,7 +26,7 @@ async function main() {
   console.log(`\n[update-db] 总结: 插入=${totalInserted}, 跳过=${totalSkipped}`);
 }
 
-main().catch((e) => {
+runWithRunLogger('update-database', main).catch((e) => {
   console.error(e);
   process.exit(1);
 });

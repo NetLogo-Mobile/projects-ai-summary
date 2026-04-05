@@ -1,5 +1,6 @@
 import axios from "axios";
 import { config } from "../config";
+import { logAiTrace } from "./runLogger";
 
 export interface QueryExpansionResult {
   extraKeywords: string[];
@@ -73,6 +74,11 @@ function getGroqErrorMessage(error: unknown): string {
   }
 
   return error instanceof Error ? error.message : String(error);
+}
+
+function logGroqResponse(label: string, content: string): void {
+  if (!content.trim()) return;
+  logAiTrace(label, content);
 }
 
 // function extractHanChars(value: string): string[] {
@@ -232,6 +238,7 @@ export async function expandKeywordsWithGroq(
     );
 
     const content = resp.data.choices?.[0]?.message?.content ?? "";
+    logGroqResponse(`Groq keyword-expansion model=${config.groqModel}`, content);
     const parsed = safeJsonParse(content);
     if (!parsed) {
       console.warn("[Groq] 关键词扩展返回了非预期 JSON，将使用原查询。");
@@ -255,5 +262,47 @@ export async function expandKeywordsWithGroq(
       getGroqErrorMessage(error),
     );
     return { extraKeywords: [] };
+  }
+}
+
+export async function chatBrieflyWithGroq(input: string): Promise<string | null> {
+  const url = getGroqChatCompletionsUrl();
+  if (!url) return null;
+
+  try {
+    const resp = await axios.post<GroqChatCompletionResponse>(
+      url,
+      {
+        model: config.groqChatModel,
+        temperature: 0.5,
+        max_tokens: config.groqChatMaxTokens,
+        messages: [
+          {
+            role: "system",
+            content:
+              "你现在只是简短接话，不要伪造数据库结果，不要长篇解释，不超过两句话，尽量控制在60个中文字符内。",
+          },
+          {
+            role: "user",
+            content: input,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${config.groqApiKey}`,
+          "Content-Type": "application/json",
+          "User-Agent": "pl-s-2-groq-chat/1.0",
+        },
+        timeout: 15000,
+      },
+    );
+
+    const content = (resp.data.choices?.[0]?.message?.content ?? "").trim();
+    logGroqResponse(`Groq fallback-chat model=${config.groqChatModel}`, content);
+    return content || null;
+  } catch (error) {
+    console.warn("[Groq] fallback chat failed:", getGroqErrorMessage(error));
+    return null;
   }
 }

@@ -3,3 +3,5 @@ dist/
 .env
 history-ids.txt
 *.http
+logs/
+home/_codex_backup/

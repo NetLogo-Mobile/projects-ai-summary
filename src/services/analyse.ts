@@ -2,6 +2,7 @@ import axios from 'axios';
 import { OpenAI } from 'openai';
 import { config } from '../config';
 import { LLMResult } from '../types/data';
+import { logAiTrace } from './runLogger';
 
 const systemPrompt =
   `你是结构化学术分类助手。正在执行结构化信息提取任务。必须且只能输出无格式纯文本的JSON对象，确保JSON.parse可直接解析。
@@ -17,6 +18,27 @@ const aiClient = useOpenAI
       dangerouslyAllowBrowser: true
     })
   : null;
+
+function recordAiCompletion(
+  provider: string,
+  response: OpenAIChatCompletionResponse,
+): void {
+  const choice = response.choices?.[0];
+  const content = choice?.message?.content?.trim();
+  const toolCalls = choice?.message?.tool_calls;
+  const parts: string[] = [];
+
+  if (content) {
+    parts.push(`content:\n${content}`);
+  }
+
+  if (toolCalls && toolCalls.length > 0) {
+    parts.push(`tool_calls:\n${JSON.stringify(toolCalls, null, 2)}`);
+  }
+
+  parts.push(`usage:\n${JSON.stringify(response.usage ?? {}, null, 2)}`);
+  logAiTrace(`${provider} model=${response.model}`, parts.join('\n\n'));
+}
 
 /**
  * 使用统一AI服务分析内容（用于学科分类）
@@ -221,7 +243,9 @@ export async function openaiChatCompletion(
     if (useOpenAI && aiClient) {
       const response = await aiClient.chat.completions.create(request as any);
       console.log('[AI] OpenAI 响应成功');
-      return response as unknown as OpenAIChatCompletionResponse;
+      const normalized = response as unknown as OpenAIChatCompletionResponse;
+      recordAiCompletion('OpenAI', normalized);
+      return normalized;
     }
 
     const sparkRequest = {
@@ -292,6 +316,7 @@ export async function openaiChatCompletion(
       }
     };
 
+    recordAiCompletion('Spark', openaiResponse);
     return openaiResponse;
   } catch (error: any) {
     console.error('[AI] 错误 - 状态码:', error.response?.status ?? error.status);

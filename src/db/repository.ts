@@ -10,6 +10,24 @@ export interface SearchFilters {
   limit?: number;
 }
 
+function toRecordParams(record: DataRecord): Array<string | number> {
+  return [
+    record.id,
+    record.name,
+    record.contentLength,
+    record.userID,
+    record.userName,
+    record.editorID,
+    record.editorName,
+    record.year,
+    record.summary,
+    record.primaryDiscipline,
+    record.secondaryDiscipline,
+    record.keyWords,
+    record.readability,
+  ];
+}
+
 export async function initTable(): Promise<void> {
   await run(`
     CREATE TABLE IF NOT EXISTS data (
@@ -40,27 +58,33 @@ export async function queryByIds(ids: string[]): Promise<DataRecord[]> {
   return all<DataRecord>(`SELECT * FROM data WHERE id IN (${placeholders})`, ids);
 }
 
+export async function listRecords(limit = 50, offset = 0): Promise<DataRecord[]> {
+  const safeLimit = Math.min(Math.max(limit, 1), 200);
+  const safeOffset = Math.max(offset, 0);
+
+  return all<DataRecord>(
+    'SELECT * FROM data ORDER BY year DESC, readability ASC, id ASC LIMIT ? OFFSET ?',
+    [safeLimit, safeOffset],
+  );
+}
+
 export async function insertOne(data: DataRecord): Promise<void> {
   await run(
     `INSERT INTO data (
       id, name, contentLength, userID, userName, editorID, editorName,
       year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      data.id,
-      data.name,
-      data.contentLength,
-      data.userID,
-      data.userName,
-      data.editorID,
-      data.editorName,
-      data.year,
-      data.summary,
-      data.primaryDiscipline,
-      data.secondaryDiscipline,
-      data.keyWords,
-      data.readability
-    ]
+    toRecordParams(data)
+  );
+}
+
+export async function upsertOne(data: DataRecord): Promise<void> {
+  await run(
+    `INSERT OR REPLACE INTO data (
+      id, name, contentLength, userID, userName, editorID, editorName,
+      year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    toRecordParams(data),
   );
 }
 
