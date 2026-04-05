@@ -18,6 +18,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync latest master
+        run: |
+          git checkout master
+          git pull --ff-only origin master
 
       - name: Install Node.js
         uses: actions/setup-node@v4
