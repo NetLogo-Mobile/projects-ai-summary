@@ -192,6 +192,10 @@ export async function expandKeywordsWithGroq(
               "只输出 JSON，不要输出 markdown。extraKeywords 仅保留短词，避免长句。",
           },
           { role: "user", content: prompt },
+          {
+            role: "user",
+            content: `输入: ${input}`,
+          },
         ],
       },
       {
