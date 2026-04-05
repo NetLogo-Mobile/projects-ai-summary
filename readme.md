@@ -51,7 +51,7 @@ SPARK_ENDPOINT=https://spark-api-open.xf-yun.com/v1/chat/completions
 
 # 用于 bot 查询时的关键词模糊扩展
 GROQ_API_KEY=your_groq_key
-GROQ_MODEL=llama-3.1-8b-instant
+GROQ_MODEL=openai/gpt-oss-20b
 # GROQ_BASE_URL=https://api.groq.com/openai/v1
 ```
 
