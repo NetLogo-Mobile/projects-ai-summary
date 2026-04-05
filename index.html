@@ -315,7 +315,7 @@
           <div class="form-grid">
             <div class="field full">
               <label for="recordId">ID</label>
-              <input id="recordId" readonly />
+              <input id="recordId" />
             </div>
             <div class="field full">
               <label for="name">标题</label>
@@ -367,6 +367,7 @@
             </div>
           </div>
           <div class="toolbar">
+            <button id="newItemBtn">新增条目</button>
             <button class="primary" id="generatePatchBtn">生成补丁</button>
             <button id="resetBtn">重置表单</button>
           </div>
@@ -399,6 +400,7 @@
         originalById: new Map(),
         selectedId: "",
         patchOperation: null,
+        isCreating: false,
       };
 
       const ids = {
@@ -546,6 +548,7 @@
       }
 
       function fillForm(record) {
+        state.isCreating = false;
         state.selectedId = record.id;
         document.getElementById("recordId").value = record.id || "";
         document.getElementById("name").value = record.name || "";
@@ -561,6 +564,14 @@
         document.getElementById("keyWords").value = (record.keyWords || []).join("\n");
         document.getElementById("readability").value = record.readability ?? 0;
         setStatus(ids.editStatus, `已载入记录 ${record.id}`);
+      }
+
+      function startNewItem() {
+        resetForm();
+        state.isCreating = true;
+        state.selectedId = "";
+        document.getElementById("recordId").focus();
+        setStatus(ids.editStatus, "已进入新增模式，请填写新记录并输入唯一 ID");
       }
 
       function tokenizeKeywords(value) {
@@ -727,7 +738,7 @@
       function generatePatch() {
         const record = collectRecord();
         if (!record.id) {
-          setStatus(ids.editStatus, "请先选中一条记录", true);
+          setStatus(ids.editStatus, "请输入记录 ID", true);
           return;
         }
 
@@ -751,7 +762,10 @@
           null,
           2,
         );
-        setStatus(ids.patchStatus, `已生成 ${record.id} 的补丁`);
+        setStatus(
+          ids.patchStatus,
+          current ? `已生成 ${record.id} 的更新补丁` : `已生成 ${record.id} 的新增补丁`,
+        );
       }
 
       async function copyPatch() {
@@ -770,6 +784,7 @@
           document.getElementById(id).value = "";
         }
         state.selectedId = "";
+        state.isCreating = false;
         setStatus(ids.editStatus, "表单已重置");
       }
 
@@ -783,6 +798,7 @@
 
       document.getElementById("searchBtn").addEventListener("click", () => runSearch("search"));
       document.getElementById("recentBtn").addEventListener("click", () => runSearch("recent"));
+      document.getElementById("newItemBtn").addEventListener("click", startNewItem);
       document.getElementById("generatePatchBtn").addEventListener("click", generatePatch);
       document.getElementById("copyPatchBtn").addEventListener("click", () => {
         copyPatch().catch((error) => setStatus(ids.patchStatus, error.message, true));

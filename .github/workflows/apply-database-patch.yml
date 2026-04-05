@@ -1,0 +1,89 @@
+name: Apply Database Patch
+
+on:
+  push:
+    paths:
+      - 'home/database.patch.json'
+      - '.github/workflows/apply-database-patch.yml'
+  workflow_dispatch:
+
+jobs:
+  apply-patch:
+    runs-on: ubuntu-latest
+    environment: pl-search
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.15.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Apply database patch
+        env:
+          DB_PATH: ./data.db
+          DB_PATCH_FILE: ./home/database.patch.json
+          LOG_DIR: ./logs
+          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
+          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
+          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
+          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
+        run: npm run apply-db-patch
+
+      - name: Reset patch file
+        run: |
+          cat > ./home/database.patch.json <<'EOF'
+          {
+            "version": 1,
+            "generatedAt": "1970-01-01T00:00:00.000Z",
+            "operations": []
+          }
+          EOF
+
+      - name: Export Cloudflare snapshot
+        env:
+          DB_PATH: ./data.db
+          CLOUDFLARE_EXPORT_FILE: ./cloudflare/data/records.mjs
+          LOG_DIR: ./logs
+          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
+          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
+          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
+          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
+        run: npm run export-cloudflare
+
+      - name: Deploy Cloudflare Worker
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        working-directory: ./cloudflare
+        run: npx wrangler deploy --config wrangler.toml
+
+      - name: Commit applied patch results
+        run: |
+          git config --global user.name 'pl-bot[bot]'
+          git config --global user.email 'noreply@github.com'
+          git add data.db
+          git add cloudflare/data/records.mjs
+          git add home/database.patch.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: apply database patch"
+            echo "CHANGES_DETECTED=true" >> $GITHUB_ENV
+          else
+            echo "No changes detected in tracked files, skipping commit."
+            echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Push to repository
+        if: env.CHANGES_DETECTED == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master

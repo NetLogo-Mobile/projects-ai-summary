@@ -34,19 +34,9 @@
 #查询 关键词=电磁学|光学 作者=张三 年份范围=2021-2024 limit=8
 ```
 
-## Cloudflare Query API
-
-导出 Cloudflare Worker 使用的静态快照：
-
-```bash
-npm run export-cloudflare
-```
-
-部署说明见 [cloudflare/README.md](./cloudflare/README.md)。
-
 ## 环境变量
 
-```env
+```
 PL_USERNAME=
 PL_PASSWORD=
 PL_DISCUSSION_ID=69a59f0eca7ceb749317ef7c
@@ -79,11 +69,20 @@ GROQ_MODEL=openai/gpt-oss-120B
 GROQ_CHAT_MODEL=openai/gpt-oss-120B
 GROQ_CHAT_MAX_TOKENS=120
 
+DB_PATCH_FILE=./home/database.patch.json
+
+CLOUDFLARE_EXPORT_FILE=./cloudflare/data/records.mjs
+LOG_DIR=./logs
 PL_LOG_SUMMARY_ID=
 PL_LOG_SUMMARY_CATEGORY=Discussion
 PL_LOG_SUMMARY_USERNAME=
 PL_LOG_SUMMARY_PASSWORD=
 PL_LOG_SUMMARY_MAX_CHARS=18000
+
+
+## Cloudflare API 配置
+CLOUDFLARE_API_TOKEN=
+CLOUDFLARE_ACCOUNT_ID=
 ```
 
 ## GitHub Actions
@@ -96,8 +95,12 @@ PL_LOG_SUMMARY_MAX_CHARS=18000
   - 执行 `npm run apply-db-patch`
   - 执行 `npm run update-db`
   - 执行 `npm run export-cloudflare`
+- `/apply-database-patch.yml`
+  - 执行：`npm run apply-db-patch`
+  - 执行: `npm run export-cloudflare`
+  - 自动部署 Worker
+  - 将更新后的 `data.db` 和 `cloudflare/data/records.mjs` 提交回仓库
 
-请在 GitHub `Settings -> Secrets and variables -> Actions` 中配置对应 Secrets。
 
 ## 本地命令
 
@@ -110,4 +113,6 @@ npm run run-bot-once
 npm run discipline-stats
 npm run flexible-collect -- --tag "精选" --take -50
 npm run sync-selected-tags
+npm run sync-all-tags
+npm run build
 ```
