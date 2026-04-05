@@ -112,7 +112,7 @@ export async function expandKeywordsWithGroq(
   if (!url) return { extraKeywords: [] };
 
   const prompt = `
-  你是一个“搜索查询纠错与对齐引擎”。
+  你是一个“搜索查询纠错与对齐引擎，用于把用户在搜索引擎的输入进行有理由的纠错和联想”。
 
 请输出 JSON：
 {"extraKeywords": string[], "reason": string}
@@ -138,7 +138,8 @@ export async function expandKeywordsWithGroq(
 
 【严格禁止】
 
-- ❌ 上位概念扩展（如 阿氏圆 → 圆锥曲线）
+- ❌ 上位概念扩展（如 阿氏圆 → 圆锥曲线 ； ACG -> 游戏）
+- ❌ 可能引发不相关的搜索结果：ACG变为动漫是可以的，但是动画就不行
 - ❌ 学科扩展（如 扩展到数学/物理体系）
 - ❌ 泛化分类（如 Trump → 政治人物）
 - ❌ 仅因词面相似进行联想
