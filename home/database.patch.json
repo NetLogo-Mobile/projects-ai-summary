@@ -1,40 +1,42 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-05T14:44:55.149Z",
+  "generatedAt": "2026-04-06T03:28:16.731Z",
   "operations": [
     {
       "operation": "upsert",
       "id": "000000501f76e37a6141bb17",
-      "updatedAt": "2026-04-05T14:44:55.148Z",
+      "updatedAt": "2026-04-06T03:28:16.730Z",
       "record": {
         "id": "000000501f76e37a6141bb17",
-        "name": "0",
-        "contentLength": 0,
-        "userID": "0",
-        "userName": "0",
-        "editorID": "0",
-        "editorName": "0",
-        "year": 0,
-        "summary": "0",
-        "primaryDiscipline": "[\"\"]",
-        "secondaryDiscipline": "[\"\"]",
-        "keyWords": "[\"\"]",
-        "readability": 0
+        "name": "000000501f76e37a6141bb17",
+        "contentLength": 1111,
+        "userID": "000000501f76e37a6141bb17",
+        "userName": "000000501f76e37a6141bb17",
+        "editorID": "000000501f76e37a6141bb17",
+        "editorName": "000000501f76e37a6141bb17",
+        "year": 2000,
+        "summary": "000000501f76e37a6141bb17",
+        "primaryDiscipline": "[\"000000501f76e37a6141bb17\"]",
+        "secondaryDiscipline": "[\"000000501f76e37a6141bb17\"]",
+        "keyWords": "[\"000000501f76e37a6141bb17\"]",
+        "readability": 0,
+        "taggingModel": "test"
       },
       "diff": {
         "id": "000000501f76e37a6141bb17",
-        "name": "0",
-        "contentLength": 0,
-        "userID": "0",
-        "userName": "0",
-        "editorID": "0",
-        "editorName": "0",
-        "year": 0,
-        "summary": "0",
-        "primaryDiscipline": "[\"文学\"]",
-        "secondaryDiscipline": "[\"文学分析\"]",
-        "keyWords": "[\"菜单\"]",
-        "readability": 0
+        "name": "000000501f76e37a6141bb17",
+        "contentLength": 1111,
+        "userID": "000000501f76e37a6141bb17",
+        "userName": "000000501f76e37a6141bb17",
+        "editorID": "000000501f76e37a6141bb17",
+        "editorName": "000000501f76e37a6141bb17",
+        "year": 2000,
+        "summary": "000000501f76e37a6141bb17",
+        "primaryDiscipline": "[\"000000501f76e37a6141bb17\"]",
+        "secondaryDiscipline": "[\"000000501f76e37a6141bb17\"]",
+        "keyWords": "[\"000000501f76e37a6141bb17\"]",
+        "readability": 0,
+        "taggingModel": "test"
       }
     }
   ]
