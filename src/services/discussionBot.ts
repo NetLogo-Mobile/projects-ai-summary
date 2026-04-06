@@ -97,12 +97,7 @@ function parseQuery(content: string): SearchFilters | null {
 
 function helpMessage(): string {
   return [
-    '支持的查询方式：',
-    '1. 直接输入关键词，例如：电磁学 光学',
-    '2. #查词: 电磁学 光学',
-    '3. #查作者: 张三',
-    '4. #查年份: 2024 或 #查年份: 2021-2024',
-    '5. #查询 关键词=电磁学|光学 作者=张三 年份范围=2021-2024 limit=8',
+    '目前只收录了实验区，黑洞区ID61以后的部分作品'
   ].join('\n');
 }
 
