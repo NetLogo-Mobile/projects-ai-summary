@@ -6,7 +6,7 @@
 2. 云端批量给物实作品加标签
 3. 一个物实机器人，定时获取物实的消息，把用户输入由AI联想后查询并返回
 4. 定时获取物实指定类型作品（可配置）拿摘要更新数据库
-5. 一个[github pages页面](https://wsxiaolin.github.io/projects-ai-summary/)，可视化编辑数据库，生成的纯文本补丁
+5. 一个[github pages页面](https://netlogo-mobile.github.io/projects-ai-summary/)，可视化编辑数据库，生成的纯文本补丁
 6. 一个ci，自动运用纯文本补丁
 7. 一个作品查询的[cloudflare workers](https://pl-search-cloudflare.zongkuli2.workers.dev/)，会自动在6和4时更新。目前只有最基础的查询功能，没有速率限制/AI联想查询
 8. 每次运行都会推送相关信息到物实一个作品的summary，类似于探针。当然也有日志。
