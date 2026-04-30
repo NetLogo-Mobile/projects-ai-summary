@@ -157,7 +157,7 @@ export async function collectByTagWithOptions(
         }
       });
 
-      const analyzeResults = await runWithConcurrency(analyzeTasks, 10);
+      const analyzeResults = await runWithConcurrency(analyzeTasks, 100);
 
       // 累积插入任务（当前批）
       const insertTasks: (() => Promise<void>)[] = [];
@@ -177,7 +177,7 @@ export async function collectByTagWithOptions(
       // 并发执行数据库插入（当前批）
       if (insertTasks.length > 0) {
         console.log(`[collectByTagWithOptions] 第 ${batchNum} 批: 开始并发插入 ${insertTasks.length} 条记录...`);
-        const insertResults = await runWithConcurrency(insertTasks, 10);
+        const insertResults = await runWithConcurrency(insertTasks, 100);
         inserted += insertResults.length;
       }
     }
@@ -254,7 +254,7 @@ export async function backfillByDiscussionIds(ids: string[]): Promise<{ inserted
         }
       });
 
-      const analyzeResults = await runWithConcurrency(analyzeTasks, 10);
+      const analyzeResults = await runWithConcurrency(analyzeTasks, 100);
 
       // 累积插入任务（当前批）
       const insertTasks: (() => Promise<void>)[] = [];
@@ -290,7 +290,7 @@ export async function backfillByDiscussionIds(ids: string[]): Promise<{ inserted
       // 并发执行数据库插入（当前批）
       if (insertTasks.length > 0) {
         console.log(`[backfillByDiscussionIds] 第 ${batchNum} 批: 开始并发插入 ${insertTasks.length} 条记录...`);
-        const insertResults = await runWithConcurrency(insertTasks, 10);
+        const insertResults = await runWithConcurrency(insertTasks, 100);
         inserted += insertResults.length;
       }
     }
