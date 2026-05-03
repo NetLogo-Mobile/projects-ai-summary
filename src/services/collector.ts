@@ -111,7 +111,7 @@ export async function collectByTagWithOptions(
     
     allItems = allItems.concat(items);
     remaining -= items.length;
-    currentSkip += items.length;
+    currentSkip += currentTake;
     
     // 分页间延迟，避免频繁请求
     if (remaining > 0 && config.collectPageDelayMs > 0) {
