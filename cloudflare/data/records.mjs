@@ -1,4 +1,4 @@
-export const generatedAt = "2026-05-22T04:32:26.974Z";
+export const generatedAt = "2026-05-23T04:22:46.896Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5459,6 +5459,47 @@ export const records = [
       "小雨",
       "温暖",
       "拥抱"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a11133cba5d17f235cfd021",
+    "name": "【葬雨蝶】 第十三章 我们的职责",
+    "contentLength": 3045,
+    "userID": "5c9e146c15c130383985cddf",
+    "userName": "无罪的画家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "故事讲述了20岁的希瑟尔从处理人培训学院毕业后加入Fate公司T区分部第8小组，担任列车环卫员。在一次执行任务时，列车遭遇一批穿白色西装的资深处理人袭击，驾驶员失踪，车厢内爆发激烈战斗。希瑟尔与组长玛悌尔特并肩作战，使用经技术部改造的幽蓝镰刀对抗敌人。战斗中多名同事牺牲，组长在重伤后将唯一的塑形血让给希瑟尔后死去。希瑟尔幸存后陷入深深的愧疚，决心赎罪。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "科幻",
+      "战斗",
+      "列车",
+      "救援",
+      "牺牲",
+      "赎罪",
+      "处理人",
+      "Fate公司",
+      "镰刀",
+      "新物质",
+      "质点",
+      "塑形血",
+      "小队",
+      "幽蓝",
+      "白色西装",
+      "事务所",
+      "幸存",
+      "复仇",
+      "奇幻",
+      "动作"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
