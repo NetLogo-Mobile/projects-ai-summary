@@ -1,4 +1,4 @@
-export const generatedAt = "2026-05-23T04:22:46.896Z";
+export const generatedAt = "2026-05-24T04:34:38.613Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5014,6 +5014,86 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a11898f075c39fbe59783c1",
+    "name": "六一儿童节的由来",
+    "contentLength": 683,
+    "userID": "67069d8eddbdaf98f786850d",
+    "userName": "溯叶悠芒",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "故事讲述了一个关于六一儿童节起源的虚构传说。村庄每年被迫向怪兽尼尔卡斯供奉翻倍数量的孩童，一位教士指导村民建立学校聚集孩子，并在六一当天设伏用骑士镇压怪兽，之后村民通过送孩子上学强化封印，六一放假以免被献祭，这个故事流传开来成为六一儿童节的由来。",
+    "primaryDiscipline": [
+      "教育学"
+    ],
+    "secondaryDiscipline": [
+      "教育学"
+    ],
+    "keyWords": [
+      "尼尔卡斯",
+      "怪兽",
+      "教士",
+      "村庄",
+      "学校",
+      "六一儿童节",
+      "供奉",
+      "献祭",
+      "陷阱",
+      "镇压",
+      "封印",
+      "骑士",
+      "孩子",
+      "教育",
+      "传说",
+      "起源",
+      "儿童节",
+      "放假",
+      "圈养",
+      "园区"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a122cdf075c39fbe597858b",
+    "name": "风暴中的幼苗——XVII",
+    "contentLength": 1760,
+    "userID": "6157d2f2cc71666b356129ea",
+    "userName": "霜花ミント",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "故事讲述在战乱中，少年薄荷为了保护家园与三名入侵者战斗，射伤一人后被迫近战，被刺伤左臂险遭杀害，幸得女孩桃雾射出一箭相救，随后东城防军成员石磊赶到制服敌人，背起昏迷的薄荷并带领桃雾撤离至安全区域。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "战斗",
+      "箭术",
+      "刀剑",
+      "铠甲",
+      "救援",
+      "少年",
+      "少女",
+      "守军",
+      "战俘",
+      "医院",
+      "平民",
+      "撤离",
+      "勇气",
+      "绝望",
+      "希望",
+      "冲突",
+      "防御",
+      "牺牲"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "69d2783eee349f84e2c67980",
     "name": "精选改革试行公告",
     "contentLength": 285,
@@ -5889,6 +5969,47 @@ export const records = [
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-ai/DeepSeek-V4-Flash"
+  },
+  {
+    "id": "6a113b45ba5d17f235cfd13f",
+    "name": "青山不见旧时人（四）银锁指雾中山门",
+    "contentLength": 1082,
+    "userID": "68a2a97282555e13e2df9d6b",
+    "userName": "桓公子鹭",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "主人公在白雨桐的陪伴和江纤尘的预知指引下，离开客家村踏入白雾深山，依靠银锁的指引来到一座名为白云寨的古老石拱门。白雨桐告诉主人公，父母的故事就在门后，主人公感受到山风吹来的呼唤。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "客家村",
+      "白雨桐",
+      "江纤尘",
+      "银锁",
+      "白雾",
+      "白云寨",
+      "寻亲",
+      "奇幻",
+      "山村",
+      "古井",
+      "老榕树",
+      "客家歌谣",
+      "石拱门",
+      "指引",
+      "阿姆",
+      "预知",
+      "山门",
+      "返乡",
+      "母爱",
+      "客家文化"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "69edbfd7ee349f84e2c81391",
