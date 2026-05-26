@@ -1,4 +1,4 @@
-export const generatedAt = "2026-05-25T04:38:13.853Z";
+export const generatedAt = "2026-05-26T04:31:51.589Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5839,6 +5839,47 @@ export const records = [
       "议会政治",
       "自由权利",
       "历史穿越"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a1422cf365eb4c0298911a0",
+    "name": "晚风渡旧巷   续（1） 啦啦啦又更了",
+    "contentLength": 3438,
+    "userID": "6a103d7cfff8b701635d526f",
+    "userName": "叉烧包不吃肉",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "秋日老巷中，独居画家沈逾白与搬来的新邻居陆知珩因一场意外结识。陆知珩帮忙修好被风雨刮倒的画架，两人在雨中的小院喝茶聊天，逐渐了解彼此——沈逾白曾是大城市商业画师，陆知珩曾是高强度的建筑师，两人都因厌倦喧嚣而回到小城。此后他们保持着温柔克制的相处，在日复一日的关照中，彼此成为同频相伴的存在。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "老巷",
+      "秋雨",
+      "邻里",
+      "修理支架",
+      "画家",
+      "建筑师",
+      "安静",
+      "治愈",
+      "温柔",
+      "晚风",
+      "桂香",
+      "茶",
+      "独居",
+      "相遇",
+      "陪伴",
+      "烟火气",
+      "逃离喧嚣",
+      "小城生活",
+      "岁月静好",
+      "雨伞"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
