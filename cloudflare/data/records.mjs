@@ -1,4 +1,4 @@
-export const generatedAt = "2026-05-29T04:35:31.987Z";
+export const generatedAt = "2026-05-30T04:28:08.585Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5710,6 +5710,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a1a61e73d7adce7dd3b591c",
+    "name": "《狂人日记-儒学瘢痕》（与原著无关 只是故事）？",
+    "contentLength": 797,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这篇作品以市井观察和校园见闻为线索，反思\"尊老爱幼\"\"尊师重道\"等传统礼教在现代社会中的单向性——只强调晚辈对长辈、学生对老师的顺从与谦卑，却忽视了长辈应慈爱、老师应传道育人的双向责任，批判了道德规范沦为束缚弱者的工具。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "尊老爱幼",
+      "尊师重道",
+      "传统礼教",
+      "道德",
+      "伦理",
+      "社会规范",
+      "单向约束",
+      "弱者",
+      "长辈",
+      "晚辈",
+      "学生",
+      "老师",
+      "双标",
+      "权力关系",
+      "顺从",
+      "社会观察",
+      "反思",
+      "批判",
+      "不平等",
+      "礼教"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -6379,6 +6420,49 @@ export const records = [
       "执念",
       "泡沫",
       "歌声"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a19b2cb3d7adce7dd3b57fb",
+    "name": "蜡像与阳光",
+    "contentLength": 1821,
+    "userID": "61e5f1d177298072d234d650",
+    "userName": "MapMaths",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以象征手法叙述了一位吟游诗人踏上的救世之旅。诗人试图消除世间的苦难与恶，先后对抗了奴役、欺压、无知、愚昧等形式的恶，但最终发现恶已寄生在所有人心中，包括他自己。诗人解剖他人心脏却发现其中混杂着善，最终意识到恶的不可名状与普遍存在，并在镜中看见自己。作品深刻探讨了恶的本质、人性的矛盾、自由意志与救赎的可能性。",
+    "primaryDiscipline": [
+      "文学",
+      "哲学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学",
+      "哲学"
+    ],
+    "keyWords": [
+      "潘多拉魔盒",
+      "恶",
+      "救赎",
+      "诗人",
+      "救世",
+      "奴役",
+      "欺压",
+      "愚昧",
+      "无知",
+      "伪善",
+      "矛盾",
+      "人性",
+      "心脏",
+      "黑色火焰",
+      "玫瑰色",
+      "神明",
+      "自由意志",
+      "存在主义",
+      "时间",
+      "诅咒"
     ],
     "readability": 0.5,
     "taggingModel": "deepseek-v4-flash"
