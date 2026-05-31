@@ -1,4 +1,4 @@
-export const generatedAt = "2026-05-30T04:28:08.585Z";
+export const generatedAt = "2026-05-31T04:37:14.258Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5178,6 +5178,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a1bad063d7adce7dd3b5e59",
+    "name": "二十五章 初现的端倪",
+    "contentLength": 1478,
+    "userID": "605a6f5b0e7b6176dffc0b99",
+    "userName": "Soloist",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "三位主角东方允、盛天、念心在穿越通路后发现异常，抵达戈谭镇时遭遇梦兽袭击。他们发现了一个蓝黑色裂缝，盛天用混沌三剑将其转化为碎片附于手背。念心解释梦兽是被摧毁的\"永恒之心\"遗留的混沌能量凝聚而成，且她与现任神明\"星火\"相识。众人决定前往法恩镇探查真相，怀疑有人在背后操纵混沌能量制造灾难。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "梦兽",
+      "混沌能量",
+      "永恒之心",
+      "法恩镇",
+      "戈谭镇",
+      "蓝黑色裂缝",
+      "混沌三剑",
+      "碎梦",
+      "北大陆",
+      "里世界",
+      "焚燔与烈火之神",
+      "星火",
+      "玄幻小说",
+      "网络文学",
+      "幻想文学",
+      "东方允",
+      "盛天",
+      "念心",
+      "通路",
+      "神明"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "69d2783eee349f84e2c67980",
     "name": "精选改革试行公告",
     "contentLength": 285,
@@ -5746,6 +5787,83 @@ export const records = [
       "批判",
       "不平等",
       "礼教"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a1ad4303d7adce7dd3b5bd5",
+    "name": "青山不见旧时人（七）十三年前的泣诉",
+    "contentLength": 3430,
+    "userID": "68a2a97282555e13e2df9d6b",
+    "userName": "桓公子鹭",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "主角在白云寨从林阿婆口中得知身世真相：父母是福建白氏族人，因发现二长老偷窃义士名册而被追杀，哑巴阿福舍命相救，父母最终被害。主角决定前往承安楼复仇。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "樟木盒",
+      "银锁",
+      "白氏",
+      "承安楼",
+      "私刑队",
+      "义士名册",
+      "阿福",
+      "林阿婆",
+      "白云寨",
+      "复仇",
+      "家族恩怨",
+      "悬疑",
+      "传承",
+      "牺牲",
+      "身世之谜"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a1aea463d7adce7dd3b5c4f",
+    "name": "于无尽的巴别塔下（五）",
+    "contentLength": 4720,
+    "userID": "69a2f3203e7c5b9a74b5dc91",
+    "userName": "青鸟啤酒",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这部作品是一部融合校园青春与硬科幻元素的小说。故事围绕拉格朗日、德尔塔、青鸠等角色展开，以一场因\"拟南芥事件\"引发的学生网络暴力与暴动为现实线索，穿插着关于平行宇宙、超宏观结构、宇宙周期性毁灭与重生等宏大设定。卡提亚特尔研究所曾研究生物体神秘消失现象，来自其他宇宙的\"纵横家文明\"使者（空桐九皋）揭示了宇宙碰撞的真相——带有\"编码\"的生命会在撞击中消失，而某些幸运儿可能免疫。在暴动之夜，主角们集结于实验楼，准备面对不可控的危机。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "拉格朗日",
+      "德尔塔",
+      "青鸠",
+      "空桐九皋",
+      "平行宇宙",
+      "卡提亚特尔研究所",
+      "超宏观结构",
+      "编码",
+      "纵横家文明",
+      "学生暴动",
+      "网络暴力",
+      "宇宙碰撞",
+      "神使",
+      "拟南芥",
+      "小蓝块",
+      "令狐生箫",
+      "西园寺那崎",
+      "校园科幻",
+      "末日预言",
+      "卡蒂亚特研究所"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
