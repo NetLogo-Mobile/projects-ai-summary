@@ -1,4 +1,4 @@
-export const generatedAt = "2026-05-31T04:37:14.258Z";
+export const generatedAt = "2026-06-01T04:40:09.864Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5746,6 +5746,47 @@ export const records = [
       "货币政策",
       "评审员招募",
       "高考"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a13d46df8300540bf0db7de",
+    "name": "与过往留白     续",
+    "contentLength": 1271,
+    "userID": "6a103d7cfff8b701635d526f",
+    "userName": "叉烧包不吃肉",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品讲述了女主角苏念婉长期承受母亲的精神压迫与家庭暴力，最终鼓起勇气逃离家庭，独自在外漂泊生活。她虽身体获得自由，却难以摆脱内心的创伤回忆，反复被噩梦纠缠。在独自打拼、自我疗愈的漫长过程中，她逐渐学会与过往和解。最终，好友阮柠溪历尽艰辛找到她，给予温暖的陪伴与理解，帮助她卸下防备、重新拥抱生活。小说探讨了原生家庭创伤、自我救赎与和解的成长主题。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "苏念婉",
+      "原生家庭",
+      "家庭暴力",
+      "母女冲突",
+      "逃离",
+      "创伤",
+      "噩梦",
+      "自我疗愈",
+      "和解",
+      "成长",
+      "青春",
+      "心理阴影",
+      "自由",
+      "孤独",
+      "坚强",
+      "阮柠溪",
+      "民宿",
+      "老街",
+      "兼职",
+      "情感治愈"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
