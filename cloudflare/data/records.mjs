@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-02T04:37:03.719Z";
+export const generatedAt = "2026-06-03T04:37:58.057Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5214,6 +5214,47 @@ export const records = [
       "念心",
       "通路",
       "神明"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a1e7e6d6b53db780547e78c",
+    "name": "絮语",
+    "contentLength": 1040,
+    "userID": "671eec7a1159b7835af2076a",
+    "userName": "沁今每",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品讲述23岁患有中度焦虑症（伴躯体化症状）的许呈，在喂猫时不慎割伤手后，前往一家巷尾酒吧，遇见了一位年轻的调酒师。故事以细腻的心理描写展现焦虑症患者的日常状态，开启了一段年下纯爱短篇的序幕。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "焦虑症",
+      "躯体化症状",
+      "纯爱",
+      "年下",
+      "调酒师",
+      "酒吧",
+      "心理疾病",
+      "日常",
+      "短篇",
+      "双男主",
+      "精神疾病预警",
+      "晕眩",
+      "耳鸣",
+      "呼吸困难",
+      "都市",
+      "治愈向",
+      "第一人称内心独白",
+      "电话亲情",
+      "猫",
+      "自愈"
     ],
     "readability": 0.3,
     "taggingModel": "deepseek-v4-flash"
@@ -32254,6 +32295,45 @@ export const records = [
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-ai/DeepSeek-V4-Flash"
+  },
+  {
+    "id": "6725bcc6d1225ef7950607b1",
+    "name": "学术讨论分区/标签管理规范",
+    "contentLength": 442,
+    "userID": "60e933da4ad4cae147f48a66",
+    "userName": "故事里的人",
+    "editorID": "",
+    "editorName": "",
+    "year": 2024,
+    "summary": "本文阐述了社区新增\"学术讨论\"板块的收录标准和管理规则，包括作品需激发深度思考、质量高于一般精选标准、评论区需有知识性讨论且占比高于闲聊、介绍多子内容需剖析内在关联、作品字数需超1000字等具体要求，同时提及编辑部可精选少量历史作品作为质量标准参考。",
+    "primaryDiscipline": [
+      "教育学"
+    ],
+    "secondaryDiscipline": [
+      "教育技术学"
+    ],
+    "keyWords": [
+      "学术讨论",
+      "社区管理",
+      "内容标准",
+      "精选标准",
+      "知识性讨论",
+      "社区氛围",
+      "学术交流",
+      "板块规则",
+      "内容审核",
+      "讨论质量",
+      "评论标准",
+      "字数要求",
+      "历史作品",
+      "收录标准",
+      "知识性内容",
+      "编辑部精选",
+      "质量标准",
+      "知识性探讨"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "659d55de4242f1e98526a1b0",
