@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-04T04:37:02.286Z";
+export const generatedAt = "2026-06-05T04:36:12.772Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6596,6 +6596,49 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a2181150d2e40be83534c4b",
+    "name": "物实组织及企划管理办法修正案试行草案",
+    "contentLength": 3705,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "该修正案为物实平台组织及企划管理规定的全面修订与细化，涵盖组织与企划的定义、建立流程、运行规范、行动纲领要求、非违纪矛盾处理机制、改组规则、分支组织管理、停运重启程序、非法团体管理及站外团体管理等内容，旨在完善原有规定的模糊与过时之处。",
+    "primaryDiscipline": [
+      "管理学",
+      "法学"
+    ],
+    "secondaryDiscipline": [
+      "公共管理",
+      "行政管理"
+    ],
+    "keyWords": [
+      "组织管理",
+      "企划管理",
+      "责任担保",
+      "行动纲领",
+      "改组",
+      "停运",
+      "分支组织",
+      "管理办法",
+      "民间组织",
+      "官方组织",
+      "集体交涉权",
+      "成员认定",
+      "非违纪矛盾处理",
+      "站外团体管理",
+      "备案制度",
+      "两法一例",
+      "终止存在",
+      "重启机制",
+      "人员架构",
+      "交涉代表"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "69edbfd7ee349f84e2c81391",
     "name": "西山基地编号-061：天泪",
     "contentLength": 3954,
@@ -6838,6 +6881,47 @@ export const records = [
       "珠蛋白基因",
       "溶血性疾病",
       "基因检测"
+    ],
+    "readability": 0.55,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a0b3952075c39fbe59747d9",
+    "name": "[鸣野+RRR+申精]Maxwell方程组",
+    "contentLength": 3833,
+    "userID": "68bc3389a73570ce3b39a146",
+    "userName": "银箭星辉",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文系统阐述了麦克斯韦方程组的微分形式，逐条解析了高斯电场定律（∇·E=ρ/ε₀）、高斯磁场定律（∇·B=0）、法拉第电磁感应定律（∇×E=-∂B/∂t）和安培-麦克斯韦定律（∇×B=μ₀J+μ₀ε₀∂E/∂t）的物理含义、散度与旋度的几何意义，以及各方程之间的内在关联。文章还推导了真空中电磁波的波动方程，证明光速c=1/√(μ₀ε₀)，揭示了光作为电磁波的统一本质。内容涵盖从库仑定律、安培定律到麦克斯韦方程组的逻辑演进，强调位移电流项的革命性贡献。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "Maxwell方程组",
+      "电磁学",
+      "电场强度",
+      "磁感应强度",
+      "散度",
+      "旋度",
+      "高斯定律",
+      "法拉第电磁感应定律",
+      "安培-麦克斯韦定律",
+      "位移电流",
+      "电磁波",
+      "波动方程",
+      "光速",
+      "电动力学",
+      "楞次定律",
+      "磁矢势",
+      "电荷守恒",
+      "真空介电常数",
+      "真空磁导率",
+      "场论"
     ],
     "readability": 0.55,
     "taggingModel": "deepseek-v4-flash"
