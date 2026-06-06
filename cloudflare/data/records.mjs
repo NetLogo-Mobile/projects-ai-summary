@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-05T04:36:12.772Z";
+export const generatedAt = "2026-06-06T04:29:58.472Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5260,6 +5260,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a22a1690d2e40be83534e07",
+    "name": "镇上的巧克力工厂",
+    "contentLength": 1130,
+    "userID": "605a6f5b0e7b6176dffc0b99",
+    "userName": "Soloist",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "一篇以巧克力工厂为隐喻的独立小说，讲述新任生产总监为谋取私利偷换巧克力原料，用优质材料做外壳、劣质材料做内部欺骗厂长和镇民的故事。揭示了监督机制的失效、利益驱动下的道德沦丧，以及最终承受后果的永远是普通消费者这一深刻社会寓言。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "巧克力",
+      "生产总监",
+      "厂长",
+      "材料偷换",
+      "欺骗",
+      "质量",
+      "利润",
+      "消费者",
+      "监督失效",
+      "小镇",
+      "工厂",
+      "香精",
+      "外壳与内部",
+      "检查",
+      "利益",
+      "谎言",
+      "味觉",
+      "工人",
+      "金钱",
+      "社会寓言"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "69d2783eee349f84e2c67980",
     "name": "精选改革试行公告",
     "contentLength": 285,
@@ -6634,6 +6675,49 @@ export const records = [
       "重启机制",
       "人员架构",
       "交涉代表"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a23a11f0d2e40be83535127",
+    "name": "《狂人日记-愚昧和科学》",
+    "contentLength": 1140,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品通过描写墙上两尊文昌像和被迫磕头拜神的经历，批判了当前教育中存在的迷信盲从、形式主义与功利化倾向。作者以荒诞的叙事反思教育的本质，指出真正的教育应培养独立思考能力，而非让人盲目服从旧规矩，呼吁打破愚昧束缚，回归民主科学精神。",
+    "primaryDiscipline": [
+      "文学",
+      "教育学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学",
+      "教育学原理"
+    ],
+    "keyWords": [
+      "教育",
+      "迷信",
+      "盲从",
+      "形式主义",
+      "文昌像",
+      "磕头",
+      "封建",
+      "传统",
+      "束缚",
+      "功利",
+      "科学",
+      "民主",
+      "思考",
+      "自由",
+      "压迫",
+      "荒诞",
+      "压抑",
+      "规矩",
+      "顺从",
+      "批判"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
