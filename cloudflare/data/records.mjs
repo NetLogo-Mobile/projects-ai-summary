@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-06T04:29:58.472Z";
+export const generatedAt = "2026-06-07T04:37:31.108Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6042,6 +6042,47 @@ export const records = [
       "高考祝福",
       "精知优选",
       "兰台新议"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a23fccd821f78e016dc531c",
+    "name": "焱炀基（羊站神）的某个镜世界",
+    "contentLength": 1770,
+    "userID": "6385b96efee232a5a68052dd",
+    "userName": "牢羊",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品讲述主角焱炀基在镜世界背景下回归家族鸿园焱家，却发现家族正面临四大家族的围攻。他在短时间内接连失去大哥深海龙、奶奶、堂姐、阿比斯、洚流和阳等至亲与战友，在绝望与悲痛中觉醒，手握鸿蒙方舟之剑，拥抱深渊与墨水，从被遗弃者蜕变为从天堂归来的存在。这是一个关于失去、抗争与觉醒的玄幻叙事。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "焱炀基",
+      "四大家族",
+      "鸿园",
+      "焱家",
+      "深渊",
+      "繁星",
+      "E.G.O",
+      "墨浸染",
+      "黑兽仙人",
+      "四天二十八宿",
+      "镜世界",
+      "漫记",
+      "代行",
+      "阿比斯",
+      "洚流",
+      "阳",
+      "鸿蒙方舟",
+      "战争",
+      "家族",
+      "归来"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
