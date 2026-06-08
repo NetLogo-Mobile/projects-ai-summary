@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-07T04:37:31.108Z";
+export const generatedAt = "2026-06-08T04:38:46.906Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6083,6 +6083,48 @@ export const records = [
       "战争",
       "家族",
       "归来"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a253fb20d2e40be835357f5",
+    "name": "物实之辉周刊2026.6.7",
+    "contentLength": 2453,
+    "userID": "667652820b5f97343a9d4d66",
+    "userName": "富冈义勇liao",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这是一份物实社区第79期周刊，包含了精知优选、兰台新议、冲精防淹、实验区的问候、文学荟萃、访谈长廊、社区新闻、本社通告等多个栏目，收录了本周和近三个月来的学术讨论、学术创新论文、冲精作品、小说散文等文学创作，以及社区管理公告、活动宣传等内容，涵盖计算机科学、数学、物理、化学、生物、历史、地理、社科、哲学、经济学、心理学等多个学科领域。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "新闻传播学",
+      "综合"
+    ],
+    "keyWords": [
+      "周刊",
+      "物实社区",
+      "精知优选",
+      "兰台新议",
+      "冲精防淹",
+      "文学荟萃",
+      "社区新闻",
+      "学术讨论",
+      "黑洞区",
+      "学科精选",
+      "公示公告",
+      "作品推荐",
+      "实验区",
+      "文学创作",
+      "社区管理",
+      "学术创新",
+      "讨论帖",
+      "精选作品",
+      "物实周刊",
+      "社区刊物"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
