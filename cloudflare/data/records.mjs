@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-08T04:38:46.906Z";
+export const generatedAt = "2026-06-09T04:31:38.111Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6389,6 +6389,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a26b78e0d2e40be83535c5c",
+    "name": "苏武秉节斥卫律",
+    "contentLength": 1423,
+    "userID": "64d62721738530362ba5e93b",
+    "userName": "文森维尔",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "该作品是一出独幕历史剧，改编自《汉书·苏武传》。剧情围绕匈奴叛徒审判展开，汉使苏武面对叛将卫律的威逼利诱，坚贞不屈，拒绝投降，展现了崇高的民族气节与爱国精神。作品以戏剧对话形式再现了苏武持节不屈的历史典故，后记中作者表达了对苏武精神的敬仰以及对\"中国脊梁\"的致敬。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "苏武",
+      "卫律",
+      "匈奴",
+      "汉朝",
+      "历史剧",
+      "戏剧",
+      "剧本",
+      "话剧",
+      "民族气节",
+      "爱国主义",
+      "忠义",
+      "不屈",
+      "叛徒",
+      "审判",
+      "使节",
+      "独幕剧",
+      "人物对话",
+      "文学创作",
+      "历史人物",
+      "经典改编"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a12a6a5075c39fbe5978817",
     "name": "《狂人日记-特别篇》（与原著无关 只是故事）？",
     "contentLength": 1446,
@@ -6801,6 +6842,47 @@ export const records = [
       "规矩",
       "顺从",
       "批判"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a26e2b80d2e40be83535d16",
+    "name": "【高考送行】勇敢者向死而生",
+    "contentLength": 2758,
+    "userID": "61e5f1d177298072d234d650",
+    "userName": "MapMaths",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "文章以高考为背景，通过多个时间节点（2024年7月、2026年1月、4月、6月）的叙事片段，描绘了几位青年学子在高考备考、复读、挫折与成长中的心路历程。文中交织着对梦想的执着、对现实的迷茫、对失败的痛苦挣扎以及重拾勇气的蜕变，展现了他们在命运的熔炉中彼此碰撞、坚守信念、勇敢前行的精神面貌，最终表达了对即将踏入高考考场的朋友们的深切祝福与鼓励。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "高考",
+      "青春",
+      "梦想",
+      "奋斗",
+      "成长",
+      "迷茫",
+      "复读",
+      "坚持",
+      "勇气",
+      "希望",
+      "未来",
+      "友情",
+      "信念",
+      "拼搏",
+      "理想",
+      "磨砺",
+      "蜕变",
+      "祝福",
+      "萤火",
+      "盛夏"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
