@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-13T04:36:36.876Z";
+export const generatedAt = "2026-06-14T04:37:57.941Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -104,6 +104,47 @@ export const records = [
       "寻亲",
       "复仇",
       "客家土楼"
+    ],
+    "readability": 0.25,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a2cde6b0d2e40be83536a06",
+    "name": "《狂人日记-盈满自己的世道》（与原著无关 只是故事）？",
+    "contentLength": 707,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这篇文章以日记体形式，记录了作者对当代社会中人情冷漠、自私自利现象的多日观察与反思。从街头见闻到邻里吵架，从熟人闲聊到深夜沉思，作者通过一系列日常场景，揭示了人与人之间温情渐失、利益至上的社会现状，并呼吁人们找回做人的本心。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "人情冷漠",
+      "自私自利",
+      "社会观察",
+      "道德反思",
+      "人际关系",
+      "利己主义",
+      "世态炎凉",
+      "人性",
+      "邻里关系",
+      "利益算计",
+      "人情味",
+      "助人精神",
+      "社会风气",
+      "信任缺失",
+      "冷漠社会",
+      "私心",
+      "人心不古",
+      "散文",
+      "社会批判",
+      "日记体"
     ],
     "readability": 0.25,
     "taggingModel": "deepseek-v4-flash"
@@ -5337,6 +5378,47 @@ export const records = [
       "工人",
       "金钱",
       "社会寓言"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a2d21640d2e40be83536b09",
+    "name": "后室level D-4",
+    "contentLength": 143,
+    "userID": "6580574b200532b3e037cb02",
+    "userName": "ZTZ-99B主战坦克",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "Level D-4\"甘古特号\"是后室中的一个安全层级，表现为一艘甘古特号战列舰。该层级实体绝迹等级为0，十分安全，甲板上可能存在坦克。物资极为丰富，包括能量棒、杏仁水和皇家口粮等，MEG在此建立了前哨站。入口位于Level7中一本关于战列舰的书，出口则是钻进炮口可返回现实世界。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "后室",
+      "Backrooms",
+      "Level D-4",
+      "甘古特号",
+      "战列舰",
+      "安全层级",
+      "实体绝迹",
+      "能量棒",
+      "杏仁水",
+      "皇家口粮",
+      "MEG",
+      "前哨站",
+      "层级入口",
+      "层级出口",
+      "网络文学",
+      "虚构创作",
+      "恐怖怪谈",
+      "集体创作",
+      "空间异常",
+      "炮口出口"
     ],
     "readability": 0.3,
     "taggingModel": "deepseek-v4-flash"
