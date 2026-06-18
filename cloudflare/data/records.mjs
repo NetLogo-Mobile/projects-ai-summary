@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-17T04:38:42.331Z";
+export const generatedAt = "2026-06-18T04:37:29.631Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5624,6 +5624,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a32a481821f78e016dc78a7",
+    "name": "第74章",
+    "contentLength": 2347,
+    "userID": "6952861a5bbbe2eb6cec82f0",
+    "userName": "芙门2",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "精灵艾琳娜向栗原勉倾诉心事并赠予指路石，次日清晨栗原勉从阿尔戈处得知昨晚攻略会议上牙王公开质疑蒂尔贝鲁是封测玩家，导致会议中断、攻略组分裂的故事片段。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "栗原勉",
+      "艾琳娜",
+      "阿尔戈",
+      "蒂尔贝鲁",
+      "牙王",
+      "精灵",
+      "指路石",
+      "攻略组",
+      "封测玩家",
+      "BOSS战",
+      "LA",
+      "SAO",
+      "噩梦",
+      "克洛伊索斯",
+      "迷宫",
+      "幻境走廊",
+      "宝箱怪",
+      "酒果",
+      "梅斯菲尔德",
+      "微笑魔鬼"
+    ],
+    "readability": 0.32,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "69d2783eee349f84e2c67980",
     "name": "精选改革试行公告",
     "contentLength": 285,
@@ -7008,6 +7049,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a32b031821f78e016dc7972",
+    "name": "河清海晏 4",
+    "contentLength": 14804,
+    "userID": "626407c6ad27f25aa2275572",
+    "userName": "O114514",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "小说讲述了少女唐河清与哥哥周海晏（无血缘）之间的情感故事。周海晏的母亲因丈夫牺牲患上抑郁症，最终自杀。周海晏继承父志成为缉毒警察，与唐河清分别。唐河清学法医，等待周海晏归来。作品探讨了亲情、爱情、牺牲与等待的主题。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "家长会",
+      "周海晏",
+      "唐河清",
+      "母亲",
+      "抑郁症",
+      "自杀",
+      "缉毒警察",
+      "爱情",
+      "等待",
+      "法医",
+      "成长",
+      "离别",
+      "桂花树",
+      "风铃",
+      "曲奇饼干",
+      "高考",
+      "校园",
+      "纹身",
+      "小付警官",
+      "沈临熙"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a12a6a5075c39fbe5978817",
     "name": "《狂人日记-特别篇》（与原著无关 只是故事）？",
     "contentLength": 1446,
@@ -7500,6 +7582,47 @@ export const records = [
       "定积分",
       "分部积分",
       "换元法"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a32cb040d2e40be83537acd",
+    "name": "【科普】沃尔夫冈是如何命名的？",
+    "contentLength": 2859,
+    "userID": "67069d8eddbdaf98f786850d",
+    "userName": "溯叶悠芒",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文是一篇虚构游记散文，以第一人称叙述作者在洛因国旅游的经历。通过描述洛因国清新的空气、干净的公共设施、热情的市民以及沃尔夫冈为新品橘子命名“沃柑”的故事，展现洛因国的自由、民主与包容，并与作者祖国高帝国的专制落后形成鲜明对比，引发对民族劣根性与制度的深刻反思。文末附有沃柑育种历史及种植条件的科普说明。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "沃尔夫冈",
+      "沃柑",
+      "洛因国",
+      "高帝国",
+      "东明国",
+      "民主",
+      "自由",
+      "反思",
+      "橘子命名",
+      "旅游见闻",
+      "空气净化",
+      "公共设施",
+      "市民辩论",
+      "审判庭",
+      "自由经济",
+      "人道主义",
+      "阳光",
+      "柑橘杂交",
+      "武鸣",
+      "种植条件"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
