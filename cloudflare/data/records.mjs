@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-20T04:35:26.523Z";
+export const generatedAt = "2026-06-21T04:38:29.851Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5706,6 +5706,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a363fbe821f78e016dc8604",
+    "name": "小说/反战",
+    "contentLength": 1060,
+    "userID": "690611b93e4463b172f8021c",
+    "userName": "jasperY",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以第一人称叙述了作者在CSGO游戏中结识一位俄罗斯队友，两人建立深厚友谊，一同游戏并约定见面。后因战争爆发，俄罗斯朋友参军并在库尔斯克战场牺牲，作者最终从朋友圈得知其死讯，表达了战争对普通人友情的摧残和对和平的渴望。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "CSGO",
+      "俄罗斯",
+      "朋友",
+      "战争",
+      "库尔斯克",
+      "牺牲",
+      "烈士",
+      "友情",
+      "游戏",
+      "残局",
+      "默契",
+      "枪战",
+      "和平",
+      "战火",
+      "孤独",
+      "回忆",
+      "死亡",
+      "微信",
+      "好友",
+      "第一人称"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -6937,6 +6978,86 @@ export const records = [
       "反派阴谋",
       "生存挑战",
       "同人创作"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a3618ed821f78e016dc853b",
+    "name": "【阪环】被发配和歌山啦——",
+    "contentLength": 2257,
+    "userID": "64eb641f7385301ac5a67a2b",
+    "userName": "川崎三力",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "小说讲述主角大剑翔太与恋人星川铃在大阪旅游后，因疲惫误乘大阪环状线的「关空快速·纪州路快速」（俗称阪环离心机），在日根野站遭遇列车解挂分离，翔太被送往关西机场而铃被送往和歌山，被迫绕行大阪重新会合的轻小说短篇故事。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "大阪",
+      "环状线",
+      "阪环离心机",
+      "关空快速",
+      "纪州路快速",
+      "日根野站",
+      "列车分离",
+      "铁道宅",
+      "轻小说",
+      "陷阱列车",
+      "旅行",
+      "情侣",
+      "误乘",
+      "噩梦",
+      "短篇",
+      "日本铁道",
+      "创作",
+      "星川铃",
+      "大剑翔太",
+      "大阪环状线"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a3644450d2e40be83538554",
+    "name": "界点的笑",
+    "contentLength": 321,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文以作者在CSGO游戏中结识一位俄罗斯网友为引子，从FPS游戏场景自然过渡到现实战争议题，深刻刻画了战争的残酷本质，揭示了战争带来的不可逆伤害。作品通过虚拟世界的友谊反衬现实冲突的荒诞，传达反对战争、呼唤和平共存与相互陪伴的核心主旨，是一篇具有鲜明现实意义和人文关怀的反战小说。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国现当代文学"
+    ],
+    "keyWords": [
+      "反战",
+      "战争",
+      "和平",
+      "CSGO",
+      "FPS游戏",
+      "网络友谊",
+      "现实意义",
+      "小说",
+      "战争伤害",
+      "不可逆",
+      "俄罗斯",
+      "陪伴",
+      "残酷",
+      "和平共存",
+      "新秀作家",
+      "人性",
+      "游戏与现实",
+      "人文关怀"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
