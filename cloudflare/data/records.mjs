@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-21T04:38:29.851Z";
+export const generatedAt = "2026-06-23T04:30:33.725Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5706,6 +5706,43 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a34d76e821f78e016dc7fdc",
+    "name": "RRR申知/精：如何求任意非负实数的算术平方根的近似值？",
+    "contentLength": 2184,
+    "userID": "69d62db4f073f255250a2919",
+    "userName": "神秘生物CREATURE",
+    "editorID": "65e472049772658af7a6c303",
+    "editorName": "TQRΗG",
+    "year": 2026,
+    "summary": "本文从小学草稿本上的一个发现出发，通过二次方程x^2+x-1=0的求解引入黄金比，展示了小学生可能使用的连分数展开方法，并推广到一般非负实数的算术平方根的连分数表示。随后对比了连分数展开与牛顿迭代法在计算平方根近似值上的效率，指出牛顿迭代法收敛速度快（指数级增长），而连分数展开收敛速度慢（线性），并给出了两者之间的有趣联系（连分数第2^n项等价于牛顿迭代第n项）。文章风格轻松幽默，带有个人发现的记录色彩。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "二次方程",
+      "求根公式",
+      "黄金比",
+      "连分数",
+      "算术平方根",
+      "牛顿迭代法",
+      "切线逼近",
+      "迭代法",
+      "近似值",
+      "无理数",
+      "循环连分数",
+      "平方根",
+      "收敛速度",
+      "非线性方程",
+      "切线零点",
+      "近似计算"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a363fbe821f78e016dc8604",
     "name": "小说/反战",
     "contentLength": 1060,
@@ -7063,6 +7100,95 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a37ce3b1779cc523dbc57d9",
+    "name": "物实之辉周刊2026.6.21",
+    "contentLength": 4397,
+    "userID": "667652820b5f97343a9d4d66",
+    "userName": "富冈义勇liao",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "第80期物实社区周刊，收录本周精选学术讨论、文学作品、社区新闻等内容。涵盖数学（超限基数、复变函数、线性代数）、物理（Maxwell方程组）、计算机科学、社科、哲学、文学（小说、散文、诗歌）等多个学科领域，设有精知优选、兰台新议、冲精防淹、实验区的问候、文学荟萃、访谈长廊、社区新闻、本社通告等栏目。",
+    "primaryDiscipline": [
+      "理学",
+      "工学",
+      "文学",
+      "哲学"
+    ],
+    "secondaryDiscipline": [
+      "数学",
+      "物理学",
+      "计算机科学与技术",
+      "中国语言文学",
+      "哲学"
+    ],
+    "keyWords": [
+      "超限基数",
+      "Cantor定理",
+      "复变函数",
+      "柯西积分公式",
+      "留数定理",
+      "Hamel基",
+      "Maxwell方程组",
+      "线性代数",
+      "贪心算法",
+      "超新星",
+      "社区新闻",
+      "小说",
+      "散文",
+      "诗歌",
+      "申精",
+      "RRR",
+      "周刊",
+      "物实",
+      "学术讨论",
+      "精选评审"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a38122e1779cc523dbc598d",
+    "name": "予你王冠3",
+    "contentLength": 14822,
+    "userID": "626407c6ad27f25aa2275572",
+    "userName": "O114514",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "小说章节讲述时音帮助妹妹芝爱通过射箭部接近席闻乐的故事，穿插校园日常、感情纠葛与姐妹策略谋划，展现了人物间的微妙互动与情感张力。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "时音",
+      "芝爱",
+      "慕西尉",
+      "席闻乐",
+      "射箭",
+      "明御高中",
+      "一箭穿心",
+      "温博甫",
+      "高衫依",
+      "任心悠",
+      "告白",
+      "姐妹",
+      "校园",
+      "言情",
+      "策略",
+      "雪",
+      "眼镜",
+      "女管",
+      "靶心",
+      "箭术"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -7493,6 +7619,43 @@ export const records = [
       "纹身",
       "小付警官",
       "沈临熙"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a3773701779cc523dbc55f7",
+    "name": "《等待朝夕》剧本",
+    "contentLength": 15534,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这是一部融合舞台剧与电影形式的实验性剧本，围绕\"等待朝夕\"这一核心意象展开。剧中人物甲、乙、丙、丁、戊在枯树旁、房间内等场景中反复相遇与对话，探讨存在主义式的等待、马克思主义信仰、个人理想与现实生活的割裂、社会不公与革命、信仰与神明、自我认知与怯懦等深刻主题。全剧以枯树从凋零到繁茂再到被焚毁的意象贯穿，最终以\"一万年太久，只争朝夕\"的横幅收束，传达出从被动等待到主动行动的转变。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "戏剧与影视学"
+    ],
+    "keyWords": [
+      "等待朝夕",
+      "话剧剧本",
+      "舞台剧",
+      "存在主义",
+      "马克思主义",
+      "信仰",
+      "革命",
+      "枯树意象",
+      "政治哲学",
+      "自我认知",
+      "理想信念",
+      "平凡生活",
+      "哲学对话",
+      "实验戏剧",
+      "精神困境",
+      "意识形态"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
@@ -9811,6 +9974,46 @@ export const records = [
       "庞加莱截面",
       "天体动力学",
       "数值模拟"
+    ],
+    "readability": 0.6,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a360d8b821f78e016dc84de",
+    "name": "[精选申请] 贪心算法的证明",
+    "contentLength": 4640,
+    "userID": "60f439e5289dc7cdebf70f88",
+    "userName": "零次互反律",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "本文通过两个例题（树上的d-覆盖集问题和Birkhoff-von-Neumann定理）深入分析贪心算法的数学原理，着重阐述从局部性质推导全局性质的证明思路，并讨论了贪心算法在NP-难问题中近似比分析的应用。文章适合对算法数学原理感兴趣的读者。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "贪心算法",
+      "组合数学",
+      "d-覆盖集",
+      "Birkhoff-von-Neumann定理",
+      "置换矩阵",
+      "非负线性组合",
+      "树",
+      "深度优先搜索",
+      "完美匹配",
+      "Hall定理",
+      "数学归纳法",
+      "近似比",
+      "加权集合覆盖",
+      "多处理器调度",
+      "图论",
+      "二分图",
+      "局部性质",
+      "全局性质",
+      "NP-难"
     ],
     "readability": 0.6,
     "taggingModel": "deepseek-v4-flash"
