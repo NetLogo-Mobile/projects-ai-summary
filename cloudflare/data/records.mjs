@@ -1,4 +1,4 @@
-export const generatedAt = "2026-06-23T04:30:33.725Z";
+export const generatedAt = "2026-06-24T04:32:04.229Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -8448,6 +8448,47 @@ export const records = [
       "提案评估",
       "PR代码质量",
       "项目管理"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a3b47af1779cc523dbc600c",
+    "name": "《狂人日记-马先生正传》",
+    "contentLength": 2279,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以马先生的一生为主线，从襁褓时期母亲被炮弹炸死、青年时期父亲在公社大炼钢铁中绝望而死、妻子在苦日子中落水身亡，到晚年无儿无女、无亲无故、住在桥洞下，最终跳桥自尽。通过一家三代在解放战争、人民公社、大跃进等历史浪潮中的悲剧命运，揭示了时代变革背景下底层个体的苦难与无奈，批判了被遗忘的个体、被牺牲的尊严与难以跨越的时代伤痕。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "荒诞",
+      "历史苦难",
+      "家庭悲剧",
+      "时代变迁",
+      "战争创伤",
+      "人民公社",
+      "大炼钢铁",
+      "饥荒",
+      "死亡",
+      "孤独",
+      "幸福错觉",
+      "忆苦思甜",
+      "人性",
+      "社会批判",
+      "马先生",
+      "炮弹伤疤",
+      "绝望",
+      "命运",
+      "个体牺牲",
+      "时代伤痕"
     ],
     "readability": 0.5,
     "taggingModel": "deepseek-v4-flash"
