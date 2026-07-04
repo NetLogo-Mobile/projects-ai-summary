@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-03T06:39:02.695Z";
+export const generatedAt = "2026-07-04T06:25:12.374Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5065,6 +5065,47 @@ export const records = [
     "taggingModel": "deepseek-ai/DeepSeek-V4-Flash"
   },
   {
+    "id": "69febc29875ba2e3cc5d570e",
+    "name": "[RRR申精]DNA的结构和复制",
+    "contentLength": 1227,
+    "userID": "67b456701882a6176e1fa954",
+    "userName": "晴川<",
+    "editorID": "5e3bdea5e14269dcdbab75d0",
+    "editorName": "DeBasltteH",
+    "year": 2026,
+    "summary": "本文以通俗易懂的语言介绍了DNA的化学组成（磷酸、脱氧核糖、四种碱基）、双螺旋结构（反向平行链、碱基互补配对原则）以及半保留复制的详细过程（解旋、引物放置、新链合成、完成修复），包括前导链、后随链和冈崎片段等关键概念。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "生物学"
+    ],
+    "keyWords": [
+      "DNA",
+      "脱氧核糖核酸",
+      "双螺旋结构",
+      "碱基互补配对",
+      "半保留复制",
+      "脱氧核苷酸",
+      "磷酸",
+      "脱氧核糖",
+      "碱基",
+      "腺嘌呤",
+      "鸟嘌呤",
+      "胞嘧啶",
+      "胸腺嘧啶",
+      "氢键",
+      "解旋酶",
+      "DNA聚合酶",
+      "前导链",
+      "后随链",
+      "冈崎片段",
+      "引物"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "69ffe01d875ba2e3cc5efc86",
     "name": "冬漠-「无限猴子」",
     "contentLength": 598,
@@ -5892,6 +5933,47 @@ export const records = [
       "心理感受",
       "情绪表达",
       "个体差异"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a467b78820886de092b2a1b",
+    "name": "高数笔记4——函数的连续与导数（补无穷小的比较）",
+    "contentLength": 6463,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "这是一篇由高中毕业生撰写的高等数学学习笔记，以通俗易懂的方式系统讲解了无穷小的比较、连续、间断点、连续函数的运算与初等函数的连续性、导数及其求导法则等微积分基础知识，内容极尽简略但便于理解，旨在作为科普而非应试教学。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "无穷小",
+      "等价无穷小",
+      "连续",
+      "间断点",
+      "导数",
+      "求导法则",
+      "极限",
+      "洛必达法则",
+      "复合函数",
+      "反函数",
+      "隐函数",
+      "对数求导法",
+      "参数方程",
+      "链式法则",
+      "高阶导数",
+      "可导",
+      "切线",
+      "基本初等函数",
+      "初等函数",
+      "左连续与右连续"
     ],
     "readability": 0.3,
     "taggingModel": "deepseek-v4-flash"
@@ -8977,6 +9059,47 @@ export const records = [
       "丛林城",
       "Boop",
       "玩家保护区"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a476773820886de092b2c12",
+    "name": "《过去》（没错这是新的专题）",
+    "contentLength": 890,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品通过超现实的意象（乌鸦先生、猫头鹰先生、记忆方块、黑白魔物）讲述一个家族因追求永生而走向毁灭的悲剧故事。叙述者探索磨坊、电梯与记忆空间，揭示永生代价与记忆的扭曲，最终点明一切不过是“未被登记的故事”。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "永生",
+      "乌鸦先生",
+      "猫头鹰先生",
+      "家族",
+      "记忆",
+      "方块",
+      "磨坊",
+      "尸体",
+      "机器",
+      "墨水",
+      "刀",
+      "诗",
+      "兔子",
+      "冲锋枪",
+      "蛋糕",
+      "血泊",
+      "刻痕",
+      "狗",
+      "白鸽报社",
+      "PAIX"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
