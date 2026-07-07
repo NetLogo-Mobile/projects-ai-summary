@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-06T07:17:57.135Z";
+export const generatedAt = "2026-07-07T06:52:10.312Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -8377,6 +8377,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a4b6211820886de092b37bc",
+    "name": "《过去》（看来这个世界的人类还是失败了）",
+    "contentLength": 569,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以第一人称视角讲述自称侦探的Dale调查一桩离奇凶杀案，实则从杀人犯的视角审视案发现场。通过书籍暗格中的忏悔书、尸体口中的甲虫机关、血液填字游戏以及神秘电话等线索，逐步揭示锈湖世界的诡异规则，最终被告知\"位置被取代\"，充满黑色悬疑与超现实风格。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "锈湖",
+      "侦探",
+      "谋杀",
+      "案发现场",
+      "甲虫",
+      "填字游戏",
+      "暗格",
+      "血迹",
+      "钥匙",
+      "电话谜题",
+      "Dale",
+      "劳拉",
+      "黑影",
+      "悬疑",
+      "黑色风格",
+      "超现实",
+      "身份替换",
+      "凶杀",
+      "推理",
+      "梦境"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a12a6a5075c39fbe5978817",
     "name": "《狂人日记-特别篇》（与原著无关 只是故事）？",
     "contentLength": 1446,
@@ -9739,6 +9780,46 @@ export const records = [
       "裂隙颠覆者",
       "造物主",
       "星系重启"
+    ],
+    "readability": 0.55,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a4bad6e820886de092b3996",
+    "name": "浅谈Turchin的End_Times",
+    "contentLength": 2380,
+    "userID": "684cbffde56588fad7ec0a33",
+    "userName": "SchwarzeMowe",
+    "editorID": "5ea1934c8116c49429d3e405",
+    "editorName": "16号管理者",
+    "year": 2026,
+    "summary": "本文介绍了Peter Turchin的《End Times: Elites, Counter-Elites, and the Path of Political Disintegration》一书的核心理论框架，包括财富泵机制、精英生产过剩、系统失稳等概念，并评价了该理论的优点（量化分析历史危机、结构性思维框架）与不足（低估政治观念独立作用、忽视技术变革尤其是AI、精英概念模糊、历史周期宿命论倾向）。文章认为Turchin提供了一种结构性分析工具，但历史是具体约束条件下各方力量博弈的产物。",
+    "primaryDiscipline": [
+      "法学"
+    ],
+    "secondaryDiscipline": [
+      "政治学"
+    ],
+    "keyWords": [
+      "Turchin",
+      "End Times",
+      "财富泵",
+      "精英过剩",
+      "反精英",
+      "政治崩溃",
+      "结构性思维",
+      "量化分析",
+      "政治动荡",
+      "危机",
+      "社会结构",
+      "精英让利",
+      "国家制度",
+      "人工智能",
+      "技术变革",
+      "中产阶级",
+      "统合主义",
+      "动力系统模型",
+      "概率模型"
     ],
     "readability": 0.55,
     "taggingModel": "deepseek-v4-flash"
