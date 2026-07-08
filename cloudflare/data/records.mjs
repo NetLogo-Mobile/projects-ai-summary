@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-07T06:52:10.312Z";
+export const generatedAt = "2026-07-08T05:57:09.674Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -9247,6 +9247,47 @@ export const records = [
       "情商",
       "决策",
       "心理学"
+    ],
+    "readability": 0.48,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a4c6e333e4c5bc67be24a12",
+    "name": "异想体图鉴（自）",
+    "contentLength": 640,
+    "userID": "5fd37e40e791261daa189bc7",
+    "userName": "朽玉",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "一台发出不成章音乐的机械，其深红心脏藏于空腔。故事回溯至久远前，塞壬行走世间创作无数歌曲，直至遇见没有心的愚者。愚者渴望创作秘诀，塞壬让他\"用心去感受\"，但愚者没有心，却自以为理解。此后愚者凭借不属自己的天赋获得财富与野心，最终塞壬的灵感耗竭，对完美的追求疯狂生长。愚者花光积蓄后产生让机器代替创作的想法，用废铁造出能动的大家伙。代价？如同巴别塔，齿轮紧贴皮肤，圣路浸满朝圣者的血液。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "塞壬",
+      "愚者",
+      "音乐",
+      "机械",
+      "完美",
+      "欲望",
+      "创作",
+      "灵感",
+      "心脏",
+      "歌曲",
+      "E.G.O",
+      "巴别塔",
+      "穷举",
+      "废铁",
+      "童话",
+      "寓言",
+      "代价",
+      "天才",
+      "模仿",
+      "空洞"
     ],
     "readability": 0.48,
     "taggingModel": "deepseek-v4-flash"
