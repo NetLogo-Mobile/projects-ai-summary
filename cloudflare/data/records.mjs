@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-08T05:57:09.674Z";
+export const generatedAt = "2026-07-09T06:50:11.469Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -7747,6 +7747,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a4e0f07820886de092b3ee5",
+    "name": "《过去》（好吧我承认我其实想独占文学区）",
+    "contentLength": 599,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品讲述了一位警员在调查一桩诡异案件时，经历超自然现象——黑猫口吐预言\"血色将至\"并产下带黑色方块的蛋，随后主人公被带到名为\"锈湖\"的神秘老宅，故事充满悬疑、轮回与超现实色彩。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "血色将至",
+      "黑猫",
+      "锈湖",
+      "劳拉",
+      "家族树",
+      "兔先生",
+      "弹孔",
+      "黑色方块",
+      "警局",
+      "案件调查",
+      "超自然",
+      "永生",
+      "十代往生",
+      "狗",
+      "蛋",
+      "半透明纸张",
+      "咖啡",
+      "手铐",
+      "玄案",
+      "灵魂解放"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -8413,6 +8454,88 @@ export const records = [
       "凶杀",
       "推理",
       "梦境"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a4e29df3e4c5bc67be24ed1",
+    "name": "《过去》（呃没错又完结一个）",
+    "contentLength": 735,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以梦境叙事展开，讲述了在锈湖（Rusty Lake）场景中发生的一系列悬疑事件，包括猫头鹰先生、神秘电台、身份替换和谋杀等元素。灵感来源于Rusty Lake系列解谜游戏，作者试图用散文形式探索悬疑主题，探讨过去与现在的纠缠关系，并植入对存在与身份的哲学思考。全文以意识流手法呈现，带有超现实主义和黑色幽默色彩。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "锈湖",
+      "悬疑",
+      "散文",
+      "梦境",
+      "谋杀",
+      "身份替换",
+      "血色将至",
+      "Rusty Lake",
+      "解谜游戏",
+      "哲学思考",
+      "平衡",
+      "过去",
+      "生命",
+      "物质",
+      "意识流",
+      "超现实主义",
+      "黑色幽默",
+      "电子合成音",
+      "传送带",
+      "猫头鹰先生"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a4ef47e3e4c5bc67be2507e",
+    "name": "予你王冠6",
+    "contentLength": 14046,
+    "userID": "626407c6ad27f25aa2275572",
+    "userName": "O114514",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "第五章讲述了时音为保护妹妹芝爱与席闻乐达成交易，在席闻乐别墅过夜并发生亲密接触，随后席闻乐履行承诺与芝爱交往，时音巧妙利用花粉症使高衫依出局。故事围绕交易、感情博弈和家族压力展开。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国现当代文学"
+    ],
+    "keyWords": [
+      "时音",
+      "芝爱",
+      "席闻乐",
+      "交易",
+      "过夜",
+      "味道",
+      "足球",
+      "象棋",
+      "雪",
+      "花粉症",
+      "高衫依",
+      "严禹森",
+      "汤浩",
+      "慕西尉",
+      "慕羌",
+      "慕夫人",
+      "药浴",
+      "名牌",
+      "OK绷",
+      "母亲房间"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
@@ -9202,6 +9325,47 @@ export const records = [
       "狗",
       "白鸽报社",
       "PAIX"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a4e27913e4c5bc67be24ec9",
+    "name": "戏剧《帝国测量员》",
+    "contentLength": 4009,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "话剧剧本《帝国测量员》讲述了一位自称来自奥匈帝国的中学生K在校园中，通过幻想中的帝国身份与现实生活交织，探讨个人归属、历史记忆与身份认同的主题。剧中K与同学甲、乙的互动，以及他建立'临时城堡'、制作帝国制服等行为，展现了一个少年在现实中寻找精神家园的历程。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "戏剧文学"
+    ],
+    "keyWords": [
+      "话剧",
+      "剧本",
+      "帝国测量员",
+      "奥匈帝国",
+      "身份认同",
+      "历史记忆",
+      "归属感",
+      "K",
+      "城堡",
+      "中学生",
+      "校园",
+      "幻想与现实",
+      "友谊",
+      "中考",
+      "双头鹰",
+      "民族国家",
+      "普世帝国",
+      "临时政府",
+      "测量员",
+      "帝国"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
