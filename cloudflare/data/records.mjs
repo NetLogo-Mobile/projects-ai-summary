@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-09T06:50:11.469Z";
+export const generatedAt = "2026-07-10T06:50:52.465Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -7783,6 +7783,47 @@ export const records = [
       "手铐",
       "玄案",
       "灵魂解放"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a504f7a820886de092b448e",
+    "name": "高数笔记5——微分",
+    "contentLength": 3596,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "5e40b1749178a319c6ea5974",
+    "editorName": "北冥薛猫",
+    "year": 2026,
+    "summary": "本文是个人学习高等数学的笔记，以高中生知识水平为基础，讲解了微分、微分中值定理和泰勒公式等微积分核心概念，内容包括微分的定义与近似计算、罗尔定理、拉格朗日中值定理、柯西中值定理以及泰勒公式的推导与应用，重点在于科普而非教学，便于理解但缺少直观图解。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "微分",
+      "导数",
+      "可微",
+      "微分中值定理",
+      "罗尔定理",
+      "费马引理",
+      "拉格朗日中值定理",
+      "柯西中值定理",
+      "泰勒公式",
+      "麦克劳林公式",
+      "近似计算",
+      "线性函数",
+      "高阶无穷小",
+      "皮亚诺余项",
+      "拉格朗日余项",
+      "可导",
+      "连续",
+      "函数",
+      "微积分",
+      "高等数学"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
