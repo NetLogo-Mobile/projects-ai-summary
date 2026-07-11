@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-10T06:50:52.465Z";
+export const generatedAt = "2026-07-11T05:45:35.775Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -5902,6 +5902,47 @@ export const records = [
       "交换身份",
       "被困",
       "超自然"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a40db9eb043bb0ba0f310e5",
+    "name": "高数笔记3-无穷与极限的运算",
+    "contentLength": 2949,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "本文是一篇个人高等数学学习笔记，由一位不打算学数学的理科高中毕业生在暑假期间编写。内容涵盖无穷小与无穷大的定义及运算、极限的运算法则、极限存在准则（夹逼准则、单调有界准则、柯西准则）、第一重要极限（sinx/x）和第二重要极限（1+1/x)^x=e，并简要介绍了洛必达法则和中值定理。笔记以高中生知识水平为基础，语言通俗易懂，内容极尽简略，适合初学者快速了解高等数学入门概念。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "高等数学",
+      "无穷小",
+      "无穷大",
+      "极限",
+      "极限运算",
+      "夹逼准则",
+      "单调有界准则",
+      "柯西准则",
+      "重要极限",
+      "第一重要极限",
+      "第二重要极限",
+      "自然常数e",
+      "洛必达法则",
+      "中值定理",
+      "数列极限",
+      "函数极限",
+      "sinx/x",
+      "(1+1/x)^x",
+      "无穷小运算",
+      "学习笔记"
     ],
     "readability": 0.3,
     "taggingModel": "deepseek-v4-flash"
