@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-11T05:45:35.775Z";
+export const generatedAt = "2026-07-12T06:08:52.408Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -7865,6 +7865,46 @@ export const records = [
       "函数",
       "微积分",
       "高等数学"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a52e6ae820886de092b4d32",
+    "name": "二十六章 凝滞的时刻",
+    "contentLength": 1252,
+    "userID": "605a6f5b0e7b6176dffc0b99",
+    "userName": "Soloist",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "三位猎梦人念心、东方允和盛天在北方荒芜之地寻找幸存城镇的旅途中，遭遇了极其稀有的冰狼亚种「时刻」。该冰狼拥有停止时间10秒（冷却3分钟）的混沌能力，与三人展开激烈战斗。在关键时刻，盛天左臂的混沌三剑意外吸收了冰狼的时停混沌能量，使冰狼能力失效，最终念心用长枪将其击败。盛天吸收了冰狼坍缩成的菱形碎片后，左手背图案增至两片，三人继续向法恩镇前进以探寻真相。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "猎梦人",
+      "冰狼",
+      "时刻",
+      "时间停止",
+      "混沌三剑",
+      "念心",
+      "东方允",
+      "盛天",
+      "永恒之心",
+      "梦兽",
+      "法恩镇",
+      "菱形碎片",
+      "混沌能量",
+      "北行",
+      "时停战斗",
+      "奇幻",
+      "网络文学",
+      "异能",
+      "三人组"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
