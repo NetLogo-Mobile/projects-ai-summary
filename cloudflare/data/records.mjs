@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-15T05:37:21.483Z";
+export const generatedAt = "2026-07-16T05:45:36.088Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6020,6 +6020,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a57030d820886de092b5ada",
+    "name": "高数笔记7——积分",
+    "contentLength": 6401,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "本文以高中毕业生的视角，系统介绍了高等数学中积分学的基础知识，包括不定积分、定积分、积分方法（换元积分法、分部积分法）、基本公式（变上限积分函数求导、牛顿-莱布尼兹公式）、反常积分以及定积分的应用（求面积、体积、弧长等）。内容通俗易懂，注重概念解释而非应试技巧，适合初学者理解积分学的核心思想。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "高等数学",
+      "积分",
+      "不定积分",
+      "定积分",
+      "原函数",
+      "换元积分法",
+      "分部积分法",
+      "牛顿-莱布尼兹公式",
+      "反常积分",
+      "瑕积分",
+      "面积",
+      "体积",
+      "旋转体",
+      "极坐标",
+      "弧长",
+      "微元法",
+      "积分表",
+      "变上限积分函数",
+      "壳法",
+      "曲边梯形"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -9584,6 +9625,47 @@ export const records = [
       "临时政府",
       "测量员",
       "帝国"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a58363b3e4c5bc67be26f53",
+    "name": "《疯狂》（感觉和狂人日记差不多啊）",
+    "contentLength": 863,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以“嘉豪”这一网络标签为线索，通过李雷之死和叙述者的亲身遭遇，描绘了校园中群体冷漠、网络标签化与从众心理对个体的压迫与伤害。故事兼具现实与荒诞色彩，揭示了在集体狂欢与刻板印象下，个体身份被剥夺、悲剧被消费的残酷现实。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "嘉豪",
+      "校园欺凌",
+      "网络文化",
+      "群体心理",
+      "冷漠",
+      "身份认同",
+      "标签化",
+      "悲剧",
+      "青春",
+      "荒诞",
+      "讽刺",
+      "从众心理",
+      "孤立",
+      "社会批判",
+      "死亡",
+      "抵抗",
+      "网络暴力",
+      "校园暴力",
+      "少年",
+      "压抑"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
