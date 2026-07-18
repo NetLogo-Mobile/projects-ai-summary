@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-17T05:46:59.770Z";
+export const generatedAt = "2026-07-18T05:32:31.587Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -8882,6 +8882,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a59ea0d820886de092b657c",
+    "name": "【葬与蝶】宇宙背景与大体时间线",
+    "contentLength": 928,
+    "userID": "5c9e146c15c130383985cddf",
+    "userName": "无罪画家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本作品设定了一个多星球的宇宙背景，描绘了地球、耶路撒冷、伊利洛亚和史埃尔特四个宜居星的文明兴衰史。地球因阶级仇恨导致全星球灭绝；耶路撒冷因智械革命使人类灭绝；伊利洛亚科技倒退至军国混战时期；史埃尔特作为人类最后希望，经历了人工智能发展、反智能革命、公司控制等阶段，最终面临耶路撒冷之星的威胁。作品以《葬与蝶》及外传《伊塔》为主时间线，讲述流浪星球与文明重建的故事。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "比较文学与世界文学"
+    ],
+    "keyWords": [
+      "宇宙背景",
+      "宜居星",
+      "地球",
+      "耶路撒冷",
+      "伊利洛亚",
+      "史埃尔特",
+      "双星系统",
+      "人工智能",
+      "智械革命",
+      "文明灭绝",
+      "科技倒退",
+      "军国混战",
+      "避难所",
+      "黄矮星",
+      "原住民",
+      "科技残骸",
+      "反智能革命",
+      "公司控制",
+      "葬与蝶",
+      "流浪星球"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a12a6a5075c39fbe5978817",
     "name": "《狂人日记-特别篇》（与原著无关 只是故事）？",
     "contentLength": 1446,
@@ -9748,6 +9789,87 @@ export const records = [
       "校园暴力",
       "少年",
       "压抑"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a59c318820886de092b64db",
+    "name": "【葬与蝶】26个区设定[A~I]",
+    "contentLength": 2262,
+    "userID": "5c9e146c15c130383985cddf",
+    "userName": "无罪画家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品\"轴 Axis\"构建了一个反乌托邦科幻世界，描述了多个名为\"Cooperation\"的组织及其尖端科技（如化学/概念侵蚀、波形整改、物质稠化、量子信息共振、自机械化迁移、常温超导交通、基因编辑、情绪控制力场、光学/概念隐形等）。每个组织都设有\"脑\"（核心管制区）和\"脏\"（外围混乱区）的双层结构，并受到名为\"首席执行官\"的最高掌权者及森严的决策会制度统治。作品通过科技异化、阶级分化、信息监控与人口控制等元素，展现了极权体制下的社会图景。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "轴",
+      "侵蚀",
+      "化学侵蚀",
+      "概念侵蚀",
+      "集成中轴",
+      "扩震",
+      "浆化",
+      "视网",
+      "量子信息共振网",
+      "迁移",
+      "自机械化材料",
+      "轨道",
+      "常温超导",
+      "基因刻刀",
+      "存乐",
+      "二阶力场稳定器",
+      "墨点",
+      "光学隐形",
+      "概念隐形"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a59e1e9820886de092b6563",
+    "name": "【葬与蝶】通用[蛹]评级及[灾害]评级",
+    "contentLength": 1053,
+    "userID": "5c9e146c15c130383985cddf",
+    "userName": "无罪画家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文档定义了一种称为“蛹”的危险存在及其六大等级（SAFE、NUN、MEH、TSADE、ALETH、UNKNOWN），并描述了对应的八级灾害评级体系（DELTA、MIRA、APHONI、GAMMA、LAMUDA、BEZZ、CIPHA、PAI），详细说明了各等级的杀伤力、影响范围和应对方式。该设定构建了一个从低危害到灭绝级的完整威胁分级框架。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "蛹",
+      "灾害评级",
+      "SAFE",
+      "NUN",
+      "MEH",
+      "TSADE",
+      "ALETH",
+      "UNKNOWN",
+      "DELTA",
+      "MIRA",
+      "APHONI",
+      "GAMMA",
+      "LAMUDA",
+      "BEZZ",
+      "CIPHA",
+      "PAI",
+      "等级体系",
+      "杀伤力",
+      "社会恐慌",
+      "灾难分类"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
