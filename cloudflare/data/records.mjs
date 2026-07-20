@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-19T06:01:45.837Z";
+export const generatedAt = "2026-07-20T06:22:38.736Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -8170,6 +8170,63 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a5c75e7820886de092b6def",
+    "name": "物实之辉周刊2026.7.19",
+    "contentLength": 2727,
+    "userID": "667652820b5f97343a9d4d66",
+    "userName": "富冈义勇liao",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这是一份社区周刊（第83期），收录并分类整理了学术讨论、论文、小说、诗歌等作品，涵盖计算机科学、数学、物理、化学、生物、历史、地理、社科、哲学、经济学、心理学、文学等多个学科领域，同时包含社区新闻、访谈长廊、本社通告等栏目，并附有天气提醒和社区寄语。",
+    "primaryDiscipline": [
+      "理学",
+      "工学",
+      "文学",
+      "哲学",
+      "法学",
+      "经济学"
+    ],
+    "secondaryDiscipline": [
+      "计算机科学",
+      "数学",
+      "物理学",
+      "化学",
+      "生物学",
+      "历史学",
+      "地理学",
+      "社会科学",
+      "哲学",
+      "经济学",
+      "心理学",
+      "文学"
+    ],
+    "keyWords": [
+      "周刊",
+      "精知优选",
+      "兰台新议",
+      "冲精防淹",
+      "文学荟萃",
+      "访谈长廊",
+      "社区新闻",
+      "本社通告",
+      "物实",
+      "黑洞区",
+      "高数笔记",
+      "微分方程",
+      "电磁学",
+      "有机化合物",
+      "积分",
+      "学术讨论",
+      "小说",
+      "散文",
+      "诗歌",
+      "基础学科"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a58b6a03e4c5bc67be27194",
     "name": "高数笔记8——微分方程",
     "contentLength": 6625,
@@ -9000,6 +9057,52 @@ export const records = [
       "公司控制",
       "葬与蝶",
       "流浪星球"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a5d959f820886de092b7131",
+    "name": "RRR+申知：中考生物大复习：人体的调节（上）",
+    "contentLength": 2815,
+    "userID": "67c1d3be95b89da49f0a7de7",
+    "userName": "一个牛逼的物理课代表",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "本文是一篇中考生物复习的教学文章，以通俗易懂的语言讲解眼睛和耳朵的结构与功能，包括视觉形成过程、听觉形成过程，以及近视、远视的成因与矫正方法（凹透镜/凸透镜）。文章还涉及瞳孔调节、中耳炎预防、皮肤作为感觉器官等内容，适合初中生中考复习使用。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "生物学"
+    ],
+    "keyWords": [
+      "视觉形成",
+      "听觉形成",
+      "眼",
+      "耳",
+      "近视",
+      "远视",
+      "晶状体",
+      "视网膜",
+      "鼓膜",
+      "耳蜗",
+      "神经系统",
+      "内分泌系统",
+      "角膜",
+      "瞳孔",
+      "虹膜",
+      "玻璃体",
+      "脉络膜",
+      "视神经",
+      "听小骨",
+      "半规管",
+      "前庭",
+      "咽鼓管",
+      "凹透镜",
+      "凸透镜",
+      "皮肤"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
@@ -10414,6 +10517,122 @@ export const records = [
       "静电荷",
       "电荷量",
       "量子力学"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a5c76b33e4c5bc67be27dd6",
+    "name": "全斗焕——一代枭雄(2)",
+    "contentLength": 2891,
+    "userID": "64d62721738530362ba5e93b",
+    "userName": "文森维尔",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文详细叙述了1961年韩国516军事政变中朴正熙上台的背景，以及全斗焕如何通过向朴正熙表忠心和告发政敌而获得信任，逐步掌握军权并建立“一心会”势力的过程。同时描述了1979年朴正熙遇刺事件后，全斗焕利用调查权清洗异己、安插亲信，为后续夺权铺平道路的历史细节。",
+    "primaryDiscipline": [
+      "历史学"
+    ],
+    "secondaryDiscipline": [
+      "世界史"
+    ],
+    "keyWords": [
+      "朴正熙",
+      "全斗焕",
+      "516政变",
+      "韩国",
+      "军事政变",
+      "一心会",
+      "陆士11期",
+      "姜英勋",
+      "金载圭",
+      "朴正熙遇刺",
+      "车智澈",
+      "卢泰愚",
+      "权力斗争",
+      "军事独裁",
+      "韩国军队",
+      "首尔",
+      "青瓦台",
+      "汉江奇迹",
+      "政权更迭",
+      "军权掌控"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a5d1f6e3e4c5bc67be27ff4",
+    "name": "[Linguistics][语言学小短篇]存档内容：西班牙语的yeísmo",
+    "contentLength": 850,
+    "userID": "5c0f9dc91b29fcb335b56eea",
+    "userName": "StēllæNoctis",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文介绍了西班牙语中的yeísmo音变现象，即字母组合LL与Y的发音合流（/ʎ/演变为/ʝ/），以及更激进的变体zheísmo（/ʝ/演变为/ʒ/）和sheísmo（/ʒ/演变为/ʃ/），并给出了这些音变发生的地理区域分布，同时提及了与葡萄牙语同源词中的相关音变最终得到软腭清擦音/x/。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "外国语言文学"
+    ],
+    "keyWords": [
+      "yeísmo",
+      "西班牙语",
+      "音变",
+      "硬腭边近音",
+      "硬腭浊擦音",
+      "龈后浊擦音",
+      "龈后清擦音",
+      "音变链",
+      "/ʎ/",
+      "/ʝ/",
+      "/ʒ/",
+      "/ʃ/",
+      "/x/",
+      "zheísmo",
+      "sheísmo",
+      "拉美西班牙语",
+      "音系学",
+      "正字法"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a5d84cb3e4c5bc67be2807b",
+    "name": "关于系列作品申精知的解释",
+    "contentLength": 285,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文阐述了系列作品在物实平台申请精选（申精）的分类与规则。将系列作品分为I类（各篇高度相关连贯）和II类（各篇独立成文），并专门针对I类系列作品规定了两种申精方式：可选择单篇申精（视为放弃整体申精）或整体申精（针对全部正文评判，精选给到目录作品或第一篇）。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "新闻传播学"
+    ],
+    "keyWords": [
+      "系列作品",
+      "I类",
+      "II类",
+      "申精规定",
+      "精选申请",
+      "单篇申精",
+      "整体申精",
+      "连贯性",
+      "相关性",
+      "目录作品",
+      "物实平台",
+      "文章分类",
+      "出版规则",
+      "选题阐述",
+      "正文评判"
     ],
     "readability": 0.5,
     "taggingModel": "deepseek-v4-flash"
