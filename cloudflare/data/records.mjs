@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-21T05:55:42.237Z";
+export const generatedAt = "2026-07-22T05:55:37.536Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6143,6 +6143,43 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a5f79c23e4c5bc67be289da",
+    "name": "庆贺西山收容物达到155",
+    "contentLength": 277,
+    "userID": "63ea4191fd0015ad302ea261",
+    "userName": "灭神之天",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "该作品是\"西山基地收容编号列表\"相关讨论帖，记录了155个收容物编号，属于网络社区共创性质的SCP风格虚构创作。帖子表达了创作者对社区活跃度下降的感慨，以及对物实平台和西山基地未来发展的期待与呼吁。整体风格轻松口语化，带有社区互动属性。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学",
+      "网络文学"
+    ],
+    "keyWords": [
+      "西山基地",
+      "收容物",
+      "SCP风格",
+      "网络文学",
+      "社区创作",
+      "收容编号",
+      "虚拟设定",
+      "物实平台",
+      "共创写作",
+      "科幻设定",
+      "收容列表",
+      "虚构组织",
+      "异常物品",
+      "同人创作",
+      "网络社群"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -9108,6 +9145,88 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a5dd9f1820886de092b727f",
+    "name": "高数笔记番外——线性代数速成",
+    "contentLength": 9225,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "61e5f1d177298072d234d650",
+    "editorName": "MapMaths",
+    "year": 2026,
+    "summary": "本文是线性代数速成笔记，基于3Blue1Brown视频《线性代数的本质》，以直观理解为核心，系统讲解了线性组合与张成空间、矩阵与线性变换、行列式、逆矩阵与列空间、非方阵、点积与对偶性、叉积、基变换、特征向量与特征值、抽象向量空间等核心概念。文章避免繁琐计算，注重几何直觉和概念本质，适合快速建立线性代数框架认识。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "线性代数",
+      "线性组合",
+      "张成空间",
+      "矩阵",
+      "线性变换",
+      "行列式",
+      "逆矩阵",
+      "列空间",
+      "秩",
+      "零空间",
+      "非方阵",
+      "点积",
+      "对偶性",
+      "叉积",
+      "基变换",
+      "特征向量",
+      "特征值",
+      "抽象向量空间",
+      "3Blue1Brown",
+      "线性方程组"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a6018b43e4c5bc67be28c31",
+    "name": "回不来的人，送不到的信",
+    "contentLength": 1877,
+    "userID": "605a6f5b0e7b6176dffc0b99",
+    "userName": "Soloist",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "以一名前德军士兵的晚年回忆视角，讲述二战期间斯大林格勒战役中，战友诺莫·珀森临死前托付他转交信件给未婚妻艾丽卡，但因战后生活变迁和柏林墙的建立，他最终未能履行诺言的故事，深刻反映了战争对普通人命运的摧残与无法弥补的遗憾。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "二战",
+      "斯大林格勒战役",
+      "德军士兵",
+      "诺莫·珀森",
+      "信件",
+      "诺言",
+      "柏林墙",
+      "艾丽卡",
+      "战争与人性",
+      "死亡",
+      "回忆录",
+      "遗憾",
+      "普通人的故事",
+      "德国",
+      "苏联",
+      "冬天",
+      "怀表",
+      "1961年",
+      "战友情",
+      "反战"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a12a6a5075c39fbe5978817",
     "name": "《狂人日记-特别篇》（与原著无关 只是故事）？",
     "contentLength": 1446,
@@ -10060,6 +10179,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a604313820886de092b7e13",
+    "name": "《守尸人》（独立短篇）",
+    "contentLength": 1873,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "在遥远的来福国，守尸人曾是神圣的职业，负责守护亡魂前往彼岸。随着长生不老药的普及，死亡变得稀少，守尸人逐渐消亡。最后一代守尸人莱恩在十二年后终于迎来一桩委托——富豪纳瑞秋尔主动求死，并雇佣莱恩为其守尸。在为期两年的旅途中，莱恩陪伴瑞秋的灵魂游历人间。瑞秋揭开了自己拥有无尽寿命却选择死亡的真相：他曾贪恋永恒，却经历背叛、目睹亲友离去，最终领悟到有限的生命才是赋予存在意义的真谛。莱恩深受触动，摔碎了自己珍藏的不老药，选择拥抱生命有限的自然轮回。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "守尸人",
+      "长生不老",
+      "死亡",
+      "灵魂",
+      "永恒",
+      "孤独",
+      "生命意义",
+      "来福国",
+      "短篇小说",
+      "奇幻",
+      "寓言",
+      "人性",
+      "时间",
+      "记忆",
+      "救赎",
+      "存在主义",
+      "有限与无限",
+      "自然轮回",
+      "友情与背叛",
+      "使命"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a2bdd52821f78e016dc677d",
     "name": "[精] 社交的手腕,人性的秘密",
     "contentLength": 3648,
@@ -10633,6 +10793,47 @@ export const records = [
       "出版规则",
       "选题阐述",
       "正文评判"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a5f808e820886de092b7b0c",
+    "name": "讨论：文学可以成为精选吗？",
+    "contentLength": 373,
+    "userID": "5ea1934c8116c49429d3e405",
+    "userName": "16号管理者",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文围绕50社区中文学作品能否成为精选展开讨论，回顾了社区内优秀文学作者与作品（如岚雨《菲莫尼尔》、沃尔夫冈《等待朝夕》、某柴《恋爱开始于约会之后》等），提出以周期性竞赛模式、加权投票方式，按严肃小说、散文、诗歌、戏剧、娱乐文学五个门类评选文学类精选作品，并向全社区征求意见。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "精选评审",
+      "文学作品",
+      "社区讨论",
+      "评选机制",
+      "严肃小说",
+      "散文",
+      "诗歌",
+      "戏剧",
+      "娱乐文学",
+      "加权投票",
+      "周期性竞赛",
+      "某柴",
+      "岚雨",
+      "沃尔夫冈",
+      "菲莫尼尔",
+      "等待朝夕",
+      "实验性作品",
+      "文学分类",
+      "作者质量",
+      "物实社区"
     ],
     "readability": 0.5,
     "taggingModel": "deepseek-v4-flash"
