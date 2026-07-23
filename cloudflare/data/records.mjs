@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-22T05:55:37.536Z";
+export const generatedAt = "2026-07-23T06:06:26.368Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -184,6 +184,47 @@ export const records = [
       "散文",
       "社会批判",
       "日记体"
+    ],
+    "readability": 0.25,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a6166aa3e4c5bc67be2938b",
+    "name": "幸存者日常：第七章",
+    "contentLength": 512,
+    "userID": "65080e78d15c97d81730083f",
+    "userName": "TZY谭某",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "谭明成为heaven护卫队外派专员后遭遇Ravager组织袭击，被俘关押于昏暗潮湿的实验室地牢中，五天后被用于丧尸可控性实验，面临丧尸群攻击。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "幸存者",
+      "末世",
+      "丧尸",
+      "实验室",
+      "地牢",
+      "Ravager",
+      "heaven护卫队",
+      "外派专员",
+      "劫掠",
+      "志愿者",
+      "日记",
+      "可控性实验",
+      "谭明",
+      "末日生存",
+      "科幻",
+      "实验",
+      "袭击",
+      "铁栏杆",
+      "尖刺",
+      "棒球攻击"
     ],
     "readability": 0.25,
     "taggingModel": "deepseek-v4-flash"
@@ -8305,6 +8346,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a60a8d6820886de092b80fe",
+    "name": "烈阳，星月与地平线",
+    "contentLength": 2551,
+    "userID": "5ea1934c8116c49429d3e405",
+    "userName": "16号管理者",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "物实通讯社发布的物理实验室社区月度创作竞赛企划公告。竞赛设置三大板块：烈阳（游戏与虚构世界，欢迎游戏评论、剧情分析、机制设计研究等）、星月（社会与人文观察，涵盖哲学、历史、心理学、社会学等人文社科领域的观察与思考）、地平线（生活、见闻与杂谈，关注个人经历、校园生活、成长感悟等真实生活内容）。公告详细说明了参赛要求（字数600-20000字、禁止抄袭与AI直接生成、需标注引用来源等）、评分办法（满分100分，由共同指标70分和板块专项指标30分组成）、评审方式（三名评委独立评分、20分分差需复核）和奖项设置（各板块独立评奖、跨板块Grand Prize大奖）。竞赛旨在鼓励社区成员表达自我、分享见解，不设狭窄统一命题，强调真诚、真实和独立思考。",
+    "primaryDiscipline": [
+      "教育学",
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "教育学",
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "物理实验室",
+      "月度创作竞赛",
+      "征文活动",
+      "烈阳板块",
+      "星月板块",
+      "地平线板块",
+      "游戏评论",
+      "社会观察",
+      "人文观察",
+      "生活杂谈",
+      "创作竞赛",
+      "评分体系",
+      "奖项设置",
+      "参赛要求",
+      "精选作品",
+      "Grand Prize",
+      "社区活动",
+      "独立思考"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -9222,6 +9304,47 @@ export const records = [
       "1961年",
       "战友情",
       "反战"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a60aa7c820886de092b811e",
+    "name": "泰拉记事（巴别塔篇）",
+    "contentLength": 2687,
+    "userID": "6742cccfe638cfd7c7bed91a",
+    "userName": "沉沦者的黑流树海",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "以《明日方舟》世界观为背景的同人小说，讲述了博士在特雷西斯入侵时被迫背叛巴别塔和特雷西娅，却发现特雷西娅早已理解其苦衷并主动牺牲，通过记忆清除程序让博士重获新生。多年后博士偶然发现特雷西娅临终影像，领悟了她的馈赠与期待。后记部分对萨卡兹民族千年苦难与信念冲突进行了哲学性反思，表达了对和平与团结的向往。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "明日方舟",
+      "同人小说",
+      "巴别塔",
+      "特雷西娅",
+      "博士",
+      "萨卡兹",
+      "卡兹戴尔",
+      "源石",
+      "背叛",
+      "牺牲",
+      "记忆清除",
+      "罗德岛",
+      "PRTS",
+      "泰拉",
+      "魂灵熔炉",
+      "信念",
+      "文明",
+      "死亡与光明",
+      "吊坠",
+      "和平"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
@@ -11162,6 +11285,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a58279d3e4c5bc67be26f04",
+    "name": "[物实物理教程]电磁学1.4",
+    "contentLength": 3839,
+    "userID": "68bc3389a73570ce3b39a146",
+    "userName": "银箭星辉",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文为物理实验室物理学教程电磁学篇中关于库仑定律的章节内容。系统阐述了静止点电荷之间相互作用的库仑定律的矢量形式数学表达、国际单位制中库仑常数的定义与取值、真空介电常数的引入、高斯制单位与SI单位制的对比、电荷相互作用的叠加原理及其适用范围限制，以及库仑定律平方反比关系的历史验证过程——从Cavendish实验到Maxwell的改进直至现代Williams等人在10^-16精度范围内的检验，并讨论了库仑定律在极小尺度（10^-16m以下）和极大尺度（10^8m以上）的适用性边界问题。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "库仑定律",
+      "Coulomb定律",
+      "静电学",
+      "点电荷",
+      "平方反比关系",
+      "叠加原理",
+      "真空介电常数",
+      "国际单位制",
+      "高斯单位制",
+      "静电力",
+      "电场",
+      "Cavendish实验",
+      "Maxwell",
+      "电荷相互作用",
+      "电磁场理论",
+      "扭秤平衡法",
+      "矢量形式",
+      "电荷量",
+      "距离平方反比",
+      "经典电磁理论"
+    ],
+    "readability": 0.58,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "697b312287799549e87be8aa",
     "name": "【逻辑】语言与结构",
     "contentLength": 1831,
@@ -12527,6 +12691,82 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a5afa823e4c5bc67be27841",
+    "name": "[物实物理教程]电磁学1.6",
+    "contentLength": 1759,
+    "userID": "68eb3e33f6cd7a6283ab5377",
+    "userName": "银箭朔耀",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "该作品以氯化钠（NaCl）离子晶体为例，系统讲述了晶体中静电势能的计算方法。主要内容包括：将离子视为点电荷进行等效处理、利用周期性结构简化求和运算（从双重求和化为单重求和）、计算电势能的公式推导（式1.16-1.18），以及求和收敛性问题的讨论。作品还指出纯经典理论无法解释晶体稳定性的局限，暗示量子物理的必要性。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "离子晶体",
+      "氯化钠",
+      "静电势能",
+      "点电荷",
+      "晶格",
+      "库仑力",
+      "马德隆常数",
+      "晶体稳定性",
+      "内聚力",
+      "电磁学",
+      "晶体物理学",
+      "电荷相互作用",
+      "收敛性",
+      "经典物理",
+      "量子物理",
+      "电势能求和"
+    ],
+    "readability": 0.6,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a5b61313e4c5bc67be27a71",
+    "name": "[物实物理教程]电磁学1.7",
+    "contentLength": 2029,
+    "userID": "68bc3389a73570ce3b39a146",
+    "userName": "银箭星辉",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文定义了电场E为试探电荷q₀所受单位电荷力F/q₀的极限，给出点电荷系电场叠加公式E=(1/4πε₀)∑(qⱼr̂₀ⱼ/r₀ⱼ²)，讨论了电场的物理实在性、局域性以及电场矢量的可视化表示方法（包括箭头线段图示和电场线两种方式），并介绍了SI制（N/C、V/m）与高斯制（dyn/esu、statvolt/cm）中的电场强度单位。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "电磁学",
+      "电场",
+      "点电荷",
+      "库仑定律",
+      "叠加原理",
+      "试探电荷",
+      "电场强度",
+      "电场线",
+      "矢量场",
+      "静电场",
+      "国际单位制",
+      "高斯单位制",
+      "牛顿/库仑",
+      "伏/米",
+      "场叠加",
+      "平方反比律",
+      "电场的局域性",
+      "源电荷"
+    ],
+    "readability": 0.6,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a56e862820886de092b5a53",
     "name": "[物实物理教程]电磁学1.1",
     "contentLength": 2359,
@@ -12911,6 +13151,47 @@ export const records = [
     ],
     "readability": 0.65,
     "taggingModel": "deepseek-ai/DeepSeek-V4-Flash"
+  },
+  {
+    "id": "6a60c6cd3e4c5bc67be29141",
+    "name": "记录中的岚...暮",
+    "contentLength": 2026,
+    "userID": "67069d8eddbdaf98f786850d",
+    "userName": "Luallaby",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文呈现了虚构角色\"谬\"（岚暮）的完整设定，包括其外貌、性格、能力、携带物品及背景故事，并附有关于世界本质、意义与叙世的哲学论述，探讨了生命、存在、定义与虚无等主题，文字风格晦涩，充满自创术语与哲学思辨。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "角色设定",
+      "岚暮",
+      "谬",
+      "虚构",
+      "哲学",
+      "叙世",
+      "灵质",
+      "封印",
+      "冠冕",
+      "羁绊",
+      "虚无",
+      "真实",
+      "认知",
+      "现象",
+      "定义",
+      "永恒",
+      "命运",
+      "神明",
+      "意义",
+      "世界"
+    ],
+    "readability": 0.65,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "6996e2c3102b6330141c4caf",
@@ -19216,6 +19497,46 @@ export const records = [
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-ai/DeepSeek-V4-Flash"
+  },
+  {
+    "id": "67bb1df73d0df2cb43c36f79",
+    "name": "物实通讯社-编撰委员会（招人）",
+    "contentLength": 842,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2025,
+    "summary": "星辉报社改组为物实通讯社，该通讯社是由管理层领导的传媒组织。组织设委员（预期8位，强流动性）和荣誉委员（杰出贡献者）两类建制，下设周刊组（负责主刊收录、副刊1精知作品摘要、副刊2新闻快讯）和专栏组（撰写专栏文章）。当前公开招募周刊组的主刊和副刊1编撰人员，主刊原则上无要求，副刊1需有精选/知识库2篇或累计超过4000字。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "新闻传播学"
+    ],
+    "keyWords": [
+      "星辉报社",
+      "物实通讯社",
+      "传媒组织",
+      "委员制度",
+      "荣誉委员",
+      "周刊组",
+      "专栏组",
+      "主刊",
+      "副刊",
+      "新闻快讯",
+      "编撰工作",
+      "招聘",
+      "组织架构",
+      "编辑部",
+      "精知作品",
+      "摘要撰写",
+      "行政管理",
+      "公开招募",
+      "通讯社建制"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "67cac81e861b7236d7e70934",
