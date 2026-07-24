@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-23T06:06:26.368Z";
+export const generatedAt = "2026-07-24T05:54:25.171Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6221,6 +6221,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a61d8f03e4c5bc67be298b1",
+    "name": "高数笔记9——面与线",
+    "contentLength": 3081,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "本文忠实地记录了一个不打算学数学的理科高中毕业生在暑假里学习高等数学的痕迹，内容极尽简略，以高中生知识水平为基础，重点放在讲清知识而非考试，省略大部分例题，补充被省略的结论的证明。内容涵盖平面及其方程、空间直线及其方程、曲面及其方程、空间曲线及其方程等解析几何核心内容，包括点法式、一般式、截距式、点向式、参数式方程，以及球面、旋转曲面、柱面、二次曲面（圆锥面、椭球面、双曲面、椭圆抛物面、双曲抛物面）和空间曲线的参数方程等。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "高数笔记",
+      "解析几何",
+      "平面方程",
+      "空间直线",
+      "曲面方程",
+      "空间曲线",
+      "法向量",
+      "方向向量",
+      "点法式",
+      "一般式",
+      "截距式",
+      "点向式",
+      "参数式",
+      "旋转曲面",
+      "柱面",
+      "二次曲面",
+      "双曲面",
+      "抛物面",
+      "马鞍面",
+      "螺旋线"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -8387,6 +8428,44 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a622d07820886de092b8c5c",
+    "name": "黠猫传",
+    "contentLength": 247,
+    "userID": "64ae7fa24fcb41dc52713ab4",
+    "userName": "薛猫的真爱粉",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文以文言文风格叙述了作者收养一只名为\"溯叶\"的猫，教其雅文后猫化形成人（保留猫耳猫尾），反诬主人为猫娘，最终导致主人被责罚的幽默奇幻故事。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "溯叶",
+      "猫娘",
+      "化形",
+      "文言文",
+      "故事",
+      "收养",
+      "猫",
+      "诬陷",
+      "幽默",
+      "奇幻",
+      "沃大人",
+      "薛猫管事",
+      "宠物",
+      "灵慧",
+      "雅文",
+      "反诬",
+      "短篇"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -9345,6 +9424,47 @@ export const records = [
       "死亡与光明",
       "吊坠",
       "和平"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a61c8e33e4c5bc67be297d2",
+    "name": "泰拉记事（天不予）",
+    "contentLength": 1204,
+    "userID": "6742cccfe638cfd7c7bed91a",
+    "userName": "沉沦者的黑流树海",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "故事围绕岁家兄妹的羁绊与离散展开。颉为阻止岁苏醒而牺牲，其弟易在界园筑灵堂，以遗物铸长钉镇守岁陵，摆放十二副空碗筷追忆往昔团圆。二哥望被囚二十年后化为一百八十一枚黑子散入大炎各地，与天地对弈。岁家兄妹散落各方，唯易独守灵堂，最终发现颉残识中留下的嘱托：\"守好彼此，便是守好岁月\"。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "界园",
+      "岁陵",
+      "颉",
+      "易",
+      "望",
+      "年夜饭",
+      "灵堂",
+      "画像",
+      "墨",
+      "棋局",
+      "腊梅",
+      "长钉",
+      "岁家",
+      "禁军",
+      "天师",
+      "归位",
+      "残识",
+      "供桌",
+      "墨锭",
+      "除夕"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
@@ -10338,6 +10458,45 @@ export const records = [
       "自然轮回",
       "友情与背叛",
       "使命"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a623600820886de092b8cbe",
+    "name": "痴猫传",
+    "contentLength": 432,
+    "userID": "67069d8eddbdaf98f786850d",
+    "userName": "Luallaby",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这是一篇以文言文写就的仙侠寓言故事，讲述仙人溯叶在河畔遇见灵智初开的猫娘\"猫粉\"并试图点化之，然猫粉根性昏聩、积愚难返，不但不自省己身乃猫娘之属，反诬告仙人溯叶为猫娘所化，最终真相不辩自明的故事。作品以古典神话笔法，借猫粉之妄语与仙人之清净，讽刺愚顽之辈以己度人、班门弄斧的荒谬行径。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "溯叶",
+      "猫粉",
+      "猫娘",
+      "仙人",
+      "柑橘精",
+      "沃大人",
+      "薛猫",
+      "灵智",
+      "仙侠",
+      "神话",
+      "寓言",
+      "点化",
+      "妄语",
+      "真相",
+      "混沌",
+      "本相",
+      "痴顽",
+      "神通"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
