@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-24T05:54:25.171Z";
+export const generatedAt = "2026-07-25T05:48:00.530Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -30,6 +30,69 @@ export const records = [
     ],
     "readability": 0.1,
     "taggingModel": "Gemi狸3.1flash"
+  },
+  {
+    "id": "6a641aaa820886de092b9651",
+    "name": "2026暑假编辑大选讨论区",
+    "contentLength": 184,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "关于2026年暑假编辑大选讨论区的公告，鼓励志愿者报名参与编辑大选，并提供了相关流程规范链接，讨论区用于编辑大选相关内容的交流与讨论。",
+    "primaryDiscipline": [
+      "管理学"
+    ],
+    "secondaryDiscipline": [
+      "公共管理"
+    ],
+    "keyWords": [
+      "编辑大选",
+      "志愿者",
+      "讨论区",
+      "流程规范",
+      "2026暑假",
+      "社区治理",
+      "招募",
+      "选举",
+      "公告"
+    ],
+    "readability": 0.15,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a6430123e4c5bc67be2a70a",
+    "name": "没错这是一个暗广",
+    "contentLength": 302,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这是一则关于《青年文摘》目录更新的论坛帖子，内容包含对番外篇的简要评价和互动通知，语言风格随意且带有大量重复字符，整体缺乏系统性和学术价值。",
+    "primaryDiscipline": [
+      "文学",
+      "教育学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学",
+      "新闻传播学"
+    ],
+    "keyWords": [
+      "青年文摘",
+      "目录",
+      "番外",
+      "更新",
+      "通知",
+      "论坛帖子",
+      "广告",
+      "互动",
+      "文学杂志",
+      "青少年阅读"
+    ],
+    "readability": 0.15,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "6a2eadf8821f78e016dc70da",
@@ -8466,6 +8529,43 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a638e653e4c5bc67be2a478",
+    "name": "《狂人日记》（与原作无关，我大抵可以接着界点写点吧）",
+    "contentLength": 903,
+    "userID": "64ae7fa24fcb41dc52713ab4",
+    "userName": "薛猫的真爱粉",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文以鲁迅式杂文笔法，记录了\"手子\"这一北方方言在校园班级中的流行与异化现象。起初\"手子\"是对某人某方面能力的通俗褒称（如\"学习手子\"\"运动手子\"），但随后逐渐演变为带有贬义色彩的标签，被用于嘲讽、排挤那些表现出色的同学。通过班长修理白板被叫\"电脑手子\"、同学分享新解法被讥为\"红人手子\"\"歪门手子\"等具体场景，揭示了语言标签从褒义到贬义的嬗变过程，以及背后隐含的群体压力、同辈排挤与校园软暴力现象。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "手子",
+      "北方方言",
+      "语言暴力",
+      "标签化",
+      "校园",
+      "群体压力",
+      "同辈排挤",
+      "褒贬转化",
+      "语义演变",
+      "社会语言学",
+      "青少年亚文化",
+      "从众心理",
+      "语言现象",
+      "软暴力",
+      "地域文化",
+      "方言词"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -9424,6 +9524,47 @@ export const records = [
       "死亡与光明",
       "吊坠",
       "和平"
+    ],
+    "readability": 0.4,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a60d3b03e4c5bc67be291cf",
+    "name": "RRR+申知：霍金辐射是什么",
+    "contentLength": 3585,
+    "userID": "653daca4c6c54c0437145d16",
+    "userName": "～刘某人～",
+    "editorID": "66bc220e6188c424cbe6e198",
+    "editorName": "tyq",
+    "year": 2026,
+    "summary": "本文系统介绍了霍金辐射理论，从广义相对论与量子力学的结合出发，通过真空涨落和虚粒子对模型解释了黑洞如何通过事件视界捕获负能粒子并释放正能粒子，导致黑洞质量逐渐减少直至蒸发。文章详细推导了霍金温度公式，讨论了黑洞质量与辐射强度的反比关系，并涉及黑洞信息悖论、黑洞热力学等延伸话题，最后指出霍金辐射在统一量子引力理论中的重要意义。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "霍金辐射",
+      "黑洞",
+      "事件视界",
+      "虚粒子",
+      "真空涨落",
+      "量子力学",
+      "广义相对论",
+      "海森堡不确定性原理",
+      "负能量",
+      "黑洞蒸发",
+      "史瓦西黑洞",
+      "霍金温度",
+      "博戈留波夫变换",
+      "黑洞信息悖论",
+      "黑洞热力学",
+      "量子引力",
+      "热辐射",
+      "弯曲时空量子场论",
+      "引力",
+      "质能方程"
     ],
     "readability": 0.4,
     "taggingModel": "deepseek-v4-flash"
@@ -10463,6 +10604,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a60bad8820886de092b81cb",
+    "name": "对选举违规进行处罚的投票",
+    "contentLength": 1544,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "该提案旨在规范物理实验室社区编辑大选流程，主要内容包括：一、在编辑大选流程规范中增设竞选宣传期（腊月二十五至正月初一、7月25日至7月31日），明确宣传期内外拉票行为的合规性及禁止范围；二、明确投票权归自然人所有，禁止一人多投及小号投票；三、新增违规处罚章节，对使用小号一人多投、投票期间拉票等行为规定撤销管理身份、禁止参选投票、封禁账号、无效选票等处罚措施，并设定追溯期限。",
+    "primaryDiscipline": [
+      "法学",
+      "管理学"
+    ],
+    "secondaryDiscipline": [
+      "宪法学与行政法学",
+      "行政管理"
+    ],
+    "keyWords": [
+      "编辑大选",
+      "投票权",
+      "竞选宣传",
+      "一人多投",
+      "小号",
+      "选举违规",
+      "处罚",
+      "物理实验室",
+      "社区治理",
+      "选举规范",
+      "无效选票",
+      "投票期限",
+      "追溯期",
+      "选民资格",
+      "选举公正",
+      "拉票",
+      "贿买",
+      "宣传期"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a623600820886de092b8cbe",
     "name": "痴猫传",
     "contentLength": 432,
@@ -11121,6 +11303,47 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a630d3c820886de092b90c0",
+    "name": "泰拉记事(凛冬已至)",
+    "contentLength": 1376,
+    "userID": "6742cccfe638cfd7c7bed91a",
+    "userName": "沉沦者的黑流树海",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "该作品讲述了《明日方舟》中霜星与爱国者这对养父女的悲剧故事。霜星不顾爱国者的劝阻，为给雪怪小队带来希望而前往龙门执行任务，最终与雪怪小队全员阵亡。爱国者得知消息后，在罗德岛的必经之路上设下考验，最终也战死。两人的护身符未能再次重逢，留下了永恒的遗憾。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "霜星",
+      "爱国者",
+      "叶莲娜",
+      "博卓卡斯替",
+      "雪怪小队",
+      "切尔诺伯格",
+      "龙门",
+      "源石",
+      "护身符",
+      "罗德岛",
+      "阿米娅",
+      "博士",
+      "幻影弩手",
+      "塔露拉",
+      "冰晶",
+      "寒流",
+      "矿场",
+      "感染者的枷锁",
+      "牺牲",
+      "风雪"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a5b9077820886de092b6b8c",
     "name": "关于对选举违规进行处罚的讨论",
     "contentLength": 1496,
@@ -11439,6 +11662,45 @@ export const records = [
       "统合主义",
       "动力系统模型",
       "概率模型"
+    ],
+    "readability": 0.55,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a61c1fb820886de092b8856",
+    "name": "从巴塞尔问题到魏尔斯特拉斯分解定理",
+    "contentLength": 3340,
+    "userID": "662cebec6325f6cd7f3679d9",
+    "userName": "ydhfgdus",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文以欧拉解决巴塞尔问题（∑1/n²=π²/6）的历史为线索，深入探讨了无穷乘积分解的合法性问题。文章从门戈利的提问出发，重现了欧拉利用sinx的麦克劳林展开和代数基本定理类比得出π²/6的传奇证明，同时指出该证明因适用于有限多项式的代数基本定理被推广到无穷级数而存在逻辑漏洞。通过引入反例eˣ·sinx与魏尔斯特拉斯严格化思想，文章系统分析了无穷乘积收敛的充要条件——依赖于零点倒数级数∑|1/a_n|的敛散性，并进一步讨论了配对乘积、矫正因子等高级技巧。最终总结出数学进步的标准路径：先有天才直觉的猜测（欧拉），后有严格逻辑的奠基（魏尔斯特拉斯），两者共同推动数学真理的发现。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "巴塞尔问题",
+      "欧拉",
+      "魏尔斯特拉斯",
+      "无穷乘积",
+      "sinx展开",
+      "收敛性",
+      "数学证明",
+      "代数基本定理",
+      "麦克劳林公式",
+      "调和级数",
+      "比较判别法",
+      "泰勒展开",
+      "零点分解",
+      "整函数",
+      "矫正因子",
+      "复分析",
+      "π²/6",
+      "级数求和"
     ],
     "readability": 0.55,
     "taggingModel": "deepseek-v4-flash"
