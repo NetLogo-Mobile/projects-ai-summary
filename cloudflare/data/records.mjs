@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-27T06:36:40.322Z";
+export const generatedAt = "2026-07-28T05:53:05.664Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -288,6 +288,37 @@ export const records = [
       "铁栏杆",
       "尖刺",
       "棒球攻击"
+    ],
+    "readability": 0.25,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a677d17820886de092baf6b",
+    "name": "冷饭重热",
+    "contentLength": 104,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以《狂人日记18》为题，延续了狂人日记的叙事风格，包含一段关于创作满意度的自省式讨论，提及\"没有玉米\"等象征性表达，整体呈现碎片化、开放式叙事特征。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "狂人日记",
+      "续写",
+      "碎片化叙事",
+      "自省",
+      "开放式结局",
+      "文学创作",
+      "象征表达",
+      "后现代",
+      "意识流",
+      "未完待续"
     ],
     "readability": 0.25,
     "taggingModel": "deepseek-v4-flash"
@@ -8781,6 +8812,49 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a65c85c820886de092ba31b",
+    "name": "RRR+申精：她在何方？",
+    "contentLength": 3074,
+    "userID": "65e472049772658af7a6c303",
+    "userName": "TQRΗG",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文从还原论立场探讨数学哲学中\"数\"的存在问题。文章首先介绍Hilbert的形式主义纲领，试图将算术事实还原为有限句子的推导；接着通过Gödel不完备性定理指出形式主义的局限——存在真实但不可证的算术真理；然后引入Tarski的真理论，说明\"真\"无法在系统内部定义，进一步挑战形式主义还原路径；最后讨论结构主义立场，将结构视为比数更基本的存在，但也面临元理论绝对性等困境。文章梳理了数学哲学中关于数的存在问题的几种主要立场及其内在张力。",
+    "primaryDiscipline": [
+      "哲学",
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "科学技术哲学",
+      "数学"
+    ],
+    "keyWords": [
+      "数学哲学",
+      "还原论",
+      "形式主义",
+      "柏拉图主义",
+      "结构主义",
+      "Gödel不完备性定理",
+      "Tarski真理论",
+      "Hilbert纲领",
+      "数理逻辑",
+      "算术真理",
+      "自指命题",
+      "ω法则",
+      "T-模式",
+      "对象语言",
+      "元语言",
+      "对角线引理",
+      "Peano公理系统",
+      "模态逻辑",
+      "非标准模型",
+      "ZFC"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -11095,6 +11169,43 @@ export const records = [
       "名牌",
       "宪兵",
       "战争文学"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a677ab83e4c5bc67be2c003",
+    "name": "《疯狂》（琐事一篇）",
+    "contentLength": 658,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作品以窗边观察者的视角，描写夜晚巷口一群人围听一位\"先生\"闲谈的场景。听众虽大多未能理解内容，却盲目点头附和；有人提出疑问即遭劝阻，最终放弃独立思考，随众颔首。散场后，人们转述先生的话语，意思逐渐扭曲却言之凿凿，遇到追问便搬出先生名号搪塞一切。全文通过细腻的街巷场景刻画，呈现了群体盲从、权威崇拜与独立思考缺失的社会现象。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "群体盲从",
+      "权威崇拜",
+      "独立思考",
+      "沉默的螺旋",
+      "从众心理",
+      "社会讽刺",
+      "文学叙事",
+      "知识分子",
+      "群众心理",
+      "认知失调",
+      "话语权",
+      "思想惰性",
+      "理性缺失",
+      "街巷场景",
+      "观察者视角",
+      "乌合之众"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
@@ -13713,6 +13824,47 @@ export const records = [
       "微元",
       "求和极限",
       "物理教材"
+    ],
+    "readability": 0.6,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a64436e820886de092b97d1",
+    "name": "RRR申精|10.1 电介质",
+    "contentLength": 2555,
+    "userID": "6983633baf078298e1386848",
+    "userName": "热月",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文是物理实验室物理学教程·电磁学篇中关于电介质的章节。从极化的微观机制出发，区分了无极分子与有极分子的位移极化和取向极化，介绍了电极化强度P、退极化场、相对介电常数等核心概念。重点讲解了引入电位移矢量D以处理束缚电荷问题的思路，推导了介质中的高斯定理和边值关系，并通过平行板电容器填充双层介质的具体案例演示了求解方法。最后延伸到时变场下的介电损耗和击穿场强等高级话题，系统构建了电介质物理的理论框架。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "电介质",
+      "极化",
+      "无极分子",
+      "有极分子",
+      "位移极化",
+      "取向极化",
+      "束缚电荷",
+      "电偶极矩",
+      "电极化强度",
+      "退极化场",
+      "相对介电常数",
+      "电位移矢量",
+      "高斯定理",
+      "边值关系",
+      "电容器",
+      "介电损耗",
+      "击穿场强",
+      "本构关系",
+      "自由电荷",
+      "静电能"
     ],
     "readability": 0.6,
     "taggingModel": "deepseek-v4-flash"
