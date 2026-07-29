@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-28T05:53:05.664Z";
+export const generatedAt = "2026-07-29T05:57:36.522Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -30,6 +30,37 @@ export const records = [
     ],
     "readability": 0.1,
     "taggingModel": "Gemi狸3.1flash"
+  },
+  {
+    "id": "6a6848ab820886de092bb1b6",
+    "name": "界点的笑",
+    "contentLength": 151,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "作者宣布将原先封存的《狂人日记》专题继续更新且永不停更，同时将《疯狂》专题合并到《狂人日记》中，并隐藏终章内容。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "狂人日记",
+      "专题更新",
+      "疯狂",
+      "合并且停更",
+      "终章隐藏",
+      "文学创作",
+      "个人声明",
+      "博客更新",
+      "系列作品",
+      "叙事调整"
+    ],
+    "readability": 0.12,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "6a641aaa820886de092b9651",
@@ -8855,6 +8886,90 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a68bdea820886de092bb510",
+    "name": "（申知）相对简单的受力分析",
+    "contentLength": 2286,
+    "userID": "66420dce7e4be630ef10e82b",
+    "userName": "辰寅",
+    "editorID": "65e472049772658af7a6c303",
+    "editorName": "TQRΗG",
+    "year": 2026,
+    "summary": "本文从初中物理的简单受力分析出发，逐步深入到高中物理中质点与矢量的概念、场力（重力、电磁力）、弹力、摩擦力的分析方法，详细介绍了地面物块、多物块、斜面、斜面小球及多力综合等经典模型的受力分析思路，强调了受力分析的本质是抽丝剥茧。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "受力分析",
+      "质点",
+      "矢量",
+      "重力",
+      "弹力",
+      "摩擦力",
+      "场力",
+      "正交分解",
+      "牛顿力学",
+      "滑动摩擦力",
+      "静摩擦力",
+      "万有引力",
+      "电场力",
+      "斜面模型",
+      "平衡分析",
+      "高中物理",
+      "初中物理",
+      "物块模型",
+      "平行四边形法则",
+      "理想化模型"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a68e83f01312babd13f4c54",
+    "name": "【申知】中国美育真的很烂吗-论美",
+    "contentLength": 1455,
+    "userID": "671eec7a1159b7835af2076a",
+    "userName": "沁今每",
+    "editorID": "65e472049772658af7a6c303",
+    "editorName": "TQRΗG",
+    "year": 2026,
+    "summary": "本文从美、审美、美育三个概念入手，探讨了美的主观性与客观性、审美的形成机制及其高低之分，以及美育在当下社会被忽视的现状。作者指出功利主义社会追求效率与利益，与美本身的非功利性相悖，导致审美贫乏和浅薄；同时批评了AI对艺术创造能力的侵蚀。文章最终呼吁重视美育，培养发现美的眼睛，丰富精神世界。",
+    "primaryDiscipline": [
+      "哲学",
+      "教育学"
+    ],
+    "secondaryDiscipline": [
+      "美学",
+      "教育学"
+    ],
+    "keyWords": [
+      "美",
+      "审美",
+      "美育",
+      "蔡元培",
+      "精神世界",
+      "功利性",
+      "非功利性",
+      "艺术",
+      "美学",
+      "审美教育",
+      "感受力",
+      "AI与艺术",
+      "审美能力",
+      "主观与客观",
+      "精神愉悦",
+      "文化素质",
+      "文艺复兴",
+      "工业发展",
+      "审美浅薄",
+      "社会与美"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -11133,6 +11248,46 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a64f0053e4c5bc67be2ae45",
+    "name": "RRR申知•論MOFs在碳中和中之應用",
+    "contentLength": 1085,
+    "userID": "6837a0c55a34dd000eb1030c",
+    "userName": "s106183",
+    "editorID": "64aa97a34fcb4133cd7117ee",
+    "editorName": "Vick3rs",
+    "year": 2026,
+    "summary": "本文介紹了金屬有機框架（MOFs）在碳捕捉與碳中和領域的應用。文章詳細說明了MOFs的基本原理，包括其孔洞調控、凡德瓦力吸附機制、提高吸附量的兩種方法（增加表面積與提升親和性），以及有機配體的設計策略。隨後逐一介紹了多種典型MOF材料：MOF-74(Mg)及其水耐受性問題、工業化材料CALF-20、高氮氣選擇性的UTSA-16、具有精確孔徑（3.84Å）和四極矩選擇性的SIFSIX-3-Zn，以及含鈮化合物NbOFFIVE-1-Ni（KAUST-7）。文章最後強調這些材料在遏止全球暖化、實現碳中和中的重要作用。",
+    "primaryDiscipline": [
+      "工学"
+    ],
+    "secondaryDiscipline": [
+      "材料科学与工程"
+    ],
+    "keyWords": [
+      "MOFs",
+      "金属有机框架",
+      "碳捕捉",
+      "碳中和",
+      "二氧化碳吸附",
+      "凡德瓦力",
+      "配位化学",
+      "孔洞材料",
+      "气体分离",
+      "MOF-74(Mg)",
+      "CALF-20",
+      "UTSA-16",
+      "SIFSIX-3-Zn",
+      "NbOFFIVE-1-Ni",
+      "KAUST-7",
+      "吸附选择性",
+      "四极矩",
+      "有機配體",
+      "环境工程"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a65c5fe3e4c5bc67be2b2fb",
     "name": "1917，他们正年轻",
     "contentLength": 3205,
@@ -11169,6 +11324,47 @@ export const records = [
       "名牌",
       "宪兵",
       "战争文学"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a67611b820886de092bae3a",
+    "name": "RRR申精｜我真的认识自旋吗？",
+    "contentLength": 4261,
+    "userID": "6983633baf078298e1386848",
+    "userName": "热月",
+    "editorID": "667652820b5f97343a9d4d66",
+    "editorName": "富冈义勇liao",
+    "year": 2026,
+    "summary": "这篇作品沿着\"自旋是什么\"这一核心问题展开，从斯特恩-盖拉赫实验的历史线索出发，先用经典力学中的载流线圈、磁矩、角动量等概念类比推导自旋的物理图像，再揭示经典解释的局限——分裂成两束现象暴露了量子化本质（自旋1/2）。随后引入群论视角，用旋转操作与抽象属性空间的对应关系重新定义自旋，并借助叠加原理解释半整数自旋的合理性。最后讨论了观测与波函数坍缩的关系，并坦诚地反思自身理解的局限，指出遗漏了狄拉克方程、轨道自旋等重要内容。全文兼具科普的可读性与学术的严谨性，风格亲切而深入。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学"
+    ],
+    "keyWords": [
+      "自旋",
+      "斯特恩-盖拉赫实验",
+      "磁矩",
+      "角动量",
+      "量子化",
+      "波粒二象性",
+      "旋量",
+      "叠加原理",
+      "量子力学",
+      "内禀属性",
+      "非均匀磁场",
+      "磁旋比",
+      "群论",
+      "电子",
+      "基本粒子",
+      "磁偶极子",
+      "载流线圈",
+      "观测",
+      "坍缩",
+      "半整数自旋"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
@@ -14363,6 +14559,44 @@ export const records = [
     ],
     "readability": 0.68,
     "taggingModel": "spark 3.5 max"
+  },
+  {
+    "id": "6a6874c03e4c5bc67be2c3d5",
+    "name": "【解几】n维二次曲面分类",
+    "contentLength": 3472,
+    "userID": "61e5f1d177298072d234d650",
+    "userName": "MapMaths",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文从2维二次曲线（9种）和3维二次曲面（17种）的分类出发，将其推广到n维欧氏空间。通过仿射变换等价关系，利用Sylvester惯性定理将二次曲面方程化简为三种标准形式，并分析了惯性系数(p,q)在符号翻转变换下的轨道数，最终证明了n维欧氏空间中共有n^2+3n-1种二次曲面。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "二次曲面",
+      "二次曲线",
+      "仿射变换",
+      "Sylvester惯性定理",
+      "惯性系数",
+      "轨道数",
+      "椭球面",
+      "双曲面",
+      "抛物面",
+      "二次锥面",
+      "二次柱面",
+      "曲面分类",
+      "等价关系",
+      "n维欧氏空间",
+      "代数曲面",
+      "曲面方程",
+      "标准形"
+    ],
+    "readability": 0.68,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "69933fee102b6330141c3b50",
