@@ -1,4 +1,4 @@
-export const generatedAt = "2026-07-29T05:57:36.522Z";
+export const generatedAt = "2026-07-30T05:46:56.971Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -6500,6 +6500,48 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a68def801312babd13f4c38",
+    "name": "#申知 炸药篇（一）———黑火药（上）",
+    "contentLength": 8176,
+    "userID": "6a65df2d65e62853ea0895df",
+    "userName": "乐问天阁",
+    "editorID": "5ea1934c8116c49429d3e405",
+    "editorName": "16号管理者",
+    "year": 2026,
+    "summary": "本文以炸药为切入点，首先介绍爆炸的三种分类（物理爆炸、化学爆炸、核爆炸），然后重点详述黑火药的起源（中国唐朝）及其在元明时期的大量配方演变历史，最后解析火药三种核心成分（硝酸钾、木炭、硫磺）的化学作用原理。文章采用通俗易懂的语言，旨在为小说、游戏等创作提供硬核写作素材与设定参考。",
+    "primaryDiscipline": [
+      "工学"
+    ],
+    "secondaryDiscipline": [
+      "化学工程与技术",
+      "兵器科学与技术"
+    ],
+    "keyWords": [
+      "炸药",
+      "爆炸",
+      "黑火药",
+      "硝酸钾",
+      "木炭",
+      "硫磺",
+      "物理爆炸",
+      "化学爆炸",
+      "核爆炸",
+      "火药配方",
+      "元朝火药",
+      "明朝火药",
+      "颗粒火药",
+      "鸟铳",
+      "火箭",
+      "火铳",
+      "炼丹",
+      "写作素材",
+      "可燃物",
+      "氧源"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -11402,6 +11444,49 @@ export const records = [
       "街巷场景",
       "观察者视角",
       "乌合之众"
+    ],
+    "readability": 0.45,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a68d45701312babd13f4c16",
+    "name": "对力的深度思考",
+    "contentLength": 3401,
+    "userID": "6a68018465e628dba7089a93",
+    "userName": "LZCG",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "文章从对\"力\"的定义出发，指出牛顿第二定律F=ma在独立测量力、质量和加速度上存在的循环论证问题，进而引出马赫的诘问。随后介绍变分法和泛函极值的欧拉-拉格朗日方程，并阐述分析力学通过拉格朗日量L=T-V和最小作用量原理，绕过力的定义问题，将力学建立在更基本的原则之上。最后指出分析力学并非推翻牛顿力学，而是将其转化为变分原理，解决了循环论证的哲学困境。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "物理学",
+      "力学",
+      "科学哲学"
+    ],
+    "keyWords": [
+      "力",
+      "牛顿第二定律",
+      "循环论证",
+      "马赫诘问",
+      "马赫原理",
+      "变分法",
+      "泛函",
+      "欧拉-拉格朗日方程",
+      "分析力学",
+      "拉格朗日量",
+      "最小作用量原理",
+      "广义坐标",
+      "动能",
+      "势能",
+      "单摆",
+      "保守力",
+      "惯性系",
+      "绝对空问",
+      "科学哲学",
+      "公理"
     ],
     "readability": 0.45,
     "taggingModel": "deepseek-v4-flash"
