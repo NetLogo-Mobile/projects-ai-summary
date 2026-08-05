@@ -1,4 +1,4 @@
-export const generatedAt = "2026-08-04T05:54:22.917Z";
+export const generatedAt = "2026-08-05T05:50:45.186Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -9394,6 +9394,49 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a6ca290e44a8cee3ca93fb5",
+    "name": "高中有机化学中的同分异构体计数",
+    "contentLength": 3809,
+    "userID": "60f439e5289dc7cdebf70f88",
+    "userName": "零次互反律",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文面向中学有机化学教学，系统介绍了同分异构体计数问题的快速求解方法。文章以多道典型例题为载体，涵盖二氯代物计数、醇类结构数、烯烃与环烷烃异构体、含手性碳原子的醛类异构、苯环多取代异构及含官能团芳香族异构等，强调利用对称性、碳骨架分类、不饱和度与官能团拆分等逻辑手段，避免复杂数学工具。文末还给出链状烷烃及烷基异构数的对照表，并提及群论与Polya计数定理作为一般形式的数学背景。",
+    "primaryDiscipline": [
+      "理学",
+      "教育学"
+    ],
+    "secondaryDiscipline": [
+      "化学",
+      "教育学"
+    ],
+    "keyWords": [
+      "同分异构",
+      "有机化学",
+      "烷烃",
+      "烷基",
+      "烯烃",
+      "环烷烃",
+      "二氯代物",
+      "醇",
+      "醛基",
+      "羧基",
+      "苯环",
+      "手性碳原子",
+      "不饱和度",
+      "碳骨架",
+      "对称性",
+      "计数",
+      "Polya计数定理",
+      "群论",
+      "化学教育",
+      "甲酚"
+    ],
+    "readability": 0.38,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a001ee7cb008a4a786e19fc",
     "name": "物实之辉周刊2026.5.10",
     "contentLength": 2993,
@@ -14954,6 +14997,46 @@ export const records = [
       "欧式空间",
       "交错性",
       "归一性"
+    ],
+    "readability": 0.6,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a6c0c9b86476e226f1e669f",
+    "name": "RRR申精:广义相对论的历史(1)~初探非欧几何",
+    "contentLength": 6419,
+    "userID": "61ed3012a55d203e58e8e192",
+    "userName": "mile",
+    "editorID": "61e5f1d177298072d234d650",
+    "editorName": "MapMaths",
+    "year": 2026,
+    "summary": "本文以读书笔记形式系统介绍非欧几何（罗氏几何/双曲几何）的由来与发展，从欧几里得第五公设的长期证明尝试讲起，依次阐述萨凯里锐角假说、高斯与罗巴切夫斯基对非欧几何的独立发现、双曲距离的克莱因解析几何定义、庞加莱圆盘与克莱因圆盘的构造及其保角/保直线性质、高斯度量与度规张量的推导、高斯曲率公式及其在球面与双曲空间中的计算结果，为理解广义相对论的几何基础作铺垫。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学",
+      "物理学"
+    ],
+    "keyWords": [
+      "第五公设",
+      "非欧几何",
+      "双曲几何",
+      "罗氏几何",
+      "庞加莱圆盘",
+      "克莱因圆盘",
+      "测地线",
+      "双叶双曲面",
+      "度规",
+      "高斯度量",
+      "高斯曲率",
+      "保角投影",
+      "平行公理",
+      "广义相对论",
+      "洛伦兹内积",
+      "莫比乌斯自同构",
+      "常曲率空间",
+      "球面几何"
     ],
     "readability": 0.6,
     "taggingModel": "deepseek-v4-flash"
