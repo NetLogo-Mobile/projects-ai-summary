@@ -1,4 +1,4 @@
-export const generatedAt = "2026-08-06T05:55:06.725Z";
+export const generatedAt = "2026-08-07T04:58:48.543Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -30,6 +30,37 @@ export const records = [
     ],
     "readability": 0.1,
     "taggingModel": "Gemi狸3.1flash"
+  },
+  {
+    "id": "6a7553477708f9e9c3f4e707",
+    "name": "人非常共和国的多少个火锅吃fytgyf",
+    "contentLength": 18,
+    "userID": "6688de88450dc4668c3b4747",
+    "userName": "我的世界大苏",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "该文本内容为一段语义不明、缺乏连贯性的文字片段，包含\"云天府通\"\"物业费\"等零散词汇，未构成完整的学术论述或规范性文章，信息完整性极低，难以进行有效的学术分类与主题提炼。",
+    "primaryDiscipline": [
+      "管理学"
+    ],
+    "secondaryDiscipline": [
+      "公共管理"
+    ],
+    "keyWords": [
+      "物业费",
+      "云天府通",
+      "语义分析",
+      "文本识别",
+      "信息提取",
+      "内容分类",
+      "数据治理",
+      "公共服务",
+      "费用管理",
+      "文本质量"
+    ],
+    "readability": 0.1,
+    "taggingModel": "deepseek-v4-flash"
   },
   {
     "id": "6a6848ab820886de092bb1b6",
@@ -6889,6 +6920,42 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a746b4a7669b917e571e0bf",
+    "name": "编号104-创伤碎片",
+    "contentLength": 1128,
+    "userID": "62501068f30f1858c09a46a9",
+    "userName": "星幻梦华",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文是一篇SCP基金会风格的虚构收容文档，记录了一件形似黑色投影仪的异常收容物：它无需电源即可播放来自不同地区、不同时空的战争影像，连接多个时空，曾致一名研究员未经许可踏入影像中惨死，且长时间观看未处理影像会引发创伤后应激障碍（PTSD）。文档包含研究员对话记录、收容过程、物理隔离与模因隔离等收容措施、异常特性说明，以及后谈部分对战争残酷性与世界和平的反思。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "SCP基金会",
+      "收容物",
+      "异常项目",
+      "战争影像",
+      "时空连接",
+      "投影仪",
+      "模因隔离",
+      "创伤后应激障碍",
+      "科幻",
+      "恐怖",
+      "收容文档",
+      "虚构创作",
+      "西山基地",
+      "战争反思",
+      "和平"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -9257,6 +9324,42 @@ export const records = [
       "胰岛素",
       "运动系统",
       "中考生物"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a744eff7708f9e9c3f4e291",
+    "name": "《狂人日记-亮明与暗黑》（只是故事）？",
+    "contentLength": 706,
+    "userID": "68a1ce3d82555e2849df9b90",
+    "userName": "界点b是考古学家",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这篇荒诞故事讲述了少年亮明的悲剧：因性格懦弱长期遭受同学群体欺凌，某夜后性格骤变，沉迷手机网络并结识网上的\"死党\"。当三十余名欺凌者再次施暴后集体失踪，亮明被警方带走调查，经历少管所后愈发堕落，最终被送入戒网中心。故事以黑色幽默与恐怖元素交织，批判群体暴力、网络时代青少年困境与畸形社会心理。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "荒诞",
+      "校园暴力",
+      "网络成瘾",
+      "戒网中心",
+      "群体暴力",
+      "少年悲剧",
+      "黑色幽默",
+      "社会批判",
+      "复仇",
+      "黑暗叙事",
+      "连载小说",
+      "欺凌",
+      "网络社交",
+      "青少年教育",
+      "人性异化"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
@@ -13075,6 +13178,43 @@ export const records = [
       "史瓦西半径",
       "同分异构体",
       "社区管理"
+    ],
+    "readability": 0.5,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a75405d7708f9e9c3f4e696",
+    "name": "MC烦村惊变-7",
+    "contentLength": 748,
+    "userID": "5eaa3d21ea865361c2857a84",
+    "userName": "WhiteLake白湖",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "这是一篇以沙盒世界为背景的幻想冒险故事。主角来到被丧尸入侵而沦陷的丛林城，发现全息护盾系统损坏但蓄电池完好，并读到前任城主留下的信和坐标。主角在地表重建结构相同的\"云杉城\"，用FOREST电池驱动电力系统恢复炮塔与护盾。由于生物异常波动导致下界传送门失效，末地连接仍然稳定。主角在城中遇到用\"挖三填一\"法躲过入侵的幸存者，得知部分人逃往基岩层基地。最后主角用圣水喂养驯服的雷电兽，骑上它前往信中坐标的位置。",
+    "primaryDiscipline": [
+      "文学"
+    ],
+    "secondaryDiscipline": [
+      "中国语言文学"
+    ],
+    "keyWords": [
+      "丛林城",
+      "云杉城",
+      "丧尸入侵",
+      "全息护盾",
+      "自动炮台",
+      "蓄电池",
+      "下界传送门",
+      "末地",
+      "黑曜石",
+      "雷电兽",
+      "坐标",
+      "挖三填一",
+      "基岩层",
+      "主世界",
+      "幸存者",
+      "科技修复"
     ],
     "readability": 0.5,
     "taggingModel": "deepseek-v4-flash"
