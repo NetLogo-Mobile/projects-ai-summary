@@ -1,4 +1,4 @@
-export const generatedAt = "2026-08-09T04:21:44.626Z";
+export const generatedAt = "2026-08-10T04:43:47.364Z";
 export const records = [
   {
     "id": "67789d46826568de4e9852c0",
@@ -7076,6 +7076,37 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a780b1e7708f9e9c3f4f3bd",
+    "name": "编辑竞选结果",
+    "contentLength": 323,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "2026年暑假编辑大选第二轮投票结果公布：16号管理者获得62.5%支持率，复兴物实与文森维尔均获得100%支持率。根据投票结果，复兴物实和文森维尔通过投票，将被任命为见习编辑。",
+    "primaryDiscipline": [
+      "管理学"
+    ],
+    "secondaryDiscipline": [
+      "公共管理"
+    ],
+    "keyWords": [
+      "编辑大选",
+      "第二轮投票",
+      "投票结果",
+      "见习编辑",
+      "人事任命",
+      "社区治理",
+      "支持率",
+      "管理者",
+      "选举制度",
+      "任命公告"
+    ],
+    "readability": 0.3,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a32a481821f78e016dc78a7",
     "name": "第74章",
     "contentLength": 2347,
@@ -9233,6 +9264,43 @@ export const records = [
       "残留感知",
       "山茶花银镯",
       "林阿婆"
+    ],
+    "readability": 0.35,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a64d9953e4c5bc67be2ad94",
+    "name": "申精：生物膜构成及其结构",
+    "contentLength": 1469,
+    "userID": "64ae7fa24fcb41dc52713ab4",
+    "userName": "薛猫的真爱粉",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文系统介绍了生物膜的定义、功能与构成。生物膜是细胞膜与细胞内膜系统的统称，细胞膜具有选择透过性、物质运输和信息传递等功能，细胞内膜系统包括线粒体、叶绿体、高尔基体等细胞器膜。文章追溯了生物膜模型的认知发展历程：从罗伯特森基于电镜观察提出的\"三明治模型\"，到人鼠细胞融合实验证明膜的流动性，再到辛格和尼克尔森提出并为学界广泛接受的\"流动镶嵌模型\"。文中详细阐述了膜的构成：磷脂双分子层构成基本支架，蛋白质以不同方式镶嵌其中且功能越复杂的膜蛋白质越多，糖类与蛋白质或脂质结合形成糖蛋白、糖脂参与细胞识别，胆固醇则调节膜的流动性，使其维持适宜状态。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "生物学"
+    ],
+    "keyWords": [
+      "生物膜",
+      "细胞膜",
+      "细胞内膜系统",
+      "流动镶嵌模型",
+      "磷脂双分子层",
+      "膜蛋白",
+      "糖蛋白",
+      "糖脂",
+      "胆固醇",
+      "选择透过性",
+      "物质运输",
+      "三明治模型",
+      "线粒体",
+      "叶绿体",
+      "细胞识别",
+      "流动性"
     ],
     "readability": 0.35,
     "taggingModel": "deepseek-v4-flash"
@@ -13970,6 +14038,52 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a7823217669b917e571f2dc",
+    "name": "物实之辉周刊2026.8.9",
+    "contentLength": 3768,
+    "userID": "5f2e1445ef04fa1c9fff91f7",
+    "userName": "沃尔夫冈",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文是物实通讯社第86期周刊，系统整理了社区近期的重要内容：按学科分类（计算机科学、数学、物理、化学、生物、历史、地理、社科等）收录黑洞区精选作品与知识库，设置\"精知优选\"\"兰台新议\"\"冲精防淹\"\"实验区的问候\"等栏目推荐优秀学术讨论与实验作品，同时开设\"文学荟萃\"栏目刊登小说、散文、诗歌等文学作品，并包含访谈长廊、社区新闻（编辑竞选结果、2026上半年度作品名录、精选制度微调等）与本社通告。周刊旨在整合社区学术资源、促进跨学科交流，编辑在尾声分享了接手周刊编写工作对理解和把握社区状况的价值体会。",
+    "primaryDiscipline": [
+      "理学",
+      "工学",
+      "文学",
+      "历史学"
+    ],
+    "secondaryDiscipline": [
+      "数学",
+      "物理学",
+      "化学",
+      "中国语言文学",
+      "新闻传播学"
+    ],
+    "keyWords": [
+      "周刊",
+      "通讯社",
+      "学术精选",
+      "物理学",
+      "数学",
+      "化学",
+      "文学",
+      "历史",
+      "知识库",
+      "科学传播",
+      "社区新闻",
+      "公告",
+      "访谈",
+      "精选制度",
+      "期刊",
+      "实验",
+      "科普",
+      "百科"
+    ],
+    "readability": 0.55,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a58279d3e4c5bc67be26f04",
     "name": "[物实物理教程]电磁学1.4",
     "contentLength": 3839,
@@ -15684,6 +15798,42 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a785a6b7708f9e9c3f4f6cd",
+    "name": "〈精选申请 | 学术申请〉局部放缩技巧",
+    "contentLength": 9556,
+    "userID": "60f439e5289dc7cdebf70f88",
+    "userName": "零次互反律",
+    "editorID": "",
+    "editorName": "",
+    "year": 2026,
+    "summary": "本文系统阐述\"局部放缩\"（又称\"孤立扰动\"或逐项放缩）这一证明不等式的重要技巧。文章以IMO 2001第2题的官方解答为典型例子引出方法核心思想，将其归纳为\"寻找并证明单项不等式、再对循环和求和\"两个步骤。随后通过四个按难度排序的例题——Nesbitt不等式、2025 IMOC题、Mathematical Reflections S627及第17届XMO第14题——详细展示运用待定系数法（\"细菌法\"）、AM-GM不等式、Cauchy-Schwarz不等式等构造放缩界限的动机与过程，并讨论了该技巧在更复杂不等式中的应用，给出了多道练习题及进一步学习资源。该文发表于数学解题杂志Crux第52卷（2026年）。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "局部放缩",
+      "孤立扰动",
+      "逐项放缩",
+      "不等式证明",
+      "待定系数法",
+      "细菌法",
+      "AM-GM不等式",
+      "Cauchy-Schwarz不等式",
+      "循环和",
+      "竞赛数学",
+      "数学奥林匹克",
+      "IMO",
+      "Crux",
+      "对数放缩",
+      "多元不等式"
+    ],
+    "readability": 0.6,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6a56e862820886de092b5a53",
     "name": "[物实物理教程]电磁学1.1",
     "contentLength": 2359,
@@ -16152,6 +16302,42 @@ export const records = [
     "taggingModel": "deepseek-v4-flash"
   },
   {
+    "id": "6a7072963c478b9015db3601",
+    "name": "【线代】对偶空间",
+    "contentLength": 13136,
+    "userID": "61e5f1d177298072d234d650",
+    "userName": "MapMaths",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文系统介绍向量空间的对偶空间理论。首先定义线性型与对偶空间，构造对偶基，讨论由对偶基诱导的E与E*之间的非自然同构与E与E**之间的自然同构的区别，指出后者与基选取无关。随后借助对偶空间定义向量与线性型的正交性、正交补及其维数性质与对偶性质。接着将矩阵转置推广为线性变换的转置，证明其作为逆变函子的性质，包括核像关系、秩相等及矩阵表示。最后讨论有限维与无限维情形的差异，借助反变Hom函子将余积送到积的性质证明无限维时dim E < dim E*，并给出若干开放问题。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "数学"
+    ],
+    "keyWords": [
+      "对偶空间",
+      "对偶基",
+      "线性型",
+      "自然同构",
+      "正交补",
+      "转置",
+      "逆变函子",
+      "Hamel基",
+      "基变换",
+      "向量空间",
+      "无限维",
+      "线性代数",
+      "Riesz表示定理",
+      "范畴论",
+      "正交性"
+    ],
+    "readability": 0.65,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
     "id": "6996e2c3102b6330141c4caf",
     "name": "RRR申精 折断的矛头——米哈伊尔•卡图科夫",
     "contentLength": 5526,
@@ -16212,6 +16398,45 @@ export const records = [
       "代数曲面",
       "曲面方程",
       "标准形"
+    ],
+    "readability": 0.68,
+    "taggingModel": "deepseek-v4-flash"
+  },
+  {
+    "id": "6a6ff6ba3c478b9015db32f1",
+    "name": "来自天穹的节拍器：天文轨道力学如何谱写地球百万年气候史诗",
+    "contentLength": 6622,
+    "userID": "65f04425db62e76b0ad45b90",
+    "userName": "時語",
+    "editorID": "5f2e1445ef04fa1c9fff91f7",
+    "editorName": "沃尔夫冈",
+    "year": 2026,
+    "summary": "本文系统阐述天文轨道力学驱动地球长周期气候变化的物理机制与地质证据。文章从米兰科维奇理论出发，分析轨道偏心率、地轴倾角、岁差三要素对太阳辐射季节与纬度分配的调制作用，探讨冰-反照率反馈与CO₂反馈等气候系统内部正反馈对辐射强迫的放大机制，评析\"十万年周期问题\"与\"低纬驱动假说\"两项前沿挑战及其引发的理论修正，并结合寒武纪等深时地质记录论证轨道驱动力在无冰盖温室期的普遍性，最终指向从单一高纬驱动向全球系统耦合的地球系统科学研究范式转变。",
+    "primaryDiscipline": [
+      "理学"
+    ],
+    "secondaryDiscipline": [
+      "天文学",
+      "大气科学",
+      "地质学"
+    ],
+    "keyWords": [
+      "米兰科维奇理论",
+      "轨道偏心率",
+      "地轴倾角",
+      "岁差",
+      "冰期旋回",
+      "冰-反照率反馈",
+      "二氧化碳反馈",
+      "十万年周期问题",
+      "低纬驱动假说",
+      "深时地质记录",
+      "寒武纪",
+      "地球系统科学",
+      "温室地球",
+      "碳循环",
+      "古气候",
+      "非线性响应"
     ],
     "readability": 0.68,
     "taggingModel": "deepseek-v4-flash"
