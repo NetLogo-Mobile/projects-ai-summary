@@ -52,6 +52,7 @@ function fieldMatches(record, keyword) {
     record.name,
     record.summary,
     record.userName,
+    record.source,
     ...(record.keyWords || []),
     ...(record.primaryDiscipline || []),
     ...(record.secondaryDiscipline || []),
@@ -68,8 +69,9 @@ function matchPriority(record, keyword) {
     return 3;
   }
   if (includesIgnoreCase(record.userName, keyword)) return 4;
-  if (includesIgnoreCase(record.summary, keyword)) return 5;
-  return 6;
+  if (includesIgnoreCase(record.source, keyword)) return 5;
+  if (includesIgnoreCase(record.summary, keyword)) return 6;
+  return 7;
 }
 
 function bestPriority(record, keywords) {

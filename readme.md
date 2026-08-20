@@ -11,6 +11,8 @@
 7. 一个作品查询的[cloudflare workers](https://pl-search-cloudflare.zongkuli2.workers.dev/)，会自动在6和4时更新。目前只有最基础的查询功能，没有速率限制/AI联想查询
 8. 每次运行都会推送相关信息到物实一个作品的summary，类似于探针。当然也有日志。
 
+收录记录包含 `source` 来源字段。采集时按作品类型和筛选标签映射：`Experiment + 精选` 为“实验精选”，`Discussion + 精选` 为“黑洞精选”，`Discussion + 小说` 为“黑洞小说”，其余组合为“其他”。
+
 ## Bot 查询命令
 
 在物实指定作品内可以通过留言查询，Bot会轮询回复（其实也是基于ci，频率很低的）
@@ -96,8 +98,11 @@ npm run export-cloudflare
 npm run run-bot
 npm run run-bot-once
 npm run discipline-stats
+npm run backfill-record-sources
 npm run flexible-collect -- --tag "精选" --take -50
 npm run sync-selected-tags
 npm run sync-all-tags
 npm run build
 ```
+
+`npm run backfill-record-sources` 会从远端完整查询“实验精选”“黑洞精选”“黑洞小说”三个作品集合，再按 ID 回填来源为空的历史记录。三个集合全部查询成功后才写入数据库；重复命中时“黑洞小说”优先，其余未匹配记录标记为“其他”。常规数据库流水线会自动执行一次性回填；GitHub Actions 中的 `Backfill Record Sources` 手动工作流也可执行回填、导出 Cloudflare 快照并提交数据文件。
