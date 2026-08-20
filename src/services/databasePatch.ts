@@ -237,7 +237,11 @@ export async function applyPatchFile(
 
   for (const operation of patchFile.operations) {
     if (operation.operation !== 'upsert') continue;
-    await upsertOne(operation.record);
+    const current = (await queryById(operation.id))[0];
+    await upsertOne({
+      ...operation.record,
+      source: operation.record.source ?? (current ? current.source ?? '' : OTHER_RECORD_SOURCE),
+    });
     applied += 1;
   }
 

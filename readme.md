@@ -98,8 +98,11 @@ npm run export-cloudflare
 npm run run-bot
 npm run run-bot-once
 npm run discipline-stats
+npm run backfill-record-sources
 npm run flexible-collect -- --tag "精选" --take -50
 npm run sync-selected-tags
 npm run sync-all-tags
 npm run build
 ```
+
+`npm run backfill-record-sources` 会从远端完整查询“实验精选”“黑洞精选”“黑洞小说”三个作品集合，再按 ID 回填来源为空的历史记录。三个集合全部查询成功后才写入数据库；重复命中时“黑洞小说”优先，其余未匹配记录标记为“其他”。常规数据库流水线会自动执行一次性回填；GitHub Actions 中的 `Backfill Record Sources` 手动工作流也可执行回填、导出 Cloudflare 快照并提交数据文件。

@@ -30,10 +30,11 @@ flowchart TD
 - `syncSelectedTags`：顺序调度分页并在收到停止信号后正常结束。
 - `getTagSyncSkipReason`：根据作品标签和正文长度返回过滤原因。
 - `resolveRecordSource`：将作品类型与筛选标签映射为标准化来源。
+- `backfillHistoricalRecordSources`：完整读取三个远端来源集合并在读取成功后批量更新历史记录。
 
 ## Data Models
 
-守卫维护单个整数 `consecutiveFailures`。初始值为零，成功调用写入零，失败调用加一，达到二时抛出停止信号。`DataRecord.source` 保存“实验精选”“黑洞精选”“黑洞小说”或“其他”。
+守卫维护单个整数 `consecutiveFailures`。初始值为零，成功调用写入零，失败调用加一，达到二时抛出停止信号。`DataRecord.source` 保存“实验精选”“黑洞精选”“黑洞小说”或“其他”。旧数据库初始化时只新增来源列，历史分类由远端集合回填任务统一完成。
 
 ## Correctness Properties
 
@@ -58,6 +59,7 @@ flowchart TD
 - 验证“小作品”标签过滤、正文长度边界和多段正文合并计数。
 - 验证来源映射与未知组合回退规则。
 - 验证旧数据库来源字段迁移与默认值。
+- 验证历史来源集合分类、小说优先级和未匹配回退规则。
 
 ## References
 

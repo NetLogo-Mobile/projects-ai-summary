@@ -27,7 +27,7 @@ function toRecordParams(record: DataRecord): Array<string | number> {
     record.keyWords,
     record.readability,
     record.taggingModel,
-    record.source || OTHER_RECORD_SOURCE,
+    record.source ?? OTHER_RECORD_SOURCE,
   ];
 }
 
@@ -71,12 +71,6 @@ export async function initTable(): Promise<void> {
     ['spark 3.5 max'],
   );
 
-  await run(
-    `UPDATE data
-     SET source = ?
-     WHERE source IS NULL OR TRIM(source) = ''`,
-    [OTHER_RECORD_SOURCE],
-  );
 }
 
 export async function queryById(id: string): Promise<DataRecord[]> {
@@ -97,6 +91,24 @@ export async function listRecords(limit = 50, offset = 0): Promise<DataRecord[]>
     'SELECT * FROM data ORDER BY year DESC, readability ASC, id ASC LIMIT ? OFFSET ?',
     [safeLimit, safeOffset],
   );
+}
+
+export async function updateRecordSources(classifications: ReadonlyMap<string, string>): Promise<void> {
+  const groupedIds = new Map<string, string[]>();
+  for (const [id, source] of classifications) {
+    const ids = groupedIds.get(source) ?? [];
+    ids.push(id);
+    groupedIds.set(source, ids);
+  }
+
+  const chunkSize = 500;
+  for (const [source, ids] of groupedIds) {
+    for (let index = 0; index < ids.length; index += chunkSize) {
+      const chunk = ids.slice(index, index + chunkSize);
+      const placeholders = chunk.map(() => '?').join(', ');
+      await run(`UPDATE data SET source = ? WHERE id IN (${placeholders})`, [source, ...chunk]);
+    }
+  }
 }
 
 export async function insertOne(data: DataRecord): Promise<void> {

@@ -46,6 +46,21 @@ jobs:
           PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
         run: npm run apply-db-patch
 
+      - name: Backfill historical record sources
+        env:
+          DB_PATH: ./data.db
+          PL_BASE_URL: ${{ secrets.PL_BASE_URL }}
+          PL_ADMIN_USERNAME: ${{ secrets.PL_ADMIN_USERNAME }}
+          PL_ADMIN_PASSWORD: ${{ secrets.PL_ADMIN_PASSWORD }}
+          PL_USERNAME: ${{ secrets.PL_USERNAME }}
+          PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
+          LOG_DIR: ./logs
+          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
+          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
+          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
+          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
+        run: npm run backfill-record-sources
+
       - name: Update database
         env:
           PL_USERNAME: ${{ secrets.PL_USERNAME }}
