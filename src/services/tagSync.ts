@@ -6,6 +6,7 @@ import {
   ConsecutiveApiFailureGuard,
   SyncStoppedAfterApiFailuresError,
 } from './apiFailureGuard';
+import { getTagSyncSkipReason } from './tagSyncFilter';
 
 type PlUser = {
   token: string;
@@ -147,17 +148,24 @@ export async function syncDisciplineTagsToSelectedWorks(
       continue;
     }
     const summaryData = summary?.Data;
-    const currentTags: string[] = summaryData?.Tags ?? [];
-    const targetTags = getTargetTags(record, disciplineTagMap, whitelist);
-    const missingTags = targetTags.filter((tag) => !currentTags.includes(tag));
-
-    if (missingTags.length === 0) {
+    if (!summaryData) {
+      console.warn(`[sync-tags] 获取作品摘要失败: ${summaryID}`);
       skippedCount += 1;
       continue;
     }
 
-    if (!summaryData) {
-      console.warn(`[sync-tags] 获取作品摘要失败: ${summaryID}`);
+    const skipReason = getTagSyncSkipReason(summaryData);
+    if (skipReason) {
+      console.log(`[sync-tags] 过滤作品: ${summaryID}，${skipReason}`);
+      skippedCount += 1;
+      continue;
+    }
+
+    const currentTags: string[] = summaryData.Tags ?? [];
+    const targetTags = getTargetTags(record, disciplineTagMap, whitelist);
+    const missingTags = targetTags.filter((tag) => !currentTags.includes(tag));
+
+    if (missingTags.length === 0) {
       skippedCount += 1;
       continue;
     }
