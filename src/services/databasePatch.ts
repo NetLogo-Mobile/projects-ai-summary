@@ -4,6 +4,7 @@ import path from 'path';
 import { config } from '../config';
 import { queryById, upsertOne } from '../db/repository';
 import { DataRecord } from '../types/data';
+import { OTHER_RECORD_SOURCE } from './recordSource';
 
 export interface AdminRecord {
   id: string;
@@ -20,6 +21,7 @@ export interface AdminRecord {
   keyWords: string[];
   readability: number;
   taggingModel: string;
+  source: string;
 }
 
 export interface DatabasePatchOperation {
@@ -51,6 +53,7 @@ const RECORD_FIELDS: Array<keyof DataRecord> = [
   'keyWords',
   'readability',
   'taggingModel',
+  'source',
 ];
 
 function parseArrayField(value: unknown): string[] {
@@ -103,6 +106,7 @@ export function serializeRecordForAdmin(record: DataRecord): AdminRecord {
     keyWords: parseArrayField(record.keyWords),
     readability: record.readability,
     taggingModel: record.taggingModel,
+    source: record.source || OTHER_RECORD_SOURCE,
   };
 }
 
@@ -122,6 +126,7 @@ export function coerceAdminRecord(input: Record<string, unknown>): DataRecord {
     keyWords: stringifyArrayField(input.keyWords),
     readability: toNumber(input.readability, 0),
     taggingModel: String(input.taggingModel ?? '').trim(),
+    source: String(input.source ?? OTHER_RECORD_SOURCE).trim() || OTHER_RECORD_SOURCE,
   };
 }
 

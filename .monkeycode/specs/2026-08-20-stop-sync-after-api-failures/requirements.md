@@ -40,7 +40,21 @@
 
 #### Acceptance Criteria
 
-1. IF 作品包含“小作品”标签, 同步任务 SHALL 跳过该作品的标签更新。
-2. IF 作品正文合计少于 50 个字符, 同步任务 SHALL 跳过该作品的标签更新。
+1. WHERE 作品类型为 Discussion, IF 作品包含“小作品”标签, 同步任务 SHALL 跳过该作品的标签更新。
+2. IF 作品正文合计少于 50 个字符, 采集任务与同步任务 SHALL 跳过该作品。
 3. WHEN 作品正文合计达到 50 个字符且作品标签不包含“小作品”, 同步任务 SHALL 按现有学科映射处理该作品。
 4. WHEN 同步任务过滤作品, 运行日志 SHALL 记录作品标识与过滤原因。
+
+### Requirement 4
+
+**User Story:** AS 数据维护人员, I want 每条记录保存标准化作品来源, so that 查询和统计能够区分作品收录入口
+
+#### Acceptance Criteria
+
+1. WHEN 系统按“Experiment + 精选”采集作品, 系统 SHALL 将来源记录为“实验精选”。
+2. WHEN 系统按“Discussion + 精选”采集作品, 系统 SHALL 将来源记录为“黑洞精选”。
+3. WHEN 系统按“Discussion + 小说”采集作品, 系统 SHALL 将来源记录为“黑洞小说”。
+4. WHEN 系统按其他类型与标签组合采集作品, 系统 SHALL 将来源记录为“其他”。
+5. WHEN 系统初始化缺少来源字段的数据库, 系统 SHALL 新增来源字段并将历史记录来源填充为“其他”。
+6. WHEN 管理页读取缺少来源字段的数据库, 管理页 SHALL 将记录来源显示为“其他”。
+7. WHEN 用户使用来源名称搜索记录, 本地查询与 Cloudflare 查询 SHALL 返回来源匹配的记录。

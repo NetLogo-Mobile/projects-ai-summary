@@ -15,9 +15,9 @@ export function getWorkContentLength(summary: WorkSummary): number {
   return getStringArray(summary.Description).join('').trim().length;
 }
 
-export function getTagSyncSkipReason(summary: WorkSummary): string | null {
+export function getTagSyncSkipReason(summary: WorkSummary, category: string): string | null {
   const tags = getStringArray(summary.Tags).map((tag) => tag.trim());
-  if (tags.includes(EXCLUDED_TAG)) {
+  if (category.trim().toLowerCase() === 'discussion' && tags.includes(EXCLUDED_TAG)) {
     return `包含“${EXCLUDED_TAG}”标签`;
   }
 

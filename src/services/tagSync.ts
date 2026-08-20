@@ -154,7 +154,7 @@ export async function syncDisciplineTagsToSelectedWorks(
       continue;
     }
 
-    const skipReason = getTagSyncSkipReason(summaryData);
+    const skipReason = getTagSyncSkipReason(summaryData, category);
     if (skipReason) {
       console.log(`[sync-tags] 过滤作品: ${summaryID}，${skipReason}`);
       skippedCount += 1;

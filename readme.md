@@ -11,6 +11,8 @@
 7. 一个作品查询的[cloudflare workers](https://pl-search-cloudflare.zongkuli2.workers.dev/)，会自动在6和4时更新。目前只有最基础的查询功能，没有速率限制/AI联想查询
 8. 每次运行都会推送相关信息到物实一个作品的summary，类似于探针。当然也有日志。
 
+收录记录包含 `source` 来源字段。采集时按作品类型和筛选标签映射：`Experiment + 精选` 为“实验精选”，`Discussion + 精选` 为“黑洞精选”，`Discussion + 小说` 为“黑洞小说”，其余组合为“其他”。
+
 ## Bot 查询命令
 
 在物实指定作品内可以通过留言查询，Bot会轮询回复（其实也是基于ci，频率很低的）

@@ -1,5 +1,6 @@
 import { all, run } from './client';
 import { DataRecord } from '../types/data';
+import { OTHER_RECORD_SOURCE } from '../services/recordSource';
 
 export interface SearchFilters {
   keywords?: string[];
@@ -26,6 +27,7 @@ function toRecordParams(record: DataRecord): Array<string | number> {
     record.keyWords,
     record.readability,
     record.taggingModel,
+    record.source || OTHER_RECORD_SOURCE,
   ];
 }
 
@@ -45,15 +47,21 @@ export async function initTable(): Promise<void> {
       secondaryDiscipline TEXT,
       keyWords TEXT,
       readability REAL,
-      taggingModel TEXT
+      taggingModel TEXT,
+      source TEXT
     );
   `);
 
   const columns = await all<{ name: string }>('PRAGMA table_info(data)');
   const hasTaggingModel = columns.some((column) => column.name === 'taggingModel');
+  const hasSource = columns.some((column) => column.name === 'source');
 
   if (!hasTaggingModel) {
     await run('ALTER TABLE data ADD COLUMN taggingModel TEXT');
+  }
+
+  if (!hasSource) {
+    await run('ALTER TABLE data ADD COLUMN source TEXT');
   }
 
   await run(
@@ -61,6 +69,13 @@ export async function initTable(): Promise<void> {
      SET taggingModel = ?
      WHERE taggingModel IS NULL OR TRIM(taggingModel) = ''`,
     ['spark 3.5 max'],
+  );
+
+  await run(
+    `UPDATE data
+     SET source = ?
+     WHERE source IS NULL OR TRIM(source) = ''`,
+    [OTHER_RECORD_SOURCE],
   );
 }
 
@@ -88,8 +103,8 @@ export async function insertOne(data: DataRecord): Promise<void> {
   await run(
     `INSERT INTO data (
       id, name, contentLength, userID, userName, editorID, editorName,
-      year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability, taggingModel
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability, taggingModel, source
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     toRecordParams(data)
   );
 }
@@ -98,8 +113,8 @@ export async function upsertOne(data: DataRecord): Promise<void> {
   await run(
     `INSERT OR REPLACE INTO data (
       id, name, contentLength, userID, userName, editorID, editorName,
-      year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability, taggingModel
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability, taggingModel, source
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     toRecordParams(data),
   );
 }
@@ -114,7 +129,7 @@ export async function searchRecords(filters: SearchFilters): Promise<DataRecord[
         filters.keywords
           .map(
             () =>
-              '(name LIKE ? OR keyWords LIKE ? OR primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ? OR userName LIKE ? OR summary LIKE ?)'
+              '(name LIKE ? OR keyWords LIKE ? OR primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ? OR userName LIKE ? OR source LIKE ? OR summary LIKE ?)'
           )
           .join(' OR ') +
         ')'
@@ -122,7 +137,7 @@ export async function searchRecords(filters: SearchFilters): Promise<DataRecord[
 
     for (const key of filters.keywords) {
       const wildcard = `%${key}%`;
-      params.push(wildcard, wildcard, wildcard, wildcard, wildcard, wildcard);
+      params.push(wildcard, wildcard, wildcard, wildcard, wildcard, wildcard, wildcard);
     }
   }
 
@@ -153,15 +168,16 @@ export async function searchRecords(filters: SearchFilters): Promise<DataRecord[
   params.push(limit);
 
   // 如果有关键词，需要计算匹配优先级（summary 优先级最低）
-  // 使用 CASE 语句计算匹配分数：name > keyWords > discipline > userName > summary
+  // 使用 CASE 语句计算匹配分数：name > keyWords > discipline > userName > source > summary
   const selectClause = filters.keywords && filters.keywords.length > 0
     ? `*, CASE 
         WHEN name LIKE ? THEN 1
         WHEN keyWords LIKE ? THEN 2
         WHEN primaryDiscipline LIKE ? OR secondaryDiscipline LIKE ? THEN 3
         WHEN userName LIKE ? THEN 4
-        WHEN summary LIKE ? THEN 5
-        ELSE 6
+        WHEN source LIKE ? THEN 5
+        WHEN summary LIKE ? THEN 6
+        ELSE 7
       END AS matchPriority`
     : '*';
 
@@ -170,7 +186,10 @@ export async function searchRecords(filters: SearchFilters): Promise<DataRecord[
   if (filters.keywords && filters.keywords.length > 0) {
     const firstKeyword = `%${filters.keywords[0]}%`;
     params.pop(); // 移除 limit
-    params.push(firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword);
+    const whereParams = [...params];
+    params.length = 0;
+    params.push(firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword, firstKeyword);
+    params.push(...whereParams);
     query += ` ORDER BY matchPriority ASC, year DESC, readability ASC LIMIT ?`;
     params.push(limit);
   } else {

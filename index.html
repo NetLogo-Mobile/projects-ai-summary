@@ -109,12 +109,14 @@
 
       input,
       textarea,
+      select,
       button {
         font: inherit;
       }
 
       input,
-      textarea {
+      textarea,
+      select {
         width: 100%;
         border: 1px solid var(--line);
         border-radius: 16px;
@@ -353,6 +355,15 @@
               <label for="taggingModel">打标签模型</label>
               <input id="taggingModel" />
             </div>
+            <div class="field">
+              <label for="source">作品来源</label>
+              <select id="source">
+                <option value="其他">其他</option>
+                <option value="实验精选">实验精选</option>
+                <option value="黑洞精选">黑洞精选</option>
+                <option value="黑洞小说">黑洞小说</option>
+              </select>
+            </div>
             <div class="field full">
               <label for="summary">摘要</label>
               <textarea id="summary"></textarea>
@@ -432,6 +443,7 @@
         "keyWords",
         "readability",
         "taggingModel",
+        "source",
       ];
 
       const recordFields = [
@@ -449,6 +461,7 @@
         "keyWords",
         "readability",
         "taggingModel",
+        "source",
       ];
 
       function setStatus(target, message, isError = false) {
@@ -496,6 +509,7 @@
           keyWords: parseArrayField(record.keyWords),
           readability: Number(record.readability || 0),
           taggingModel: String(record.taggingModel || "").trim(),
+          source: String(record.source || "其他").trim() || "其他",
         };
       }
 
@@ -515,6 +529,7 @@
           keyWords: JSON.stringify(record.keyWords),
           readability: record.readability,
           taggingModel: record.taggingModel,
+          source: record.source,
         };
       }
 
@@ -553,6 +568,7 @@
           keyWords: textareaValue("keyWords"),
           readability: document.getElementById("readability").value,
           taggingModel: document.getElementById("taggingModel").value,
+          source: document.getElementById("source").value,
         });
       }
 
@@ -573,6 +589,7 @@
         document.getElementById("keyWords").value = (record.keyWords || []).join("\n");
         document.getElementById("readability").value = record.readability ?? 0;
         document.getElementById("taggingModel").value = record.taggingModel || "";
+        document.getElementById("source").value = record.source || "其他";
         setStatus(ids.editStatus, `已载入记录 ${record.id}`);
       }
 
@@ -606,8 +623,9 @@
           return 3;
         }
         if (includesIgnoreCase(record.userName, keyword)) return 4;
-        if (includesIgnoreCase(record.summary, keyword)) return 5;
-        return 6;
+        if (includesIgnoreCase(record.source, keyword)) return 5;
+        if (includesIgnoreCase(record.summary, keyword)) return 6;
+        return 7;
       }
 
       function renderResults(records) {
@@ -652,6 +670,7 @@
                   record.name,
                   record.summary,
                   record.userName,
+                  record.source,
                   ...record.keyWords,
                   ...record.primaryDiscipline,
                   ...record.secondaryDiscipline,
@@ -705,9 +724,13 @@
         state.db = new state.SQL.Database(new Uint8Array(bytes));
         state.sourceLabel = sourceLabel;
 
+        const columns = state.db.exec("PRAGMA table_info(data)");
+        const columnNames = new Set((columns[0]?.values || []).map((row) => String(row[1])));
+        const sourceExpression = columnNames.has("source") ? "source" : "'其他' AS source";
         const result = state.db.exec(`
           SELECT id, name, contentLength, userID, userName, editorID, editorName,
-                 year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability, taggingModel
+                 year, summary, primaryDiscipline, secondaryDiscipline, keyWords, readability, taggingModel,
+                 ${sourceExpression}
           FROM data
         `);
 
@@ -793,6 +816,7 @@
         for (const id of editFields) {
           document.getElementById(id).value = "";
         }
+        document.getElementById("source").value = "其他";
         state.selectedId = "";
         state.isCreating = false;
         setStatus(ids.editStatus, "表单已重置");
