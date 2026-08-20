@@ -3,6 +3,8 @@ import { analyzeContent, analyzeContentWithModel } from './analyse';
 import { insertOne, queryById } from '../db/repository';
 import { config } from '../config';
 import { DataRecord } from '../types/data';
+import { OTHER_RECORD_SOURCE, resolveRecordSource } from './recordSource';
+import { getTagSyncSkipReason } from './tagSyncFilter';
 
 // 并发控制器：限制最多并发 N 个操作
 async function runWithConcurrency<T>(
@@ -32,7 +34,13 @@ async function runWithConcurrency<T>(
   return results;
 }
 
-function toRecord(project: any, summary: any, llm: any, taggingModel: string): DataRecord {
+function toRecord(
+  project: any,
+  summary: any,
+  llm: any,
+  taggingModel: string,
+  source: string,
+): DataRecord {
   return {
     id: project.ID,
     name: project.Subject,
@@ -48,6 +56,7 @@ function toRecord(project: any, summary: any, llm: any, taggingModel: string): D
     keyWords: JSON.stringify(llm.keywords),
     readability: llm.readability,
     taggingModel,
+    source,
   };
 }
 
@@ -70,6 +79,7 @@ export async function collectByTagWithOptions(
 ): Promise<{ inserted: number; skipped: number }> {
   const user = await createUser();
   const resolvedModel = model ?? config.model;
+  const source = resolveRecordSource(discussionType, tag);
   console.log(
     `[collectByTagWithOptions] 参数: pageSize=${config.collectPageSize}, batchSize=${config.collectBatchSize}, analyzeConcurrency=${config.collectAnalyzeConcurrency}, insertConcurrency=${config.collectInsertConcurrency}, pageDelayMs=${config.collectPageDelayMs}, batchDelayMs=${config.collectBatchDelayMs}`
   );
@@ -152,6 +162,13 @@ export async function collectByTagWithOptions(
         batchSkipped += 1;
         continue;
       }
+
+      const skipReason = getTagSyncSkipReason(summary.Data ?? {}, discussionType);
+      if (skipReason) {
+        console.log(`[collectByTagWithOptions] 过滤作品: ${item.ID}，${skipReason}`);
+        batchSkipped += 1;
+        continue;
+      }
       
       const text = summary.Data.Description.join('');
       if (!text.trim()) {
@@ -190,7 +207,7 @@ export async function collectByTagWithOptions(
           continue;
         }
         
-        const record = toRecord(result.item, result.summary, result.llm, resolvedModel);
+        const record = toRecord(result.item, result.summary, result.llm, resolvedModel, source);
         insertTasks.push(async () => {
           await insertOne(record);
           console.log('[DB] 成功写入:', record.id);
@@ -263,6 +280,13 @@ export async function backfillByDiscussionIds(ids: string[]): Promise<{ inserted
         batchSkipped += 1;
         continue;
       }
+
+      const skipReason = getTagSyncSkipReason(summary.Data ?? {}, 'Discussion');
+      if (skipReason) {
+        console.log(`[backfillByDiscussionIds] 过滤作品: ${id}，${skipReason}`);
+        batchSkipped += 1;
+        continue;
+      }
       
       const text = summary.Data.Description.join('');
       if (!text.trim()) {
@@ -313,6 +337,7 @@ export async function backfillByDiscussionIds(ids: string[]): Promise<{ inserted
           keyWords: JSON.stringify(result.llm.keywords),
           readability: result.llm.readability,
           taggingModel: config.model,
+          source: OTHER_RECORD_SOURCE,
         };
 
         insertTasks.push(async () => {

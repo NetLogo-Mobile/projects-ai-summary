@@ -13,6 +13,7 @@ export interface DataRecord {
   keyWords: string;
   readability: number;
   taggingModel: string;
+  source: string;
 }
 
 export interface LLMResult {
