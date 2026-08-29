@@ -217,14 +217,14 @@ export default {
       return ok({ error: "Method not allowed" }, 405);
     }
 
-    if (url.pathname === "/" || url.pathname === "/api/meta") {
+    if (url.pathname === "/api/meta") {
       return ok({
         service: "pl-search-cloudflare",
         generatedAt,
         totalRecords: records.length,
         maxLimit: MAX_LIMIT,
         aiKeywordExpansion: Boolean(env?.GROQ_API_KEY),
-        endpoints: ["/api/search?keywords=...", "/api/record?id=..."],
+        endpoints: ["/api/meta", "/api/search?keywords=...", "/api/record?id=..."],
       });
     }
 
@@ -247,6 +247,10 @@ export default {
       const record = records.find((item) => item.id === id);
       if (!record) return ok({ error: "Not found" }, 404);
       return ok({ record, generatedAt });
+    }
+
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
     }
 
     return ok({ error: "Not found" }, 404);
