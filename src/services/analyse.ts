@@ -35,7 +35,6 @@ export async function analyzeContentWithModel(text: string, model?: string): Pro
     
     const response = await openaiChatCompletion({
       model: actualModel,
-      temperature: 0.2,
       tools: [
         {
           type: 'function',
