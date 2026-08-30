@@ -11,7 +11,7 @@
 - `src/scripts/updateDatabase.ts`：作品收录入口
 - `src/scripts/exportD1Sql.ts`：将 `data.db` 导出为 D1 SQL
 
-收录记录包含 `source` 来源字段：`Experiment + 精选` 为“实验精选”，`Discussion + 精选` 为“黑洞精选”，`Discussion + 小说` 为“黑洞小说”，其余组合为“其他”。
+收录程序遍历 `Experiment` 与 `Discussion` 两种内容类型，不使用查询 Tag 过滤。收录记录的 `source` 来源字段根据作品详情返回的 `Tags` 判断：`Experiment + 精选` 为“实验精选”，`Discussion + 精选` 为“黑洞精选”，`Discussion + 小说` 或 `小说专区` 为“黑洞小说”，其余组合为“其他”。带有“小作品”标签的作品会被过滤。
 
 ## GitHub Actions
 
@@ -43,8 +43,6 @@ D1_DATABASE_ID=1ff32e2b-ab3c-4f78-aa15-9313e095e237
 DB_PATH=./data.db
 D1_EXPORT_FILE=./cloudflare/d1/data.sql
 PL_BASE_URL=https://physics-api-cn.turtlesim.com
-PL_DISCUSSION_TAG=精选
-PL_DISCUSSION_TYPE=Discussion
 OPENAI_MODEL=gpt-4o-mini
 OPENAI_BASE_URL=https://api.openai.com/v1
 AI_REQUEST_TIMEOUT_MS=45000
@@ -67,7 +65,7 @@ npm ci
 npm run build
 npm test
 npm run update-db
-npm run flexible-collect -- --tag "精选" --type Discussion --take -50
+npm run flexible-collect -- --take -50
 npm run export-d1
 ```
 
