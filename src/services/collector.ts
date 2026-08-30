@@ -98,7 +98,7 @@ export async function collectByTypeWithOptions(
     
     let list;
     try {
-      list = await user.projects.query(discussionType, { take: takeValue, skip: currentSkip });
+      list = await user.projects.query(discussionType, { take: takeValue, skip: currentSkip, ExcludeTags: ["小作品"]});
     } catch (error) {
       console.error(`[collectByTypeWithOptions] 分页获取失败，跳过: skip=${currentSkip}, take=${takeValue}`, error instanceof Error ? error.message : String(error));
       // 如果是第一次尝试就失败，或者已经是最后一批，则跳出循环
