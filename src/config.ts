@@ -33,7 +33,6 @@ function readEnvIntAtLeast(name: string, fallback: number, minimum: number): num
 }
 
 const openaiApiKey = readEnv('OPENAI_API_KEY');
-const sparkApiPassword = readEnv('SPARK_API_PASSWORD');
 
 export const config = {
   databasePath: readEnvWithDefault('DB_PATH', './data.db'),
@@ -51,14 +50,10 @@ export const config = {
   collectInsertConcurrency: readEnvIntAtLeast('COLLECT_INSERT_CONCURRENCY', 5, 1),
   collectPageDelayMs: readEnvIntAtLeast('COLLECT_PAGE_DELAY_MS', 0, 0),
   collectBatchDelayMs: readEnvIntAtLeast('COLLECT_BATCH_DELAY_MS', 0, 0),
-  apiKey: openaiApiKey ?? sparkApiPassword ?? '',
-  model: readEnv('OPENAI_MODEL') ?? readEnv('SPARK_MODEL') ?? 'gpt-3.5-turbo',
+  apiKey: openaiApiKey ?? '',
+  model: readEnvWithDefault('OPENAI_MODEL', 'gpt-3.5-turbo'),
   apiBaseUrl: readEnvWithDefault('OPENAI_BASE_URL', 'https://api.openai.com/v1'),
   aiRequestTimeoutMs: readEnvInt('AI_REQUEST_TIMEOUT_MS', 45000),
-  apiEndpoint: readEnvWithDefault(
-    'SPARK_ENDPOINT',
-    'https://spark-api-open.xf-yun.com/v1/chat/completions',
-  ),
 
   get discussionType() { return this.discussionTypes[0]; },
   get openaiApiKey() { return openaiApiKey ?? ''; },
@@ -71,7 +66,7 @@ export function assertEnv(): void {
   if (!config.plPassword) missing.push('PL_PASSWORD');
 
   if (!config.apiKey) {
-    missing.push('OPENAI_API_KEY or SPARK_API_PASSWORD');
+    missing.push('OPENAI_API_KEY');
   }
 
   if (missing.length > 0) {

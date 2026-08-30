@@ -24,3 +24,10 @@ This file records user instructions, preferences, and teachings for reference in
 - Instructions:
   - Cloudflare 相关操作全部通过 GitHub Actions secrets（CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID，environment: pl-search）完成，不需要本地 wrangler login
   - D1 数据库：plworks，database_id 1ff32e2b-ab3c-4f78-aa15-9313e095e237
+
+[AI 与 GitHub Environment 配置]
+- Date: 2026-08-30
+- Context: 用户调整作品收录工作流配置
+- Instructions:
+  - 作品收录程序统一使用 OpenAI provider，OpenAI API Key 保存在 GitHub Environment Secret `OPENAI_API_KEY`
+  - 普通配置统一保存在 GitHub Environment Variables，工作流读取 `vars.*`

@@ -31,22 +31,23 @@ CLOUDFLARE_API_TOKEN
 PL_USERNAME
 PL_PASSWORD
 OPENAI_API_KEY
-SPARK_API_PASSWORD
 ```
 
-`OPENAI_API_KEY` 与 `SPARK_API_PASSWORD` 至少配置一个。
+`OPENAI_API_KEY` 用于全部 AI 分析请求。
 
 普通配置使用 GitHub Environment Variables：
 
 ```text
 CLOUDFLARE_ACCOUNT_ID
+D1_DATABASE_ID=1ff32e2b-ab3c-4f78-aa15-9313e095e237
+DB_PATH=./data.db
+D1_EXPORT_FILE=./cloudflare/d1/data.sql
 PL_BASE_URL=https://physics-api-cn.turtlesim.com
 PL_DISCUSSION_TAG=精选
 PL_DISCUSSION_TYPE=Discussion
 OPENAI_MODEL=gpt-4o-mini
 OPENAI_BASE_URL=https://api.openai.com/v1
-SPARK_MODEL=generalv3.5
-SPARK_ENDPOINT=https://spark-api-open.xf-yun.com/v1/chat/completions
+AI_REQUEST_TIMEOUT_MS=45000
 SKIP=0
 TAKE=-100
 COLLECT_PAGE_SIZE=20

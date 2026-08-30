@@ -68,7 +68,7 @@ export async function initTable(): Promise<void> {
     `UPDATE data
      SET taggingModel = ?
      WHERE taggingModel IS NULL OR TRIM(taggingModel) = ''`,
-    ['spark 3.5 max'],
+    [''],
   );
 
 }

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { OpenAI } from 'openai';
 import { config } from '../config';
 import { LLMResult } from '../types/data';
@@ -9,16 +8,13 @@ const systemPrompt =
   格式死亡红线：①缺失字段立即报错 ②数值未加引号视为格式错误 ③数组元素必须双引号包裹。示范正确格式：
   {"summary":"...","Subject1":["工学"],"Subject2":["机械设计及理论"],"keywords":["流体力学"],"readability":0.72}`;
 
-const useOpenAI = Boolean(config.openaiApiKey);
-const aiClient = useOpenAI
-  ? new OpenAI({
-      apiKey: config.apiKey,
-      baseURL: config.apiBaseUrl,
-      timeout: config.aiRequestTimeoutMs,
-      maxRetries: 0,
-      dangerouslyAllowBrowser: true
-    })
-  : null;
+const aiClient = new OpenAI({
+  apiKey: config.apiKey,
+  baseURL: config.apiBaseUrl,
+  timeout: config.aiRequestTimeoutMs,
+  maxRetries: 0,
+  dangerouslyAllowBrowser: true
+});
 
 /**
  * 使用统一AI服务分析内容（用于学科分类）
@@ -217,88 +213,13 @@ export async function openaiChatCompletion(
   }
 
   try {
-    const provider = useOpenAI ? 'OpenAI' : 'Spark';
-    console.log(`[AI] 使用 ${provider} 发送请求 - 模型: ${request.model}, 消息数: ${request.messages.length}`);
-
-    if (useOpenAI && aiClient) {
-      const response = await aiClient.chat.completions.create(request as any, {
-        timeout: config.aiRequestTimeoutMs,
-        maxRetries: 0,
-      });
-      console.log('[AI] OpenAI 响应成功');
-      const normalized = response as unknown as OpenAIChatCompletionResponse;
-      return normalized;
-    }
-
-    const sparkRequest = {
-      model: request.model,
-      temperature: request.temperature ?? 0.7,
-      max_tokens: request.max_tokens,
-      tools: request.tools,
-      tool_choice: request.tool_choice,
-      messages: request.messages.map(msg => ({
-        role: msg.role,
-        content: msg.content
-      }))
-    };
-
-    const response = await axios.post(
-      config.apiEndpoint,
-      sparkRequest,
-      {
-        headers: {
-          Authorization: `Bearer ${config.apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        timeout: config.aiRequestTimeoutMs
-      }
-    );
-
-    console.log('[AI] Spark 响应成功');
-
-    const sparkResponse = response.data;
-    const messageId = `chatcmpl-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
-    let toolCalls = undefined;
-    let finishReason: 'stop' | 'length' | 'tool_calls' | 'content_filter' = 'stop';
-    
-    const sparkToolCalls = sparkResponse?.choices?.[0]?.message?.tool_calls;
-    if (sparkToolCalls && sparkToolCalls.length > 0) {
-      toolCalls = sparkToolCalls.map((tc: any, index: number) => ({
-        id: `call_${Date.now()}_${index}`,
-        type: 'function',
-        function: {
-          name: tc.function.name,
-          arguments: typeof tc.function.arguments === 'string' 
-            ? tc.function.arguments 
-            : JSON.stringify(tc.function.arguments)
-        }
-      }));
-      finishReason = 'tool_calls';
-    }
-
-    const openaiResponse: OpenAIChatCompletionResponse = {
-      id: messageId,
-      object: 'chat.completion',
-      created: Math.floor(Date.now() / 1000),
-      model: request.model,
-      choices: [{
-        index: 0,
-        message: {
-          role: 'assistant',
-          content: sparkResponse?.choices?.[0]?.message?.content ?? null,
-          tool_calls: toolCalls
-        },
-        finish_reason: finishReason
-      }],
-      usage: {
-        prompt_tokens: sparkResponse?.usage?.prompt_tokens ?? 0,
-        completion_tokens: sparkResponse?.usage?.completion_tokens ?? 0,
-        total_tokens: sparkResponse?.usage?.total_tokens ?? 0
-      }
-    };
-
-    return openaiResponse;
+    console.log(`[AI] 使用 OpenAI 发送请求 - 模型: ${request.model}, 消息数: ${request.messages.length}`);
+    const response = await aiClient.chat.completions.create(request as any, {
+      timeout: config.aiRequestTimeoutMs,
+      maxRetries: 0,
+    });
+    console.log('[AI] OpenAI 响应成功');
+    return response as unknown as OpenAIChatCompletionResponse;
   } catch (error: any) {
     console.error('[AI] 错误 - 状态码:', error.response?.status ?? error.status);
     console.error('[AI] 错误信息:', error.response?.statusText ?? error.message);
