@@ -91,6 +91,7 @@ CLOUDFLARE_ACCOUNT_ID=
   - 执行 `npm run export-d1` 将 `data.db` 导出为 SQL
   - 通过 D1 database ID 全量导入 Cloudflare D1
   - 校验 D1 行数
+  - 发布使用 D1 binding 的 Cloudflare Worker
 
 
 ## 本地命令
