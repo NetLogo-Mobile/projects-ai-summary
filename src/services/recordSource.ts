@@ -1,16 +1,25 @@
 export const OTHER_RECORD_SOURCE = '其他';
 
-export function resolveRecordSource(type: string, tag: string): string {
-  const normalizedType = type.trim().toLowerCase();
-  const normalizedTag = tag.trim();
+function getTags(value: unknown): string[] {
+  if (typeof value === 'string') return [value.trim()];
+  if (Array.isArray(value)) return value.map((tag) => String(tag).trim());
+  if (value && typeof value === 'object' && '$values' in value) {
+    return getTags((value as { $values?: unknown }).$values);
+  }
+  return [];
+}
 
-  if (normalizedType === 'experiment' && normalizedTag === '精选') {
+export function resolveRecordSource(type: string, tagsValue: unknown): string {
+  const normalizedType = type.trim().toLowerCase();
+  const tags = getTags(tagsValue);
+
+  if (normalizedType === 'experiment' && tags.includes('精选')) {
     return '实验精选';
   }
-  if (normalizedType === 'discussion' && normalizedTag === '精选') {
+  if (normalizedType === 'discussion' && tags.includes('精选')) {
     return '黑洞精选';
   }
-  if (normalizedType === 'discussion' && normalizedTag === '小说') {
+  if (normalizedType === 'discussion' && (tags.includes('小说') || tags.includes('小说专区'))) {
     return '黑洞小说';
   }
 

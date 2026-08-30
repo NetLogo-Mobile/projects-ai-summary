@@ -13,13 +13,6 @@ function readEnvWithDefault(name: string, defaultValue: string): string {
   return readEnv(name) ?? defaultValue;
 }
 
-function readEnvList(name: string, fallback: string): string[] {
-  return readEnvWithDefault(name, fallback)
-    .split(',')
-    .map(value => value.trim())
-    .filter(Boolean);
-}
-
 function readEnvInt(name: string, fallback: number): number {
   const raw = readEnv(name);
   if (!raw) return fallback;
@@ -39,8 +32,6 @@ export const config = {
   d1ExportFile: readEnvWithDefault('D1_EXPORT_FILE', './cloudflare/d1/data.sql'),
   plUsername: readEnvWithDefault('PL_USERNAME', ''),
   plPassword: readEnvWithDefault('PL_PASSWORD', ''),
-  discussionTags: readEnvList('PL_DISCUSSION_TAG', '精选'),
-  discussionTypes: readEnvList('PL_DISCUSSION_TYPE', 'Discussion'),
   plBaseUrl: readEnvWithDefault('PL_BASE_URL', 'https://physics-api-cn.turtlesim.com'),
   skip: readEnvInt('SKIP', 0),
   take: readEnvInt('TAKE', -100),
@@ -55,7 +46,6 @@ export const config = {
   apiBaseUrl: readEnvWithDefault('OPENAI_BASE_URL', 'https://api.openai.com/v1'),
   aiRequestTimeoutMs: readEnvInt('AI_REQUEST_TIMEOUT_MS', 45000),
 
-  get discussionType() { return this.discussionTypes[0]; },
   get openaiApiKey() { return openaiApiKey ?? ''; },
 };
 
