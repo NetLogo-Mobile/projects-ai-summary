@@ -1,35 +1,24 @@
 {
-  "name": "pl-database-gpt",
+  "name": "pl-search-cloudflare",
   "version": "1.0.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node --test dist/services/*.test.js",
-    "init": "node dist/index.js",
+    "test": "npm run build && node --test dist/services/collectionFilter.test.js dist/services/recordSource.test.js",
     "update-db": "node dist/scripts/updateDatabase.js",
-    "apply-db-patch": "node dist/scripts/applyDatabasePatch.js",
-    "export-cloudflare": "node dist/scripts/exportCloudflareSnapshot.js",
     "export-d1": "node dist/scripts/exportD1Sql.js",
-    "sync-selected-tags": "node dist/scripts/syncSelectedTags.js",
-    "run-bot": "node dist/scripts/runBot.js",
-    "run-bot-once": "node dist/scripts/runBotOnce.js",
-    "discipline-stats": "node dist/scripts/disciplineStats.js",
-    "backfill-record-sources": "node dist/scripts/backfillRecordSources.js",
     "flexible-collect": "node dist/scripts/collect.js"
   },
   "dependencies": {
     "axios": "^1.14.0",
     "dotenv": "^16.4.5",
-    "node-cron": "^3.0.3",
     "openai": "^4.58.0",
-    "physics-lab-web-api": "^0.4.1",
     "plweb": "^0.2.1",
     "sql.js": "^1.8.0"
   },
   "devDependencies": {
     "@types/node": "^22.7.4",
-    "@types/node-cron": "^3.0.11",
     "@types/sql.js": "^1.4.9",
     "typescript": "^5.6.2"
   }

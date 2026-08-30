@@ -1,113 +1,73 @@
-﻿# Physics-Lab-Search-Engine
+# Physics Lab Search
 
-基于 `physics-lab-web-api` + SQLite + OpenAI / Spark / Groq 的作品收录、查询和补丁同步工具。有以下功能：
+物理实验室作品搜索服务。线上仅保留 Cloudflare Worker、静态搜索页面和 D1 数据库；仓库保留作品收录程序，自动调度当前关闭。
 
-1. 可以云端批量跑历史作品并由AI生成摘要
-2. 云端批量给物实作品加标签
-3. 一个物实机器人，定时获取物实的消息，把用户输入由AI联想后查询并返回
-4. 定时获取物实指定类型作品（可配置）拿摘要更新数据库
-5. 一个[github pages页面](https://netlogo-mobile.github.io/projects-ai-summary/)，可视化编辑数据库，生成的纯文本补丁
-6. 一个ci，自动运用纯文本补丁
-7. 一个作品查询的[cloudflare workers](https://pl-search-cloudflare.zongkuli2.workers.dev/)，会自动在6和4时更新。目前只有最基础的查询功能，没有速率限制/AI联想查询
-8. 每次运行都会推送相关信息到物实一个作品的summary，类似于探针。当然也有日志。
+## 架构
 
-收录记录包含 `source` 来源字段。采集时按作品类型和筛选标签映射：`Experiment + 精选` 为“实验精选”，`Discussion + 精选` 为“黑洞精选”，`Discussion + 小说` 为“黑洞小说”，其余组合为“其他”。
+- `cloudflare/public/index.html`：Cloudflare 静态搜索页面
+- `cloudflare/worker.mjs`：搜索 API 与可选的 Groq 查询词扩展
+- Cloudflare D1 `plworks`：线上查询数据源
+- `data.db`：仓库内权威数据快照
+- `src/scripts/updateDatabase.ts`：作品收录入口
+- `src/scripts/exportD1Sql.ts`：将 `data.db` 导出为 D1 SQL
 
-## Bot 查询命令
-
-在物实指定作品内可以通过留言查询，Bot会轮询回复（其实也是基于ci，频率很低的）
-
-```bash
-#查词: 电磁学 光学
-#查作者: 用户名
-#查年份: 2024
-#查年份: 2021-2024
-#查询 关键词=电磁学|光学 作者=张三 年份范围=2021-2024 limit=8
-你也可以使用自然语言，会有AI预处理
-```
-
-## 环境变量
-
-```
-PL_USERNAME=
-PL_PASSWORD=
-PL_DISCUSSION_ID=69a59f0eca7ceb749317ef7c
-PL_DISCUSSION_TAG=精选,知识库
-PL_DISCUSSION_TYPE=Discussion,Experiment
-PL_BASE_URL=https://physics-api-cn.turtlesim.com
-
-PL_ADMIN_USERNAME=
-PL_ADMIN_PASSWORD=
-PL_SYNC_CATEGORY=Discussion
-PL_SYNC_SOURCE_TAG=精选
-PL_SYNC_TAG_WHITELIST=数学,物理学,化学,生物学,地理学,天文学,计算机科学,医学,电气工程,历史学,哲学,文学,艺术学
-
-SKIP=0
-TAKE=-100
-
-DB_PATH=./data.db
-DB_PATCH_FILE=./home/database.patch.json
-LOG_DIR=./logs
-
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4o-mini
-
-SPARK_API_PASSWORD=
-SPARK_MODEL=generalv3.5
-SPARK_ENDPOINT=https://spark-api-open.xf-yun.com/v1/chat/completions
-
-GROQ_API_KEY=
-GROQ_MODEL=openai/gpt-oss-120B
-GROQ_CHAT_MODEL=openai/gpt-oss-120B
-GROQ_CHAT_MAX_TOKENS=120
-
-PL_LOG_SUMMARY_ID=
-PL_LOG_SUMMARY_CATEGORY=Discussion
-PL_LOG_SUMMARY_USERNAME=
-PL_LOG_SUMMARY_PASSWORD=
-PL_LOG_SUMMARY_MAX_CHARS=18000
-
-CLOUDFLARE_EXPORT_FILE=./cloudflare/data/records.mjs
-CLOUDFLARE_API_TOKEN=
-CLOUDFLARE_ACCOUNT_ID=
-```
+收录记录包含 `source` 来源字段：`Experiment + 精选` 为“实验精选”，`Discussion + 精选` 为“黑洞精选”，`Discussion + 小说` 为“黑洞小说”，其余组合为“其他”。
 
 ## GitHub Actions
 
-工作流位于 `.github/workflows/`：
+工作流使用 GitHub Environment `pl-search`。
 
-- `run-bot-query.yml`
-  - 执行 `npm run run-bot-once`
-- `update-database.yml`
-  - 执行 `npm run apply-db-patch`
-  - 执行 `npm run update-db`
-  - 执行 `npm run export-cloudflare`
-- `/apply-database-patch.yml`
-  - 执行：`npm run apply-db-patch`
-  - 执行: `npm run export-cloudflare`
-  - 自动部署 Worker
-  - 将更新后的 `data.db` 和 `cloudflare/data/records.mjs` 提交回仓库
-- `import-d1.yml`（手动触发，名称：导入数据到Cloudflare D1）
-  - 执行 `npm run export-d1` 将 `data.db` 导出为 SQL
-  - 通过 D1 database ID 全量导入 Cloudflare D1
-  - 校验 D1 行数
-  - 发布使用 D1 binding 的 Cloudflare Worker
+- `导入数据到Cloudflare D1`：手动将现有 `data.db` 导入 D1并部署 Worker
+- `收录作品到 Cloudflare D1`：手动收录新作品、更新 `data.db`、覆盖 D1并部署 Worker
 
+两个工作流都仅支持 `workflow_dispatch`。自动收录的实现已保留，定时触发当前关闭。
+
+## 环境配置
+
+敏感值使用 GitHub Environment Secrets：
+
+```text
+CLOUDFLARE_API_TOKEN
+PL_USERNAME
+PL_PASSWORD
+OPENAI_API_KEY
+SPARK_API_PASSWORD
+```
+
+`OPENAI_API_KEY` 与 `SPARK_API_PASSWORD` 至少配置一个。
+
+普通配置使用 GitHub Environment Variables：
+
+```text
+CLOUDFLARE_ACCOUNT_ID
+PL_BASE_URL=https://physics-api-cn.turtlesim.com
+PL_DISCUSSION_TAG=精选
+PL_DISCUSSION_TYPE=Discussion
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_BASE_URL=https://api.openai.com/v1
+SPARK_MODEL=generalv3.5
+SPARK_ENDPOINT=https://spark-api-open.xf-yun.com/v1/chat/completions
+SKIP=0
+TAKE=-100
+COLLECT_PAGE_SIZE=20
+COLLECT_BATCH_SIZE=20
+COLLECT_ANALYZE_CONCURRENCY=5
+COLLECT_INSERT_CONCURRENCY=5
+COLLECT_PAGE_DELAY_MS=0
+COLLECT_BATCH_DELAY_MS=0
+```
+
+Worker 的 Groq 查询扩展由 Cloudflare Worker Secret `GROQ_API_KEY` 控制，模型可通过 Cloudflare Variables `GROQ_KEYWORD_MODEL`、`GROQ_MODEL` 和 `GROQ_BASE_URL` 配置。
 
 ## 本地命令
 
 ```bash
-npm run update-db
-npm run apply-db-patch
-npm run export-cloudflare
-npm run run-bot
-npm run run-bot-once
-npm run discipline-stats
-npm run backfill-record-sources
-npm run flexible-collect -- --tag "精选" --take -50
-npm run sync-selected-tags
-npm run sync-all-tags
+npm ci
 npm run build
+npm test
+npm run update-db
+npm run flexible-collect -- --tag "精选" --type Discussion --take -50
+npm run export-d1
 ```
 
-`npm run backfill-record-sources` 会从远端完整查询“实验精选”“黑洞精选”“黑洞小说”三个作品集合，再按 ID 回填来源为空的历史记录。三个集合全部查询成功后才写入数据库；重复命中时“黑洞小说”优先，其余未匹配记录标记为“其他”。常规数据库流水线会自动执行一次性回填；GitHub Actions 中的 `Backfill Record Sources` 手动工作流也可执行回填、导出 Cloudflare 快照并提交数据文件。
+线上服务：`https://pl-search-cloudflare.zongkuli2.workers.dev`

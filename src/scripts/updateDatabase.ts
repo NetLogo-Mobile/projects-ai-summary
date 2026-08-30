@@ -2,7 +2,6 @@ import { assertEnv, config } from '../config';
 import { initDatabase } from '../db/client';
 import { initTable } from '../db/repository';
 import { collectByTagWithOptions } from '../services/collector';
-import { runWithRunLogger } from '../services/runLogger';
 
 async function main() {
   assertEnv();
@@ -12,7 +11,6 @@ async function main() {
   let totalInserted = 0;
   let totalSkipped = 0;
   
-  // 双层遍历：讨论类型 × 讨论标签
   for (const discussionType of config.discussionTypes) {
     for (const tag of config.discussionTags) {
       console.log(`\n[update-db] 收集: 类型=${discussionType}, 标签=${tag}`);
@@ -26,7 +24,7 @@ async function main() {
   console.log(`\n[update-db] 总结: 插入=${totalInserted}, 跳过=${totalSkipped}`);
 }
 
-runWithRunLogger('update-database', main).catch((e) => {
+main().catch((e) => {
   console.error(e);
   process.exit(1);
 });

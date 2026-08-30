@@ -3,8 +3,8 @@ import { analyzeContent, analyzeContentWithModel } from './analyse';
 import { insertOne, queryById } from '../db/repository';
 import { config } from '../config';
 import { DataRecord } from '../types/data';
-import { OTHER_RECORD_SOURCE, resolveRecordSource } from './recordSource';
-import { getTagSyncSkipReason } from './tagSyncFilter';
+import { resolveRecordSource } from './recordSource';
+import { getCollectionSkipReason } from './collectionFilter';
 
 // 并发控制器：限制最多并发 N 个操作
 async function runWithConcurrency<T>(
@@ -163,7 +163,7 @@ export async function collectByTagWithOptions(
         continue;
       }
 
-      const skipReason = getTagSyncSkipReason(summary.Data ?? {}, discussionType);
+      const skipReason = getCollectionSkipReason(summary.Data ?? {}, discussionType);
       if (skipReason) {
         console.log(`[collectByTagWithOptions] 过滤作品: ${item.ID}，${skipReason}`);
         batchSkipped += 1;
@@ -231,137 +231,5 @@ export async function collectByTagWithOptions(
   }
 
   console.log(`[collectByTagWithOptions] 完成! 插入: ${inserted}, 跳过: ${skipped}`);
-  return { inserted, skipped };
-}
-
-/**
- * 原有的collectByTag函数，现在作为collectByTagWithOptions的包装器
- * 保持向后兼容性
- */
-export async function collectByTag(tag: string,discussionType: string): Promise<{ inserted: number; skipped: number }> {
-  return collectByTagWithOptions(tag,discussionType);
-}
-
-export async function backfillByDiscussionIds(ids: string[]): Promise<{ inserted: number; skipped: number }> {
-  const user = await createUser();
-  console.log(
-    `[backfillByDiscussionIds] 参数: batchSize=${config.backfillBatchSize}, analyzeConcurrency=${config.collectAnalyzeConcurrency}, insertConcurrency=${config.collectInsertConcurrency}, batchDelayMs=${config.collectBatchDelayMs}`
-  );
-  let inserted = 0;
-  let skipped = 0;
-  
-  const batchSize = config.backfillBatchSize;
-
-  // 分批处理ID，批大小由配置控制
-  for (let i = 0; i < ids.length; i += batchSize) {
-    const batch = ids.slice(i, i + batchSize);
-    const batchNum = Math.floor(i / batchSize) + 1;
-    console.log(`[backfillByDiscussionIds] 开始处理第 ${batchNum} 批 (共${Math.ceil(ids.length / batchSize)}批)`);
-    
-    // 当前批的待分析数据
-    const sourcesToAnalyze: Array<{ id: string; summary: any; text: string }> = [];
-    let batchSkipped = 0;
-
-    for (const id of batch) {
-      // 检查ID是否已经被检查过，如果已处理则跳过，不再发请求到API
-      const exist = await queryById(id);
-      if (exist.length > 0) {
-        console.log(`[backfillByDiscussionIds] ID已检查过，跳过API请求: ${id}`);
-        batchSkipped += 1;
-        continue;
-      }
-
-      console.log(`[backfillByDiscussionIds] 开始处理ID: ${id}`);
-      let summary;
-      try {
-        summary = await user.projects.getSummary(id, 'Discussion');
-      } catch (error) {
-        console.error(`[backfillByDiscussionIds] 获取摘要失败，跳过ID: ${id}`, error instanceof Error ? error.message : String(error));
-        batchSkipped += 1;
-        continue;
-      }
-
-      const skipReason = getTagSyncSkipReason(summary.Data ?? {}, 'Discussion');
-      if (skipReason) {
-        console.log(`[backfillByDiscussionIds] 过滤作品: ${id}，${skipReason}`);
-        batchSkipped += 1;
-        continue;
-      }
-      
-      const text = summary.Data.Description.join('');
-      if (!text.trim()) {
-        console.log(`[backfillByDiscussionIds] 内容为空，跳过: ${id}`);
-        batchSkipped += 1;
-        continue;
-      }
-
-      sourcesToAnalyze.push({ id, summary, text });
-    }
-
-    // 并发调用API分析（当前批）
-    if (sourcesToAnalyze.length > 0) {
-      console.log(`[backfillByDiscussionIds] 第 ${batchNum} 批: 开始并发分析 ${sourcesToAnalyze.length} 条记录...`);
-      const analyzeTasks = sourcesToAnalyze.map(({ id, summary, text }) => async () => {
-        console.log(`[backfillByDiscussionIds] 分析ID: ${id}`);
-        try {
-          const llm = await analyzeContent(text);
-          return { id, summary, llm, error: null };
-        } catch (error) {
-          console.error(`[backfillByDiscussionIds] API分析失败，跳过ID: ${id}`, error instanceof Error ? error.message : String(error));
-          return { id, summary, llm: null, error };
-        }
-      });
-
-      const analyzeResults = await runWithConcurrency(analyzeTasks, config.collectAnalyzeConcurrency);
-
-      // 累积插入任务（当前批）
-      const insertTasks: (() => Promise<void>)[] = [];
-      for (const result of analyzeResults) {
-        if (result.error || !result.llm) {
-          batchSkipped += 1;
-          continue;
-        }
-
-        const record = {
-          id: result.id,
-          name: result.summary.Data.Subject ?? result.id,
-          contentLength: sourcesToAnalyze.find((s) => s.id === result.id)?.text.length ?? 0,
-          userID: result.summary.Data.User?.ID ?? '',
-          userName: result.summary.Data.User?.Nickname ?? '',
-          editorID: result.summary.Data.Editor?.ID ?? '',
-          editorName: result.summary.Data.Editor?.Nickname ?? '',
-          year: new Date(result.summary.Data.CreationDate).getFullYear(),
-          summary: result.llm.summary,
-          primaryDiscipline: JSON.stringify(result.llm.Subject1),
-          secondaryDiscipline: JSON.stringify(result.llm.Subject2),
-          keyWords: JSON.stringify(result.llm.keywords),
-          readability: result.llm.readability,
-          taggingModel: config.model,
-          source: OTHER_RECORD_SOURCE,
-        };
-
-        insertTasks.push(async () => {
-          await insertOne(record);
-          console.log('[DB] 成功写入记录:', record.id);
-        });
-      }
-
-      // 并发执行数据库插入（当前批）
-      if (insertTasks.length > 0) {
-        console.log(`[backfillByDiscussionIds] 第 ${batchNum} 批: 开始并发插入 ${insertTasks.length} 条记录...`);
-        const insertResults = await runWithConcurrency(insertTasks, config.collectInsertConcurrency);
-        inserted += insertResults.length;
-      }
-    }
-
-    skipped += batchSkipped;
-    
-    // 批次间延迟，避免频繁请求
-    if (i + batchSize < ids.length && config.collectBatchDelayMs > 0) {
-      await new Promise((r) => setTimeout(r, config.collectBatchDelayMs));
-    }
-  }
-
-  console.log(`[backfillByDiscussionIds] 完成! 插入: ${inserted}, 跳过: ${skipped}`);
   return { inserted, skipped };
 }

@@ -3,7 +3,6 @@ import path from 'path';
 
 import { config } from '../config';
 import { all, initDatabase } from '../db/client';
-import { runWithRunLogger } from '../services/runLogger';
 
 // 单条 INSERT 语句的行数。D1 对单条 SQL 语句有 100KB 上限，
 // 平均每行约 1-2KB，20 行一批可以留出足够的安全余量。
@@ -104,7 +103,7 @@ async function main(): Promise<void> {
   console.log(`[D1] exported ${rows.length} record(s) to ${outputPath}`);
 }
 
-runWithRunLogger('export-d1-sql', main).catch((error) => {
+main().catch((error) => {
   console.error(error);
   process.exit(1);
 });

@@ -23,7 +23,3 @@ export async function createUserWithCredentials(username: string, password: stri
   await user.user.login();
   return user;
 }
-
-export function createBot(processFn: (msg: { Content: string }) => Promise<string>) {
-  return new pl.Bot(config.plUsername, config.plPassword, processFn);
-}

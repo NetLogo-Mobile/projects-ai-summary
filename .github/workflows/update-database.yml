@@ -1,117 +1,83 @@
-﻿name: Update Database
+name: 收录作品到 Cloudflare D1
 
 on:
-  schedule:
-    - cron: '0 3 * * *'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 concurrency:
   group: database-pipeline
   cancel-in-progress: false
 
 jobs:
-  update-db:
+  collect:
     runs-on: ubuntu-latest
     environment: pl-search
+    env:
+      DB_PATH: ./data.db
+      D1_EXPORT_FILE: ./cloudflare/d1/data.sql
+      PL_USERNAME: ${{ secrets.PL_USERNAME }}
+      PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SPARK_API_PASSWORD: ${{ secrets.SPARK_API_PASSWORD }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PL_BASE_URL: ${{ vars.PL_BASE_URL }}
+      PL_DISCUSSION_TAG: ${{ vars.PL_DISCUSSION_TAG || secrets.PL_DISCUSSION_TAG }}
+      PL_DISCUSSION_TYPE: ${{ vars.PL_DISCUSSION_TYPE }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || secrets.OPENAI_MODEL }}
+      OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL || secrets.OPENAI_BASE_URL }}
+      SPARK_MODEL: ${{ vars.SPARK_MODEL || secrets.SPARK_MODEL }}
+      SPARK_ENDPOINT: ${{ vars.SPARK_ENDPOINT || secrets.SPARK_ENDPOINT }}
+      SKIP: ${{ vars.SKIP || secrets.SKIP }}
+      TAKE: ${{ vars.TAKE || secrets.TAKE }}
+      COLLECT_PAGE_SIZE: ${{ vars.COLLECT_PAGE_SIZE }}
+      COLLECT_BATCH_SIZE: ${{ vars.COLLECT_BATCH_SIZE }}
+      COLLECT_ANALYZE_CONCURRENCY: ${{ vars.COLLECT_ANALYZE_CONCURRENCY }}
+      COLLECT_INSERT_CONCURRENCY: ${{ vars.COLLECT_INSERT_CONCURRENCY }}
+      COLLECT_PAGE_DELAY_MS: ${{ vars.COLLECT_PAGE_DELAY_MS }}
+      COLLECT_BATCH_DELAY_MS: ${{ vars.COLLECT_BATCH_DELAY_MS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Sync latest main
-        run: |
-          git checkout main
-          git pull --ff-only origin main
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
 
-      - name: Apply database patch
-        env:
-          DB_PATH: ./data.db
-          DB_PATCH_FILE: ./home/database.patch.json
-          LOG_DIR: ./logs
-          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
-          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
-          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
-          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
-        run: npm run apply-db-patch
-
-      - name: Backfill historical record sources
-        env:
-          DB_PATH: ./data.db
-          PL_BASE_URL: ${{ secrets.PL_BASE_URL }}
-          PL_ADMIN_USERNAME: ${{ secrets.PL_ADMIN_USERNAME }}
-          PL_ADMIN_PASSWORD: ${{ secrets.PL_ADMIN_PASSWORD }}
-          PL_USERNAME: ${{ secrets.PL_USERNAME }}
-          PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
-          LOG_DIR: ./logs
-          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
-          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
-          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
-          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
-        run: npm run backfill-record-sources
-
-      - name: Update database
-        env:
-          PL_USERNAME: ${{ secrets.PL_USERNAME }}
-          PL_PASSWORD: ${{ secrets.PL_PASSWORD }}
-          PL_DISCUSSION_ID: ${{ secrets.PL_DISCUSSION_ID }}
-          PL_DISCUSSION_TAG: ${{ secrets.PL_DISCUSSION_TAG }}
-          PL_DISCUSSION_TYPE: ${{ secrets.PL_DISCUSSION_TYPE }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
-          SPARK_API_PASSWORD: ${{ secrets.SPARK_API_PASSWORD }}
-          SPARK_MODEL: ${{ secrets.SPARK_MODEL }}
-          SPARK_ENDPOINT: ${{ secrets.SPARK_ENDPOINT }}
-          SKIP: ${{ secrets.SKIP }}
-          TAKE: ${{ secrets.TAKE }}
-          DB_PATH: ./data.db
+      - name: Collect new records
         run: npm run update-db
 
-      - name: Export Cloudflare snapshot
-        env:
-          DB_PATH: ./data.db
-          CLOUDFLARE_EXPORT_FILE: ./cloudflare/data/records.mjs
-          LOG_DIR: ./logs
-          PL_LOG_SUMMARY_ID: ${{ secrets.PL_LOG_SUMMARY_ID }}
-          PL_LOG_SUMMARY_CATEGORY: ${{ secrets.PL_LOG_SUMMARY_CATEGORY }}
-          PL_LOG_SUMMARY_USERNAME: ${{ secrets.PL_LOG_SUMMARY_USERNAME }}
-          PL_LOG_SUMMARY_PASSWORD: ${{ secrets.PL_LOG_SUMMARY_PASSWORD }}
-        run: npm run export-cloudflare
+      - name: Export D1 SQL
+        run: npm run export-d1
+
+      - name: Import into Cloudflare D1
+        run: npx wrangler d1 execute 1ff32e2b-ab3c-4f78-aa15-9313e095e237 --remote --file=./cloudflare/d1/data.sql -y
+
+      - name: Verify row count
+        run: npx wrangler d1 execute 1ff32e2b-ab3c-4f78-aa15-9313e095e237 --remote --command "SELECT COUNT(*) AS total FROM data" -y
 
       - name: Deploy Cloudflare Worker
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         working-directory: ./cloudflare
         run: npx wrangler deploy --config wrangler.toml
 
-      - name: Check for changes and commit if needed
+      - name: Commit database snapshot
         run: |
-          git config --global user.name 'pl-bot[bot]'
-          git config --global user.email 'noreply@github.com'
+          git config user.name 'pl-bot[bot]'
+          git config user.email 'noreply@github.com'
           git add data.db
-          git add cloudflare/data/records.mjs
-          git add home/database.patch.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update database snapshot"
-            echo "CHANGES_DETECTED=true" >> $GITHUB_ENV
-          else
-            echo "No changes detected in tracked files, skipping commit."
-            echo "CHANGES_DETECTED=false" >> $GITHUB_ENV
+            git push origin HEAD:main
           fi
-
-      - name: Push to repository
-        if: env.CHANGES_DETECTED == 'true'
-        run: git push origin HEAD:main
