@@ -1,6 +1,4 @@
-﻿import { generatedAt, records } from "./data/records.mjs";
-
-const jsonHeaders = {
+﻿const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
   "access-control-allow-origin": "*",
@@ -26,6 +24,26 @@ const GENERIC_KEYWORDS = new Set([
   "模型",
 ]);
 
+// 与原 JS 内存检索一致的优先级定义：
+// name(1) > keyWords(2) > 学科(3) > userName(4) > source(5) > summary(6) > 未命中(7)
+const MATCH_PRIORITY_FIELDS = [
+  ["name"],
+  ["keyWords"],
+  ["primaryDiscipline", "secondaryDiscipline"],
+  ["userName"],
+  ["source"],
+  ["summary"],
+];
+const ALL_MATCH_FIELDS = [
+  "name",
+  "keyWords",
+  "primaryDiscipline",
+  "secondaryDiscipline",
+  "userName",
+  "source",
+  "summary",
+];
+
 function optionalNumber(value) {
   if (value == null || value === "") return NaN;
   const parsed = Number(value);
@@ -43,44 +61,123 @@ function uniq(values) {
   return Array.from(new Set(values.map((value) => String(value || "").trim()).filter(Boolean)));
 }
 
-function includesIgnoreCase(value, query) {
-  return String(value || "").toLowerCase().includes(String(query || "").toLowerCase());
-}
-
-function fieldMatches(record, keyword) {
-  return [
-    record.name,
-    record.summary,
-    record.userName,
-    record.source,
-    ...(record.keyWords || []),
-    ...(record.primaryDiscipline || []),
-    ...(record.secondaryDiscipline || []),
-  ].some((value) => includesIgnoreCase(value, keyword));
-}
-
-function matchPriority(record, keyword) {
-  if (includesIgnoreCase(record.name, keyword)) return 1;
-  if ((record.keyWords || []).some((value) => includesIgnoreCase(value, keyword))) return 2;
-  if (
-    (record.primaryDiscipline || []).some((value) => includesIgnoreCase(value, keyword)) ||
-    (record.secondaryDiscipline || []).some((value) => includesIgnoreCase(value, keyword))
-  ) {
-    return 3;
+function parseArrayField(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
   }
-  if (includesIgnoreCase(record.userName, keyword)) return 4;
-  if (includesIgnoreCase(record.source, keyword)) return 5;
-  if (includesIgnoreCase(record.summary, keyword)) return 6;
-  return 7;
+  if (typeof value !== "string") return [];
+  const trimmed = value.trim();
+  if (!trimmed) return [];
+  try {
+    const parsed = JSON.parse(trimmed);
+    if (Array.isArray(parsed)) {
+      return parsed.map((item) => String(item).trim()).filter(Boolean);
+    }
+  } catch {
+    // 按 JSON 解析失败时回退到分隔符拆分
+  }
+  return trimmed
+    .split(/[,\n|，；;]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
-function bestPriority(record, keywords) {
-  if (keywords.length === 0) return 99;
-  return keywords.reduce((best, keyword) => Math.min(best, matchPriority(record, keyword)), 99);
+function normalizeRecord(row) {
+  return {
+    ...row,
+    primaryDiscipline: parseArrayField(row.primaryDiscipline),
+    secondaryDiscipline: parseArrayField(row.secondaryDiscipline),
+    keyWords: parseArrayField(row.keyWords),
+  };
 }
 
-function matchCount(record, keywords) {
-  return keywords.reduce((count, keyword) => count + (fieldMatches(record, keyword) ? 1 : 0), 0);
+// LIKE 模式需要转义通配符，保持与原 includesIgnoreCase 语义一致
+function likeParam(keyword) {
+  const escaped = String(keyword).toLowerCase().replace(/[\\%_]/g, (ch) => `\\${ch}`);
+  return `%${escaped}%`;
+}
+
+function likeCondition(field) {
+  return `LOWER(${field}) LIKE ? ESCAPE '\\'`;
+}
+
+function buildSearchQuery(keywords, filters) {
+  const conditions = [];
+  const whereBinds = [];
+  const selectBinds = [];
+  const hasKeywords = keywords.length > 0;
+
+  if (hasKeywords) {
+    const keywordConds = keywords.map(
+      () => `(${ALL_MATCH_FIELDS.map((field) => likeCondition(field)).join(" OR ")})`,
+    );
+    conditions.push(`(${keywordConds.join(" OR ")})`);
+    for (const keyword of keywords) {
+      const param = likeParam(keyword);
+      for (let index = 0; index < ALL_MATCH_FIELDS.length; index += 1) {
+        whereBinds.push(param);
+      }
+    }
+  }
+
+  if (filters.author) {
+    conditions.push(`(${likeCondition("userName")} OR ${likeCondition("editorName")})`);
+    const param = likeParam(filters.author);
+    whereBinds.push(param, param);
+  }
+
+  if (Number.isFinite(filters.year)) {
+    conditions.push("year = ?");
+    whereBinds.push(filters.year);
+  }
+  if (Number.isFinite(filters.yearFrom)) {
+    conditions.push("year >= ?");
+    whereBinds.push(filters.yearFrom);
+  }
+  if (Number.isFinite(filters.yearTo)) {
+    conditions.push("year <= ?");
+    whereBinds.push(filters.yearTo);
+  }
+
+  let selectClause = "*";
+  if (hasKeywords) {
+    const priorityConds = [];
+    MATCH_PRIORITY_FIELDS.forEach((fields) => {
+      const conds = [];
+      for (const keyword of keywords) {
+        const param = likeParam(keyword);
+        for (const field of fields) {
+          conds.push(likeCondition(field));
+          selectBinds.push(param);
+        }
+      }
+      priorityConds.push(conds.join(" OR "));
+    });
+    const priorityCase = priorityConds
+      .map((cond, index) => `WHEN (${cond}) THEN ${index + 1}`)
+      .join(" ");
+
+    const matchParts = keywords.map((keyword) => {
+      const param = likeParam(keyword);
+      const conds = ALL_MATCH_FIELDS.map((field) => {
+        selectBinds.push(param);
+        return likeCondition(field);
+      });
+      return `CASE WHEN (${conds.join(" OR ")}) THEN 1 ELSE 0 END`;
+    });
+
+    selectClause = `*, CASE ${priorityCase} ELSE 7 END AS _priority, ${matchParts.join(" + ")} AS _matchCount`;
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  const orderClause = hasKeywords
+    ? "ORDER BY _priority ASC, _matchCount DESC, year DESC, readability ASC, id ASC"
+    : "ORDER BY year DESC, readability ASC, id ASC";
+
+  return {
+    sql: `SELECT ${selectClause} FROM data ${whereClause} ${orderClause} LIMIT ?`,
+    binds: [...selectBinds, ...whereBinds, filters.limit],
+  };
 }
 
 function parseExpansionContent(content, originalKeywords) {
@@ -144,6 +241,24 @@ async function expandKeywordsWithGroq(env, keywords) {
   }
 }
 
+async function queryAll(env, sql, binds = []) {
+  const stmt = env.DB.prepare(sql);
+  const result = binds.length > 0 ? await stmt.bind(...binds).all() : await stmt.all();
+  return result?.results ?? [];
+}
+
+let cachedGeneratedAt;
+async function getGeneratedAt(env) {
+  if (cachedGeneratedAt !== undefined) return cachedGeneratedAt;
+  try {
+    const row = await env.DB.prepare("SELECT value FROM meta WHERE key = 'generatedAt'").first();
+    cachedGeneratedAt = row?.value ?? null;
+  } catch {
+    cachedGeneratedAt = null;
+  }
+  return cachedGeneratedAt;
+}
+
 async function searchSnapshot(params, env) {
   const keywords = tokenizeKeywords(params.get("keywords")).slice(0, 8);
   const author = params.get("author");
@@ -156,38 +271,14 @@ async function searchSnapshot(params, env) {
   const extraKeywords = shouldAiExpand ? await expandKeywordsWithGroq(env, keywords) : [];
   const effectiveKeywords = uniq([...keywords, ...extraKeywords]);
 
-  const filtered = records
-    .filter((record) => {
-      const recordYear = Number(record.year);
-      if (effectiveKeywords.length && !effectiveKeywords.some((keyword) => fieldMatches(record, keyword))) {
-        return false;
-      }
-      if (author && !includesIgnoreCase(record.userName, author) && !includesIgnoreCase(record.editorName, author)) {
-        return false;
-      }
-      if (Number.isFinite(year) && recordYear !== year) return false;
-      if (Number.isFinite(yearFrom) && recordYear < yearFrom) return false;
-      if (Number.isFinite(yearTo) && recordYear > yearTo) return false;
-      return true;
-    })
-    .map((record) => ({
-      ...record,
-      _priority: bestPriority(record, effectiveKeywords),
-      _matchCount: matchCount(record, effectiveKeywords),
-    }))
-    .sort((left, right) => {
-      if (left._priority !== right._priority) return left._priority - right._priority;
-      if (left._matchCount !== right._matchCount) return right._matchCount - left._matchCount;
-      if (left.year !== right.year) return right.year - left.year;
-      return left.readability - right.readability;
-    })
-    .slice(0, limit)
-    .map(({ _priority, _matchCount, ...record }) => record);
+  const { sql, binds } = buildSearchQuery(effectiveKeywords, { author, year, yearFrom, yearTo, limit });
+  const rows = await queryAll(env, sql, binds);
+  const records = rows.map(normalizeRecord);
 
   return {
     keywords,
     extraKeywords,
-    records: filtered,
+    records,
   };
 }
 
@@ -217,36 +308,45 @@ export default {
       return ok({ error: "Method not allowed" }, 405);
     }
 
-    if (url.pathname === "/api/meta") {
-      return ok({
-        service: "pl-search-cloudflare",
-        generatedAt,
-        totalRecords: records.length,
-        maxLimit: MAX_LIMIT,
-        aiKeywordExpansion: Boolean(env?.GROQ_API_KEY),
-        endpoints: ["/api/meta", "/api/search?keywords=...", "/api/record?id=..."],
-      });
+    if (!env.DB) {
+      return ok({ error: "D1 database binding (DB) is not configured" }, 500);
     }
 
-    if (url.pathname === "/api/search") {
-      const result = await searchSnapshot(url.searchParams, env);
-      return ok({
-        generatedAt,
-        count: result.records.length,
-        keywords: result.keywords,
-        extraKeywords: result.extraKeywords,
-        aiExpanded: result.extraKeywords.length > 0,
-        records: result.records,
-      });
-    }
+    try {
+      if (url.pathname === "/api/meta") {
+        const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM data").first();
+        return ok({
+          service: "pl-search-cloudflare",
+          generatedAt: await getGeneratedAt(env),
+          totalRecords: Number(countRow?.total ?? 0),
+          maxLimit: MAX_LIMIT,
+          aiKeywordExpansion: Boolean(env?.GROQ_API_KEY),
+          endpoints: ["/api/meta", "/api/search?keywords=...", "/api/record?id=..."],
+        });
+      }
 
-    if (url.pathname === "/api/record") {
-      const id = url.searchParams.get("id");
-      if (!id) return ok({ error: "id is required" }, 400);
+      if (url.pathname === "/api/search") {
+        const result = await searchSnapshot(url.searchParams, env);
+        return ok({
+          generatedAt: await getGeneratedAt(env),
+          count: result.records.length,
+          keywords: result.keywords,
+          extraKeywords: result.extraKeywords,
+          aiExpanded: result.extraKeywords.length > 0,
+          records: result.records,
+        });
+      }
 
-      const record = records.find((item) => item.id === id);
-      if (!record) return ok({ error: "Not found" }, 404);
-      return ok({ record, generatedAt });
+      if (url.pathname === "/api/record") {
+        const id = url.searchParams.get("id");
+        if (!id) return ok({ error: "id is required" }, 400);
+
+        const row = await env.DB.prepare("SELECT * FROM data WHERE id = ?").bind(id).first();
+        if (!row) return ok({ error: "Not found" }, 404);
+        return ok({ record: normalizeRecord(row), generatedAt: await getGeneratedAt(env) });
+      }
+    } catch (error) {
+      return ok({ error: String(error?.message || error) }, 500);
     }
 
     if (env.ASSETS) {

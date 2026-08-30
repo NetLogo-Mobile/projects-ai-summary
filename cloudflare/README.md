@@ -1,13 +1,14 @@
 ﻿# Cloudflare Query API + 搜索页
 
-这个目录提供一个可直接部署到 Cloudflare Workers 的搜索服务：访问根路径会返回一个搜索页面，同时提供只读查询 API。
+这个目录提供一个可直接部署到 Cloudflare Workers 的搜索服务：访问根路径会返回一个搜索页面，同时提供只读查询 API。数据存储在 Cloudflare D1 数据库 `plworks` 中，通过手动触发的工作流导入。
 
 ## 文件
 
-- `worker.mjs`：Workers 入口，提供 `/api/meta`、`/api/search`、`/api/record`，其余路径回退到静态资源
+- `worker.mjs`：Workers 入口，提供 `/api/meta`、`/api/search`、`/api/record`，其余路径回退到静态资源，数据从 D1 binding `DB` 读取
 - `public/index.html`：搜索页面（前端检索，同源调用本 Worker 的 API）
-- `data/records.mjs`：由本地数据库导出的静态快照
-- `wrangler.toml`：Workers 配置（含静态资源 `[assets]`）
+- `d1/data.sql`：由 `npm run export-d1` 生成的导入文件（已 gitignore，不入库）
+- `data/records.mjs`：旧的静态快照，Worker 已不再依赖，仅作为数据备份保留
+- `wrangler.toml`：Workers 配置（含 D1 `[[d1_databases]]` 与静态资源 `[assets]`）
 
 ## 部署准备
 
@@ -19,6 +20,16 @@ npx wrangler deploy --config cloudflare/wrangler.toml
 ```
 
 部署后访问 Worker 域名即可打开搜索页。API 端点为 `/api/meta`、`/api/search`、`/api/record`。
+
+## 数据导入 D1
+
+仓库根目录的 `data.db` 是权威数据源。通过 GitHub Actions 工作流 `导入数据到Cloudflare D1`（`import-d1.yml`，手动触发）完成同步：
+
+1. `npm run export-d1`：从 `data.db` 导出 SQL（建表 + 全量替换 + 元信息）到 `cloudflare/d1/data.sql`
+2. `npx wrangler d1 import plworks --remote --file=./cloudflare/d1/data.sql`：全量导入 D1
+3. `npx wrangler d1 execute plworks --remote --command "SELECT COUNT(*) AS total FROM data"`：校验行数
+
+也可以本地手动执行同样两条 wrangler 命令完成导入。
 
 要给Worker配置secret`GROQ_API_KEY`,其余可选变量：
 
@@ -39,4 +50,4 @@ npx wrangler deploy --config cloudflare/wrangler.toml
 
 ## 搜索页面
 
-页面位于 `public/index.html`，以同源方式调用以上 API（`API = ''`），支持关键词、作者、年份筛选，结果卡片可展开查看关键词、学科与档案详情。`data/records.mjs` 随数据库快照更新而自动刷新。
+页面位于 `public/index.html`，以同源方式调用以上 API（`API = ''`），支持关键词、作者、年份筛选，结果卡片可展开查看关键词、学科与档案详情。数据来自 D1 数据库 `plworks`，每次运行 `导入数据到Cloudflare D1` 工作流后自动更新。

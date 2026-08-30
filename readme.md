@@ -87,6 +87,10 @@ CLOUDFLARE_ACCOUNT_ID=
   - 执行: `npm run export-cloudflare`
   - 自动部署 Worker
   - 将更新后的 `data.db` 和 `cloudflare/data/records.mjs` 提交回仓库
+- `import-d1.yml`（手动触发，名称：导入数据到Cloudflare D1）
+  - 执行 `npm run export-d1` 将 `data.db` 导出为 SQL
+  - 执行 `npx wrangler d1 import plworks --remote` 全量导入 Cloudflare D1
+  - 校验 D1 行数
 
 
 ## 本地命令

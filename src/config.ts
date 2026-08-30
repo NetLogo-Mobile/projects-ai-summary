@@ -41,6 +41,7 @@ export const config = {
   databasePath: readEnvWithDefault('DB_PATH', './data.db'),
   dbPatchFile: readEnvWithDefault('DB_PATCH_FILE', './home/database.patch.json'),
   cloudflareExportFile: readEnvWithDefault('CLOUDFLARE_EXPORT_FILE', './cloudflare/data/records.mjs'),
+  d1ExportFile: readEnvWithDefault('D1_EXPORT_FILE', './cloudflare/d1/data.sql'),
   plUsername: readEnvWithDefault('PL_USERNAME', ''),
   plPassword: readEnvWithDefault('PL_PASSWORD', ''),
   discussionTags: readEnvList('PL_DISCUSSION_TAG', '精选'),

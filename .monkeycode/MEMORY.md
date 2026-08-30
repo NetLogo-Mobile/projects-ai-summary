@@ -1,0 +1,26 @@
+# User Instruction Memory
+
+This file records user instructions, preferences, and teachings for reference in future interactions.
+
+## Format
+
+[User Instruction Summary]
+- Date: YYYY-MM-DD
+- Context: scenario
+- Instructions:
+  - content
+
+## Entries
+
+[Agent Thinking Format]
+- Date: 2026-08-30
+- Context: 用户在布置 Cloudflare D1 数据同步任务时提出
+- Instructions:
+  - 思考（thinking）内容以 "we need..." 开头
+
+[Cloudflare 部署方式]
+- Date: 2026-08-30
+- Context: 搜索服务（pl-search-cloudflare Worker + D1）的运维约定
+- Instructions:
+  - Cloudflare 相关操作全部通过 GitHub Actions secrets（CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID，environment: pl-search）完成，不需要本地 wrangler login
+  - D1 数据库：plworks，database_id 1ff32e2b-ab3c-4f78-aa15-9313e095e237
