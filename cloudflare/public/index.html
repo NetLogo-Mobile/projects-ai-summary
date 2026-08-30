@@ -711,7 +711,7 @@ function cardHTML(r, i, tokens){
   const dots = Math.max(1, Math.round(rd * 5));
   const dotHTML = Array.from({length:5}, (_,d) => `<span class="dot ${d<dots?'on':''}"></span>`).join('');
   const ed = r.editorName ? `<span class="editor-note">编辑 ${esc(r.editorName)}</span>` : '';
-  const openUrl = `https://plweb.turtlesim.com/#/p/${(r.source === '实验精选' ? 'Experiment' : 'Discussion')}/${encodeURIComponent(r.id)}`;
+  const openUrl = `open.html?id=${encodeURIComponent(r.id)}&name=${encodeURIComponent(r.name)}`;
 
   return `
   <article class="card" data-id="${esc(r.id)}" data-i="${i}" role="button" tabindex="0"
