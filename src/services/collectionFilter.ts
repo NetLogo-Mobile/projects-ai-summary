@@ -1,5 +1,4 @@
 const EXCLUDED_TAG = '小作品';
-const MINIMUM_CONTENT_LENGTH = 50;
 
 type WorkSummary = {
   Tags?: unknown;
@@ -7,23 +6,18 @@ type WorkSummary = {
 };
 
 function getStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) return [];
-  return value.map((item) => String(item));
-}
-
-export function getWorkContentLength(summary: WorkSummary): number {
-  return getStringArray(summary.Description).join('').trim().length;
-}
-
-export function getCollectionSkipReason(summary: WorkSummary, category: string): string | null {
-  const tags = getStringArray(summary.Tags).map((tag) => tag.trim());
-  if (category.trim().toLowerCase() === 'discussion' && tags.includes(EXCLUDED_TAG)) {
-    return `包含“${EXCLUDED_TAG}”标签`;
+  if (typeof value === 'string') return [value];
+  if (Array.isArray(value)) return value.map((item) => String(item));
+  if (value && typeof value === 'object' && '$values' in value) {
+    return getStringArray((value as { $values?: unknown }).$values);
   }
+  return [];
+}
 
-  const contentLength = getWorkContentLength(summary);
-  if (contentLength < MINIMUM_CONTENT_LENGTH) {
-    return `正文少于 ${MINIMUM_CONTENT_LENGTH} 字（当前 ${contentLength} 字）`;
+export function getCollectionSkipReason(summary: WorkSummary): string | null {
+  const tags = getStringArray(summary.Tags).map((tag) => tag.trim());
+  if (tags.includes(EXCLUDED_TAG)) {
+    return `包含“${EXCLUDED_TAG}”标签`;
   }
 
   return null;
