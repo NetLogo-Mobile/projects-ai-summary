@@ -26,8 +26,8 @@ npx wrangler deploy --config cloudflare/wrangler.toml
 仓库根目录的 `data.db` 是权威数据源。通过 GitHub Actions 工作流 `导入数据到Cloudflare D1`（`import-d1.yml`，手动触发）完成同步：
 
 1. `npm run export-d1`：从 `data.db` 导出 SQL（建表 + 全量替换 + 元信息）到 `cloudflare/d1/data.sql`
-2. `npx wrangler d1 execute plworks --remote --file=./cloudflare/d1/data.sql -y`：全量导入 D1
-3. `npx wrangler d1 execute plworks --remote --command "SELECT COUNT(*) AS total FROM data"`：校验行数
+2. `npx wrangler d1 execute 1ff32e2b-ab3c-4f78-aa15-9313e095e237 --remote --file=./cloudflare/d1/data.sql -y`：全量导入 D1
+3. `npx wrangler d1 execute 1ff32e2b-ab3c-4f78-aa15-9313e095e237 --remote --command "SELECT COUNT(*) AS total FROM data"`：校验行数
 
 也可以本地手动执行同样两条 wrangler 命令完成导入。
 

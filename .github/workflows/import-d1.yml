@@ -39,10 +39,10 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler d1 execute plworks --remote --file=./cloudflare/d1/data.sql -y
+        run: npx wrangler d1 execute 1ff32e2b-ab3c-4f78-aa15-9313e095e237 --remote --file=./cloudflare/d1/data.sql -y
 
       - name: Verify row count
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler d1 execute plworks --remote --command "SELECT COUNT(*) AS total FROM data" -y
+        run: npx wrangler d1 execute 1ff32e2b-ab3c-4f78-aa15-9313e095e237 --remote --command "SELECT COUNT(*) AS total FROM data" -y
