@@ -70,3 +70,21 @@ npm run export-d1
 ```
 
 线上服务：`https://pl-search-cloudflare.zongkuli2.workers.dev`
+
+## 埋点与日志
+
+Worker 启动时自动在 D1 `plworks` 创建三张表（无需额外控制台操作）：
+
+- `events`：前端埋点事件（搜索、打开作品、卡片展开、筛选等）
+- `search_terms`：搜索词统计（服务端 `/api/search` 时记录，按词聚合计数）
+- `error_logs`：API 异常日志（catch 时写入，含 path / message / stack）
+
+前端通过 `navigator.sendBeacon` 上报 `POST /api/track`（body：`{event, data}`），Worker 异步写入 D1。
+
+查询统计接口（只读，供分析用）：
+
+```text
+GET /api/stats?type=terms    搜索词 TOP50（term, count, last_searched_at）
+GET /api/stats?type=events   事件类型聚合 TOP50（event, count, last_ts）
+GET /api/stats?type=errors   最近 50 条错误日志（id, ts, path, message, extra）
+```
