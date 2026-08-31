@@ -67,6 +67,9 @@ jobs:
       - name: Verify row count
         run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --command "SELECT COUNT(*) AS total FROM data" -y
 
+      - name: Initialize analytics tables
+        run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --file=./cloudflare/d1/analytics.sql -y
+
       - name: Deploy Cloudflare Worker
         working-directory: ./cloudflare
         run: npx wrangler deploy --config wrangler.toml
