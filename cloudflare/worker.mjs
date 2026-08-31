@@ -444,6 +444,8 @@ export default {
       }
 
       if (url.pathname === "/api/stats") {
+        // The stats endpoint can be the first request after deployment.
+        await ensureTables(env);
         const type = url.searchParams.get("type") || "terms";
         if (type === "terms") {
           const rows = await env.DB.prepare(
