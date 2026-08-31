@@ -259,6 +259,95 @@ async function getGeneratedAt(env) {
   return cachedGeneratedAt;
 }
 
+/* ============ 埋点 / 错误日志（D1 持久化） ============ */
+
+let tablesReady;
+async function ensureTables(env) {
+  if (!tablesReady) {
+    tablesReady = (async () => {
+      await env.DB.batch([
+        env.DB.prepare(`CREATE TABLE IF NOT EXISTS error_logs (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          ts TEXT NOT NULL DEFAULT (datetime('now')),
+          path TEXT,
+          message TEXT,
+          stack TEXT,
+          extra TEXT
+        )`),
+        env.DB.prepare(`CREATE TABLE IF NOT EXISTS events (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          ts TEXT NOT NULL DEFAULT (datetime('now')),
+          event TEXT NOT NULL,
+          data TEXT,
+          ip TEXT
+        )`),
+        env.DB.prepare(`CREATE TABLE IF NOT EXISTS search_terms (
+          term TEXT PRIMARY KEY,
+          count INTEGER NOT NULL DEFAULT 0,
+          last_searched_at TEXT
+        )`),
+      ]);
+    })().catch((error) => {
+      tablesReady = undefined;
+      console.error("[analytics] ensureTables failed:", error?.message || error);
+    });
+  }
+  return tablesReady;
+}
+
+async function logError(env, error, extra = {}) {
+  try {
+    await ensureTables(env);
+    await env.DB.prepare(
+      `INSERT INTO error_logs (ts, path, message, stack, extra) VALUES (?, ?, ?, ?, ?)`
+    )
+      .bind(
+        new Date().toISOString(),
+        String(extra.path ?? ""),
+        String(error?.message ?? error),
+        String(error?.stack ?? ""),
+        JSON.stringify(extra),
+      )
+      .run();
+  } catch (logErr) {
+    console.error("[analytics] logError failed:", logErr?.message || logErr);
+  }
+}
+
+async function recordEvent(env, event, data = {}, ip = "") {
+  try {
+    await ensureTables(env);
+    await env.DB.prepare(
+      `INSERT INTO events (ts, event, data, ip) VALUES (?, ?, ?, ?)`
+    )
+      .bind(
+        new Date().toISOString(),
+        String(event).slice(0, 64),
+        JSON.stringify(data),
+        String(ip || "").slice(0, 64),
+      )
+      .run();
+  } catch (recordErr) {
+    console.error("[analytics] recordEvent failed:", recordErr?.message || recordErr);
+  }
+}
+
+async function recordSearchTerm(env, term) {
+  if (!term) return;
+  try {
+    await ensureTables(env);
+    const now = new Date().toISOString();
+    await env.DB.prepare(
+      `INSERT INTO search_terms (term, count, last_searched_at) VALUES (?, 1, ?)
+       ON CONFLICT(term) DO UPDATE SET count = count + 1, last_searched_at = excluded.last_searched_at`
+    )
+      .bind(term, now)
+      .run();
+  } catch (termErr) {
+    console.error("[analytics] recordSearchTerm failed:", termErr?.message || termErr);
+  }
+}
+
 async function searchSnapshot(params, env) {
   const keywords = tokenizeKeywords(params.get("keywords")).slice(0, 8);
   const author = params.get("author");
@@ -290,7 +379,7 @@ function ok(data, status = 200) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
@@ -298,10 +387,24 @@ export default {
         status: 204,
         headers: {
           ...jsonHeaders,
-          "access-control-allow-methods": "GET,OPTIONS",
+          "access-control-allow-methods": "GET,POST,OPTIONS",
           "access-control-allow-headers": "content-type",
         },
       });
+    }
+
+    if (url.pathname === "/api/track" && request.method === "POST") {
+      let body = {};
+      try {
+        body = await request.json();
+      } catch {
+        body = {};
+      }
+      const event = String(body?.event ?? body?.name ?? "").trim();
+      const data = body?.data && typeof body?.data === "object" ? body.data : {};
+      const ip = request.headers.get("CF-Connecting-IP") ?? "";
+      ctx.waitUntil(recordEvent(env, event, data, ip));
+      return ok({ ok: true });
     }
 
     if (request.method !== "GET") {
@@ -327,6 +430,9 @@ export default {
 
       if (url.pathname === "/api/search") {
         const result = await searchSnapshot(url.searchParams, env);
+        for (const keyword of result.keywords) {
+          ctx.waitUntil(recordSearchTerm(env, keyword));
+        }
         return ok({
           generatedAt: await getGeneratedAt(env),
           count: result.records.length,
@@ -335,6 +441,29 @@ export default {
           aiExpanded: result.extraKeywords.length > 0,
           records: result.records,
         });
+      }
+
+      if (url.pathname === "/api/stats") {
+        const type = url.searchParams.get("type") || "terms";
+        if (type === "terms") {
+          const rows = await env.DB.prepare(
+            "SELECT term, count, last_searched_at FROM search_terms ORDER BY count DESC LIMIT 50"
+          ).all();
+          return ok({ type, terms: rows.results ?? [] });
+        }
+        if (type === "events") {
+          const rows = await env.DB.prepare(
+            "SELECT event, COUNT(*) AS count, MAX(ts) AS last_ts FROM events GROUP BY event ORDER BY count DESC LIMIT 50"
+          ).all();
+          return ok({ type, events: rows.results ?? [] });
+        }
+        if (type === "errors") {
+          const rows = await env.DB.prepare(
+            "SELECT id, ts, path, message, extra FROM error_logs ORDER BY id DESC LIMIT 50"
+          ).all();
+          return ok({ type, errors: rows.results ?? [] });
+        }
+        return ok({ error: "unknown stats type" }, 400);
       }
 
       if (url.pathname === "/api/record") {
@@ -346,6 +475,8 @@ export default {
         return ok({ record: normalizeRecord(row), generatedAt: await getGeneratedAt(env) });
       }
     } catch (error) {
+      ctx.waitUntil(logError(env, error, { path: url.pathname }));
+      console.error("[api] error on", url.pathname, error?.message || error);
       return ok({ error: String(error?.message || error) }, 500);
     }
 
