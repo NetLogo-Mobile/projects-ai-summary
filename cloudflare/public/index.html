@@ -257,6 +257,7 @@ body.searched .hero h1{font-size:24px;line-height:1.2}
   font-size:17px;font-weight:650;letter-spacing:-.01em;line-height:1.45;
 }
 .card-title{
+  position:relative;
   display:flex;align-items:flex-start;gap:6px;
 }
 .card-title-text{
@@ -270,6 +271,40 @@ body.searched .hero h1{font-size:24px;line-height:1.2}
 }
 .card-open:hover{color:var(--accent);background:var(--accent-soft)}
 .card-open:active{transform:scale(.88)}
+.card-open.hint{
+  color:var(--accent);background:var(--accent-soft);
+  width:26px;height:26px;margin-top:-2px;border-radius:8px;
+  box-shadow:0 0 0 0 rgba(216,73,47,.45);
+  animation:hintGlow 1.6s var(--ease) infinite;
+  z-index:2;
+}
+.card-open.hint svg{width:15px;height:15px}
+@keyframes hintGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(216,73,47,.42)}
+  55%{box-shadow:0 0 0 10px rgba(216,73,47,0)}
+}
+.open-hint{
+  position:absolute;top:calc(100% + 10px);right:-6px;z-index:8;
+  background:var(--ink);color:#fff;
+  font-size:12.5px;font-weight:550;line-height:1.4;
+  padding:9px 12px;border-radius:12px;
+  box-shadow:0 10px 28px rgba(0,0,0,.22);
+  white-space:nowrap;
+  animation:cardIn .4s var(--ease) both;
+  pointer-events:auto;cursor:pointer;
+}
+.open-hint::before{
+  content:"";position:absolute;top:-5px;right:14px;
+  width:10px;height:10px;background:var(--ink);
+  transform:rotate(45deg);border-radius:2px;
+}
+.open-hint b{font-weight:700}
+@media (max-width:560px){
+  .open-hint{right:0;white-space:normal;max-width:min(220px,72vw);text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  .card-open.hint{animation:none;box-shadow:0 0 0 4px rgba(216,73,47,.22)}
+}
 .card-author{display:flex;align-items:center;gap:7px;margin-top:7px;flex-wrap:wrap}
 .avatar{
   width:19px;height:19px;border-radius:50%;flex:0 0 auto;
@@ -664,6 +699,43 @@ function clearRecent(){
   renderRecent();
 }
 
+/* ---------- 首次访问：高亮「打开作品」图标 ---------- */
+const OPEN_HINT_KEY = 'plt-archive-open-hint';
+let openHintTimer;
+function hasSeenOpenHint(){
+  try{ return localStorage.getItem(OPEN_HINT_KEY) === '1'; }catch{ return true; }
+}
+function markOpenHintSeen(){
+  try{ localStorage.setItem(OPEN_HINT_KEY, '1'); }catch{}
+}
+function dismissOpenHint(){
+  clearTimeout(openHintTimer);
+  document.querySelectorAll('.card-open.hint').forEach(el => el.classList.remove('hint'));
+  document.querySelectorAll('.open-hint').forEach(el => el.remove());
+  markOpenHintSeen();
+}
+function maybeShowOpenHint(){
+  if (hasSeenOpenHint()) return;
+  clearTimeout(openHintTimer);
+  const first = document.querySelector('.cards .card .card-open');
+  if (!first) return;
+  first.classList.add('hint');
+  const title = first.closest('.card-title');
+  if (!title || title.querySelector('.open-hint')) return;
+  const tip = document.createElement('button');
+  tip.type = 'button';
+  tip.className = 'open-hint';
+  tip.setAttribute('aria-label', '点击标题旁图标打开作品');
+  tip.innerHTML = '点这个图标 <b>打开作品</b>';
+  tip.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    dismissOpenHint();
+  });
+  title.appendChild(tip);
+  openHintTimer = setTimeout(dismissOpenHint, 7000);
+}
+
 /* ---------- 渲染 ---------- */
 function renderChips(){
   /* 热门 */
@@ -872,6 +944,7 @@ function render(){
   }
 
   box.innerHTML = `<div class="cards">${list.map((r,i) => cardHTML(r, i, tokens)).join('')}</div>`;
+  maybeShowOpenHint();
 
   const note = $('listNote');
   if (total >= LIMIT){
@@ -924,6 +997,7 @@ function bindResults(){
     if (openLink){
       const card = openLink.closest('.card');
       track('open_work', { id: card?.dataset.id });
+      dismissOpenHint();
       e.stopPropagation(); return;
     }
 
@@ -938,6 +1012,7 @@ function bindResults(){
 
     const card = e.target.closest('.card');
     if (card){
+      dismissOpenHint();
       const willOpen = !card.classList.contains('open');
       card.classList.toggle('open');
       card.setAttribute('aria-expanded', willOpen);
