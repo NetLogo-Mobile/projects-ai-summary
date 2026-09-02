@@ -97,86 +97,72 @@ function likeParam(keyword) {
   return `%${escaped}%`;
 }
 
-function likeCondition(field) {
-  return `LOWER(${field}) LIKE ? ESCAPE '\\'`;
+function likeCondition(field, patternExpr) {
+  return `LOWER(${field}) LIKE ${patternExpr} ESCAPE '\\'`;
 }
 
-function buildSearchQuery(keywords, filters) {
+function anyFieldMatch(patternExpr) {
+  return `(${ALL_MATCH_FIELDS.map((field) => likeCondition(field, patternExpr)).join(" OR ")})`;
+}
+
+export function buildSearchQuery(keywords, filters) {
   const conditions = [];
-  const whereBinds = [];
-  const selectBinds = [];
+  const paramCols = [];
+  const paramBinds = [];
+  const extraBinds = [];
   const hasKeywords = keywords.length > 0;
 
   if (hasKeywords) {
-    const keywordConds = keywords.map(
-      () => `(${ALL_MATCH_FIELDS.map((field) => likeCondition(field)).join(" OR ")})`,
-    );
-    conditions.push(`(${keywordConds.join(" OR ")})`);
-    for (const keyword of keywords) {
-      const param = likeParam(keyword);
-      for (let index = 0; index < ALL_MATCH_FIELDS.length; index += 1) {
-        whereBinds.push(param);
-      }
-    }
+    keywords.forEach((keyword, index) => {
+      paramCols.push(`? AS k${index}`);
+      paramBinds.push(likeParam(keyword));
+    });
+    conditions.push(`(${keywords.map((_, index) => anyFieldMatch(`p.k${index}`)).join(" OR ")})`);
   }
 
   if (filters.author) {
-    conditions.push(`(${likeCondition("userName")} OR ${likeCondition("editorName")})`);
-    const param = likeParam(filters.author);
-    whereBinds.push(param, param);
+    paramCols.push("? AS author");
+    paramBinds.push(likeParam(filters.author));
+    conditions.push(`(${likeCondition("userName", "p.author")} OR ${likeCondition("editorName", "p.author")})`);
   }
 
   if (Number.isFinite(filters.year)) {
     conditions.push("year = ?");
-    whereBinds.push(filters.year);
+    extraBinds.push(filters.year);
   }
   if (Number.isFinite(filters.yearFrom)) {
     conditions.push("year >= ?");
-    whereBinds.push(filters.yearFrom);
+    extraBinds.push(filters.yearFrom);
   }
   if (Number.isFinite(filters.yearTo)) {
     conditions.push("year <= ?");
-    whereBinds.push(filters.yearTo);
+    extraBinds.push(filters.yearTo);
   }
 
-  let selectClause = "*";
+  const selectPrefix = paramCols.length > 0 ? "data.*" : "*";
+  let selectClause = selectPrefix;
   if (hasKeywords) {
-    const priorityConds = [];
-    MATCH_PRIORITY_FIELDS.forEach((fields) => {
-      const conds = [];
-      for (const keyword of keywords) {
-        const param = likeParam(keyword);
-        for (const field of fields) {
-          conds.push(likeCondition(field));
-          selectBinds.push(param);
-        }
-      }
-      priorityConds.push(conds.join(" OR "));
-    });
+    const priorityConds = MATCH_PRIORITY_FIELDS.map((fields) =>
+      keywords
+        .flatMap((_, index) => fields.map((field) => likeCondition(field, `p.k${index}`)))
+        .join(" OR "),
+    );
     const priorityCase = priorityConds
       .map((cond, index) => `WHEN (${cond}) THEN ${index + 1}`)
       .join(" ");
-
-    const matchParts = keywords.map((keyword) => {
-      const param = likeParam(keyword);
-      const conds = ALL_MATCH_FIELDS.map((field) => {
-        selectBinds.push(param);
-        return likeCondition(field);
-      });
-      return `CASE WHEN (${conds.join(" OR ")}) THEN 1 ELSE 0 END`;
-    });
-
-    selectClause = `*, CASE ${priorityCase} ELSE 7 END AS _priority, ${matchParts.join(" + ")} AS _matchCount`;
+    const matchParts = keywords.map((_, index) => `CASE WHEN ${anyFieldMatch(`p.k${index}`)} THEN 1 ELSE 0 END`);
+    selectClause = `${selectPrefix}, CASE ${priorityCase} ELSE 7 END AS _priority, ${matchParts.join(" + ")} AS _matchCount`;
   }
 
+  const fromClause = paramCols.length > 0 ? `data, (SELECT ${paramCols.join(", ")}) AS p` : "data";
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
   const orderClause = hasKeywords
     ? "ORDER BY _priority ASC, _matchCount DESC, year DESC, readability ASC, id ASC"
     : "ORDER BY year DESC, readability ASC, id ASC";
 
   return {
-    sql: `SELECT ${selectClause} FROM data ${whereClause} ${orderClause} LIMIT ?`,
-    binds: [...selectBinds, ...whereBinds, filters.limit],
+    sql: `SELECT ${selectClause} FROM ${fromClause} ${whereClause} ${orderClause} LIMIT ?`,
+    binds: [...paramBinds, ...extraBinds, filters.limit],
   };
 }
 
