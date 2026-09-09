@@ -1,9 +1,13 @@
 const WORK_ID_RE = /^[0-9a-f]{24}$/i;
 const SITEMAP_CHUNK = 5000;
 const WORKS_PAGE_SIZE = 200;
+const TOPIC_PAGE_SIZE = 50;
+const TOPIC_QUERY_MAX = 40;
 const INDEXNOW_BATCH = 9990;
 const BAIDU_BATCH = 1998;
 const RESUBMIT_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
+
+export const HOT_TOPICS = ["物理", "电路", "数学", "黑洞", "相对论", "量子", "力学", "电磁", "天文", "化学", "小说", "哲学", "实验"];
 
 export const INDEXNOW_ENDPOINTS = [
   "https://api.indexnow.org/indexnow",
@@ -17,6 +21,8 @@ export const SEO_CONSTANTS = {
   WORK_ID_RE,
   SITEMAP_CHUNK,
   WORKS_PAGE_SIZE,
+  TOPIC_PAGE_SIZE,
+  TOPIC_QUERY_MAX,
   INDEXNOW_BATCH,
   BAIDU_BATCH,
 };
@@ -72,6 +78,30 @@ export function workUrl(origin, id) {
   return `${origin}/w/${String(id).toLowerCase()}`;
 }
 
+export function normalizeTopicQuery(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().slice(0, TOPIC_QUERY_MAX);
+}
+
+export function topicUrl(origin, query) {
+  return `${origin}/q/${encodeURIComponent(normalizeTopicQuery(query))}`;
+}
+
+export function parseTopicQuery(pathname) {
+  const match = String(pathname || "").match(/^\/q\/([^/]+)\/?$/);
+  if (!match) return "";
+  let decoded = match[1];
+  try {
+    decoded = decodeURIComponent(match[1].replace(/\+/g, " "));
+  } catch {
+    return "";
+  }
+  return normalizeTopicQuery(decoded);
+}
+
+export function topicPageTitle(query) {
+  return `关于${query}的作品`;
+}
+
 export function truncateText(value, max = 160) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   if (text.length <= max) return text;
@@ -92,6 +122,7 @@ function robotsGroup(userAgent) {
     "Allow: /",
     "Allow: /w/",
     "Allow: /works",
+    "Allow: /q/",
     "Disallow: /api/",
     "Disallow: /?q=",
   ];
@@ -152,7 +183,7 @@ export function buildUrlSetXml(urls, lastmod) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items.join("\n")}\n</urlset>\n`;
 }
 
-export function buildStaticSitemapUrls(origin, workCount, lastmod) {
+export function buildStaticSitemapUrls(origin, workCount, lastmod, topics = HOT_TOPICS) {
   const pages = worksListPageCount(workCount);
   const urls = [
     { loc: `${origin}/`, lastmod, changefreq: "daily", priority: "1.0" },
@@ -164,6 +195,18 @@ export function buildStaticSitemapUrls(origin, workCount, lastmod) {
       lastmod,
       changefreq: "daily",
       priority: "0.5",
+    });
+  }
+  const seen = new Set();
+  for (const topic of topics) {
+    const query = normalizeTopicQuery(topic);
+    if (!query || seen.has(query)) continue;
+    seen.add(query);
+    urls.push({
+      loc: topicUrl(origin, query),
+      lastmod,
+      changefreq: "daily",
+      priority: "0.7",
     });
   }
   return urls;
@@ -373,7 +416,7 @@ export function renderWorkPage(origin, record) {
 <meta name="keywords" content="${escapeHtml([source, ...keywords, ...subjects].filter(Boolean).join(","))}">
 ${jsonLdScript(jsonLd)}`;
   const tagLinks = [...keywords, ...subjects].slice(0, 16).map((item) => (
-    `<a class="tag" href="${escapeHtml(origin)}/?q=${encodeURIComponent(item)}">${escapeHtml(item)}</a>`
+    `<a class="tag" href="${escapeHtml(topicUrl(origin, item))}">${escapeHtml(item)}</a>`
   )).join("");
 
   return `<!DOCTYPE html>
@@ -482,7 +525,108 @@ ${baseHead({ origin, title, description, canonical, extra })}
 
 export function renderHomeNoscript(origin, records) {
   const items = records.map((row) => renderCatalogItem(origin, row, "article")).join("");
-  return `<section id="crawl-index"><h2>近期收录作品</h2><p>每篇作品的标题与摘要均对搜索引擎公开。<a href="${escapeHtml(origin)}/works">浏览全部作品</a></p><div class="list">${items}</div></section>`;
+  const topics = HOT_TOPICS.map((topic) => (
+    `<a class="tag" href="${escapeHtml(topicUrl(origin, topic))}">${escapeHtml(topicPageTitle(topic))}</a>`
+  )).join("");
+  return `<section id="crawl-index"><h2>近期收录作品</h2><p>每篇作品的标题与摘要均对搜索引擎公开。<a href="${escapeHtml(origin)}/works">浏览全部作品</a></p><div class="tags">${topics}</div><div class="list">${items}</div></section>`;
+}
+
+export function topicPageMeta(query, records) {
+  const q = normalizeTopicQuery(query);
+  const heading = topicPageTitle(q);
+  return {
+    query: q,
+    heading,
+    title: `${heading} · PL Town 作品库`,
+    description: records.length
+      ? `PL Town 已收录与「${q}」相关的社区作品，本页列出标题与摘要，便于检索。`
+      : `PL Town 作品库中暂未找到与「${q}」直接相关的作品。`,
+    robots: records.length ? "index,follow,max-image-preview:large" : "noindex,follow",
+  };
+}
+
+export function applyDocumentSeo(html, { title, description, canonical, robots }) {
+  let out = String(html || "");
+  if (title) {
+    out = out.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(title)}</title>`);
+    out = out.replace(/property="og:title" content="[^"]*"/, `property="og:title" content="${escapeHtml(title)}"`);
+    out = out.replace(/name="twitter:title" content="[^"]*"/, `name="twitter:title" content="${escapeHtml(title)}"`);
+  }
+  if (description) {
+    out = out.replace(/name="description" content="[^"]*"/, `name="description" content="${escapeHtml(description)}"`);
+    out = out.replace(/property="og:description" content="[^"]*"/, `property="og:description" content="${escapeHtml(description)}"`);
+    out = out.replace(/name="twitter:description" content="[^"]*"/, `name="twitter:description" content="${escapeHtml(description)}"`);
+  }
+  if (canonical) {
+    out = out.replace(/rel="canonical" href="[^"]*"/g, `rel="canonical" href="${escapeHtml(canonical)}"`);
+    out = out.replace(/property="og:url" content="[^"]*"/, `property="og:url" content="${escapeHtml(canonical)}"`);
+    out = out.replace(/rel="alternate" hreflang="zh-CN" href="[^"]*"/, `rel="alternate" hreflang="zh-CN" href="${escapeHtml(canonical)}"`);
+    out = out.replace(/rel="alternate" hreflang="x-default" href="[^"]*"/, `rel="alternate" hreflang="x-default" href="${escapeHtml(canonical)}"`);
+  }
+  if (robots) {
+    out = out.replace(/name="robots" content="[^"]*"/, `name="robots" content="${escapeHtml(robots)}"`);
+  }
+  return out;
+}
+
+export function renderTopicCrawlBlock(origin, query, records) {
+  const q = normalizeTopicQuery(query);
+  const heading = topicPageTitle(q);
+  const items = records.map((row) => renderCatalogItem(origin, row, "article")).join("");
+  const empty = `<p>暂无直接匹配的作品。<a href="${escapeHtml(origin)}/works">浏览全部作品</a></p>`;
+  return `<section id="crawl-index"><h1>${escapeHtml(heading)}</h1><p>与「${escapeHtml(q)}」相关的社区作品，标题与摘要对搜索引擎公开。</p>${records.length ? `<div class="list">${items}</div>` : empty}</section>`;
+}
+
+export function renderTopicPage({ origin, query, records, lastmod }) {
+  const q = normalizeTopicQuery(query);
+  const canonical = topicUrl(origin, q);
+  const { heading, title, description, robots } = topicPageMeta(q, records);
+  const extra = jsonLdScript({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: heading,
+    url: canonical,
+    inLanguage: "zh-CN",
+    isPartOf: origin,
+    dateModified: lastmod || undefined,
+    about: q,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: records.length,
+      itemListElement: records.map((row, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: workUrl(origin, row.id),
+        name: row.name || "未命名作品",
+        description: String(row.summary || "").trim(),
+      })),
+    },
+  });
+  const items = records.map((row) => renderCatalogItem(origin, row, "li")).join("");
+  const empty = `<p class="note">暂无直接匹配的作品。<a href="${escapeHtml(origin)}/works">浏览全部作品</a></p>`;
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+${baseHead({ origin, title, description, canonical, extra, robots })}
+<style>${PAGE_CSS}</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="brand-zh">作品库</div>
+  <nav class="nav">
+    <a href="${escapeHtml(origin)}/">检索</a>
+    <a href="${escapeHtml(origin)}/works">全部作品</a>
+  </nav>
+</div></header>
+<main class="wrap">
+  <h1>${escapeHtml(heading)}</h1>
+  <p class="meta">与「${escapeHtml(q)}」相关的社区作品${records.length ? ` · 本页 ${records.length} 篇` : ""}</p>
+  ${records.length ? `<ul class="list">${items}</ul>` : empty}
+  ${pageCredit()}
+</main>
+</body>
+</html>`;
 }
 
 export function renderNotFoundPage(origin) {
@@ -725,6 +869,8 @@ export function canonicalRequestPath(pathname) {
   if (path.length > 1 && path.endsWith("/")) path = path.replace(/\/+$/, "") || "/";
   const workId = parseWorkId(path);
   if (workId) return `/w/${workId}`;
+  const topic = parseTopicQuery(path);
+  if (topic) return `/q/${encodeURIComponent(topic)}`;
   return path;
 }
 
