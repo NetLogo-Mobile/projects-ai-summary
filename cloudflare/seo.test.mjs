@@ -89,6 +89,11 @@ test("work page is crawlable HTML with canonical and json-ld", () => {
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /"@type":"CreativeWork"/);
   assert.match(html, /name="robots" content="index,follow/);
+  assert.match(html, /class="open-exp"/);
+  assert.match(html, /class="open-disc"/);
+  assert.match(html, /以实验打开/);
+  assert.match(html, /以讨论打开/);
+  assert.match(html, /由wsxiaolin收集整理/);
 });
 
 test("works index paginates and links to work pages", () => {
@@ -107,6 +112,7 @@ test("works index paginates and links to work pages", () => {
   assert.ok(!html.includes(`${"乙".repeat(80)}…`));
   assert.match(html, /上一页/);
   assert.match(html, /下一页/);
+  assert.match(html, /由wsxiaolin收集整理/);
 });
 
 test("home crawl block exposes title and full summary", () => {

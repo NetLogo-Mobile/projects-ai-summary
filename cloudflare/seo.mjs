@@ -310,8 +310,13 @@ h1{font-size:clamp(26px,6vw,36px);letter-spacing:-.02em;line-height:1.25;overflo
 .summary{color:var(--ink2);white-space:pre-wrap;overflow-wrap:anywhere}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .tag{font-size:12px;padding:4px 10px;border-radius:999px;background:#f3f3f5;color:var(--ink2);text-decoration:none}
-.links{margin-top:18px;display:flex;flex-direction:column;gap:8px}
-.links a{color:var(--accent);text-decoration:none}
+.links{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.links a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;padding:12px 16px;border-radius:14px;text-decoration:none;text-align:center;-webkit-tap-highlight-color:transparent}
+.links .k{font-size:16px;font-weight:650;line-height:1.3}
+.links .sub{font-size:12px;font-weight:500;opacity:.78}
+.links .open-exp{background:var(--accent);color:#fff}
+.links .open-disc{background:var(--accent-soft);color:var(--accent)}
+.links a:active{transform:scale(.98)}
 .list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:18px}
 .list a{text-decoration:none}
 .list li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
@@ -321,7 +326,18 @@ h1{font-size:clamp(26px,6vw,36px);letter-spacing:-.02em;line-height:1.25;overflo
 .pager{margin-top:22px;display:flex;gap:16px;font-size:14px}
 .pager a{color:var(--accent);text-decoration:none}
 .note{margin-top:18px;font-size:12px;color:var(--ink3)}
-footer{margin-top:28px;font-size:12px;color:var(--ink3)}`;
+footer,.credit{margin-top:28px;font-size:12px;color:var(--ink3);text-align:center;line-height:1.8}
+.credit a{color:var(--ink2);text-decoration:none}
+@media (max-width:560px){
+  .wrap{padding:24px 16px 48px}
+  .card{padding:18px 16px}
+  .links{gap:12px}
+  .links a{min-height:56px}
+}`;
+
+function pageCredit() {
+  return `<footer class="credit">由wsxiaolin收集整理 · 作品版权归原作者与社区所有</footer>`;
+}
 
 export function renderWorkPage(origin, record) {
   const id = String(record.id || "").toLowerCase();
@@ -382,11 +398,18 @@ ${baseHead({ origin, title: `${name} · PL Town 作品库`, description, canonic
     <p class="summary" itemprop="abstract">${escapeHtml(summary)}</p>
     ${tagLinks ? `<div class="tags">${tagLinks}</div>` : ""}
     <div class="links">
-      <a href="${escapeHtml(links.experiment)}" rel="noopener">在物理实验室以实验打开</a>
-      <a href="${escapeHtml(links.discussion)}" rel="noopener">在物理实验室以讨论打开</a>
+      <a class="open-exp" href="${escapeHtml(links.experiment)}" rel="noopener">
+        <span class="k">以实验打开</span>
+        <span class="sub">物理实验室</span>
+      </a>
+      <a class="open-disc" href="${escapeHtml(links.discussion)}" rel="noopener">
+        <span class="k">以讨论打开</span>
+        <span class="sub">物理实验室</span>
+      </a>
     </div>
   </article>
-  <p class="note">本页供检索与收录；作品版权归原作者与社区所有。</p>
+  <p class="note">本页供检索与收录。</p>
+  ${pageCredit()}
 </main>
 </body>
 </html>`;
@@ -451,6 +474,7 @@ ${baseHead({ origin, title, description, canonical, extra })}
     ${prev ? `<a href="${escapeHtml(prev)}">上一页</a>` : ""}
     ${next ? `<a href="${escapeHtml(next)}">下一页</a>` : ""}
   </nav>
+  ${pageCredit()}
 </main>
 </body>
 </html>`;
@@ -473,6 +497,7 @@ ${baseHead({ origin, title: "作品未找到 · PL Town 作品库", description:
 <main class="wrap">
   <h1>作品未找到</h1>
   <p class="meta"><a href="${escapeHtml(origin)}/works">浏览全部作品</a> · <a href="${escapeHtml(origin)}/">返回检索</a></p>
+  ${pageCredit()}
 </main>
 </body>
 </html>`;
