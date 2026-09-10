@@ -6,7 +6,7 @@
 
 - `cloudflare/public/index.html`：Cloudflare 静态搜索页面
 - `cloudflare/worker.mjs`：搜索 API 与可选的 Groq 查询词扩展
-- Cloudflare D1 `plworks`：线上查询数据源
+- Cloudflare D1 `plworks`：线上查询数据源（`data` + `data_fts` 倒排索引）
 - `data.db`：仓库内权威数据快照
 - `src/scripts/updateDatabase.ts`：作品收录入口
 - `src/scripts/exportD1Sql.ts`：将 `data.db` 导出为 D1 SQL
