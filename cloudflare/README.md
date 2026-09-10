@@ -8,6 +8,7 @@
 - `GET /api/search?keywords=力学&author=张三&yearStart=2020&yearEnd=2025&limit=20`
 - `GET /api/record?id=<作品ID>`
 - `GET /w/<作品ID>`：可被搜索引擎抓取的作品详情页
+- `GET /q/<关键词>`：可被搜索引擎抓取的「关于某某的作品」检索页
 - `GET /works`：全部作品分页目录
 - `GET /robots.txt`、`GET /sitemap.xml`：收录入口
 

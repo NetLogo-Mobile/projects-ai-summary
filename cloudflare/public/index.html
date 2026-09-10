@@ -21,7 +21,7 @@
 <meta name="twitter:title" content="作品库 · PL Town">
 <meta name="twitter:description" content="检索物理实验室社区作品：标题、作者、学科与摘要。">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"PL Town 作品库","url":"https://s.pltown.online/","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://s.pltown.online/?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"PL Town 作品库","url":"https://s.pltown.online/","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://s.pltown.online/q/{search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <style>
 /* ============ 基础与变量 ============ */
@@ -441,6 +441,8 @@ body.searched #crawl-index{display:none}
 #crawl-index{margin-top:48px}
 #crawl-index h2{font-size:22px;letter-spacing:-.02em}
 #crawl-index > p{margin:8px 0 16px;font-size:13px;color:var(--ink3)}
+#crawl-index .tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+#crawl-index .tag{font-size:12px;padding:4px 10px;border-radius:999px;background:#f3f3f5;color:var(--ink2)!important;text-decoration:none}
 #crawl-index .list{list-style:none;display:flex;flex-direction:column;gap:12px}
 #crawl-index article{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 #crawl-index .t{font-size:16px;font-weight:650;line-height:1.4}
@@ -547,7 +549,7 @@ body.searched #crawl-index{display:none}
 
   <footer>
     <p>数据来自 <a href="https://s.pltown.online/">s.pltown.online</a> · <a href="/works">全部作品</a> · 检索服务运行于 Cloudflare Workers<br>
-    作品版权归原作者与社区所有 · 本页仅做检索展示</p>
+    由wsxiaolin收集整理 · 作品版权归原作者与社区所有 · 本页仅做检索展示</p>
   </footer>
 </main>
 
@@ -687,9 +689,7 @@ async function search(q, {push = true} = {}){
   $('q').value = q;
   $('btnClear').classList.toggle('show', !!q);
   if (push){
-    const u = new URL(location.href);
-    if (q) u.searchParams.set('q', q); else u.searchParams.delete('q');
-    history.pushState({q}, '', u);
+    history.pushState({q}, '', q ? `/q/${encodeURIComponent(q)}` : '/');
     if (q) rememberRecent(q);
   }
   try{
@@ -1083,8 +1083,12 @@ function bindMisc(){
 
   /* 浏览器前进后退 */
   window.addEventListener('popstate', e => {
+    let pathTopic = '';
+    try {
+      pathTopic = decodeURIComponent((location.pathname.match(/^\/q\/([^/]+)\/?$/) || [])[1] || '').replace(/\+/g, ' ').trim();
+    } catch {}
     const q = (e.state && typeof e.state.q === 'string') ? e.state.q
-            : (new URLSearchParams(location.search).get('q') || '');
+            : (pathTopic || new URLSearchParams(location.search).get('q') || '');
     if (q !== state.q) search(q, {push:false});
   });
 }
@@ -1098,8 +1102,12 @@ function bindMisc(){
 
   loadMeta();  // 并行，不阻塞
 
-  const q = new URLSearchParams(location.search).get('q') || '';
-  history.replaceState({q}, '', q ? `?q=${encodeURIComponent(q)}` : location.pathname);
+  let pathTopic = '';
+  try {
+    pathTopic = decodeURIComponent((location.pathname.match(/^\/q\/([^/]+)\/?$/) || [])[1] || '').replace(/\+/g, ' ').trim();
+  } catch {}
+  const q = pathTopic || new URLSearchParams(location.search).get('q') || '';
+  history.replaceState({q}, '', q ? `/q/${encodeURIComponent(q)}` : '/');
   if (q){  /* 分享链接直达：跳过 hero 收起动画 */
     document.documentElement.classList.add('no-trans');
     document.body.classList.add('searched');

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   INDEXNOW_ENDPOINTS,
   SEO_CONSTANTS,
+  applyDocumentSeo,
   buildBaiduBody,
   buildIndexNowPayload,
   buildRobotsTxt,
@@ -14,12 +15,17 @@ import {
   googleSiteUrl,
   isIndexNowKeyPath,
   maybeCanonicalRedirect,
+  parseTopicQuery,
   parseWorkId,
   parseWorksPage,
   renderCatalogItem,
   renderHomeNoscript,
+  renderTopicCrawlBlock,
+  renderTopicPage,
   renderWorkPage,
   renderWorksIndex,
+  topicPageTitle,
+  topicUrl,
   runSeoSubmission,
   sitemapPageCount,
   sitemapPingUrls,
@@ -49,8 +55,9 @@ test("robots and sitemap index cover all works", () => {
   assert.match(robots, /User-agent: Baiduspider/);
   assert.match(robots, /Disallow: \/api\//);
   assert.match(robots, /Disallow: \/\?q=/);
-  assert.match(robots, /User-agent: Googlebot\nAllow: \/\nAllow: \/w\/\nAllow: \/works\nDisallow: \/api\/\nDisallow: \/\?q=/);
-  assert.match(robots, /User-agent: Baiduspider\nAllow: \/\nAllow: \/w\/\nAllow: \/works\nDisallow: \/api\/\nDisallow: \/\?q=/);
+  assert.match(robots, /Allow: \/q\//);
+  assert.match(robots, /User-agent: Googlebot\nAllow: \/\nAllow: \/w\/\nAllow: \/works\nAllow: \/q\/\nDisallow: \/api\/\nDisallow: \/\?q=/);
+  assert.match(robots, /User-agent: Baiduspider\nAllow: \/\nAllow: \/w\/\nAllow: \/works\nAllow: \/q\/\nDisallow: \/api\/\nDisallow: \/\?q=/);
   assert.match(robots, /Host: s\.pltown\.online/);
   assert.match(robots, /Sitemap: https:\/\/s\.pltown\.online\/sitemap\.xml/);
 
@@ -65,7 +72,8 @@ test("static sitemap includes paginated works index", () => {
   const urls = buildStaticSitemapUrls("https://s.pltown.online", 24570, "2026-09-07T00:00:00.000Z");
   assert.equal(urls[0].loc, "https://s.pltown.online/");
   assert.equal(urls[1].loc, "https://s.pltown.online/works");
-  assert.equal(urls.at(-1).loc, "https://s.pltown.online/works?page=123");
+  assert.ok(urls.some((entry) => entry.loc === "https://s.pltown.online/works?page=123"));
+  assert.ok(urls.some((entry) => entry.loc === "https://s.pltown.online/q/%E5%8A%9B%E5%AD%A6"));
 });
 
 test("work page is crawlable HTML with canonical and json-ld", () => {
@@ -89,6 +97,11 @@ test("work page is crawlable HTML with canonical and json-ld", () => {
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /"@type":"CreativeWork"/);
   assert.match(html, /name="robots" content="index,follow/);
+  assert.match(html, /class="open-exp"/);
+  assert.match(html, /class="open-disc"/);
+  assert.match(html, /以实验打开/);
+  assert.match(html, /以讨论打开/);
+  assert.match(html, /由wsxiaolin收集整理/);
 });
 
 test("works index paginates and links to work pages", () => {
@@ -107,6 +120,7 @@ test("works index paginates and links to work pages", () => {
   assert.ok(!html.includes(`${"乙".repeat(80)}…`));
   assert.match(html, /上一页/);
   assert.match(html, /下一页/);
+  assert.match(html, /由wsxiaolin收集整理/);
 });
 
 test("home crawl block exposes title and full summary", () => {
@@ -121,6 +135,8 @@ test("home crawl block exposes title and full summary", () => {
   assert.match(html, /天体运动/);
   assert.match(html, /完整摘要必须出现在首屏可抓 HTML 中。/);
   assert.match(html, /itemprop="abstract"/);
+  assert.match(html, /关于力学的作品/);
+  assert.match(html, /href="https:\/\/s\.pltown\.online\/q\/%E5%8A%9B%E5%AD%A6"/);
   const item = renderCatalogItem("https://s.pltown.online", {
     id: "66a473d59e258e6b2f529e29",
     name: "主题标题",
@@ -128,6 +144,59 @@ test("home crawl block exposes title and full summary", () => {
   });
   assert.match(item, /主题标题/);
   assert.match(item, /全文摘要内容/);
+});
+
+test("topic pages are crawlable About-query work lists", () => {
+  assert.equal(topicPageTitle("力学"), "关于力学的作品");
+  assert.equal(parseTopicQuery("/q/%E5%8A%9B%E5%AD%A6"), "力学");
+  assert.equal(parseTopicQuery("/q/力学/"), "力学");
+  assert.equal(topicUrl("https://s.pltown.online", "力学"), "https://s.pltown.online/q/%E5%8A%9B%E5%AD%A6");
+  const html = renderTopicPage({
+    origin: "https://s.pltown.online",
+    query: "力学",
+    lastmod: "2026-09-09T00:00:00.000Z",
+    records: [{
+      id: "66a473d59e258e6b2f529e29",
+      name: "力学实验",
+      userName: "张三",
+      year: 2024,
+      summary: "这篇摘要必须出现在关于力学的作品页里。",
+    }],
+  });
+  assert.match(html, /<title>关于力学的作品 · PL Town 作品库<\/title>/);
+  assert.match(html, /<h1>关于力学的作品<\/h1>/);
+  assert.match(html, /rel="canonical" href="https:\/\/s\.pltown\.online\/q\/%E5%8A%9B%E5%AD%A6"/);
+  assert.match(html, /力学实验/);
+  assert.match(html, /这篇摘要必须出现在关于力学的作品页里。/);
+  assert.match(html, /itemprop="abstract"/);
+  assert.match(html, /由wsxiaolin收集整理/);
+  assert.match(html, /name="robots" content="index,follow/);
+  const empty = renderTopicPage({
+    origin: "https://s.pltown.online",
+    query: "不存在的词",
+    lastmod: "2026-09-09T00:00:00.000Z",
+    records: [],
+  });
+  assert.match(empty, /noindex,follow/);
+  const injected = renderTopicCrawlBlock("https://s.pltown.online", "力学", [{
+    id: "66a473d59e258e6b2f529e29",
+    name: "力学实验",
+    summary: "这篇摘要必须出现在关于力学的作品页里。",
+  }]);
+  assert.match(injected, /<h1>关于力学的作品<\/h1>/);
+  assert.match(injected, /这篇摘要必须出现在关于力学的作品页里。/);
+  const patched = applyDocumentSeo(
+    `<title>作品库 · PL Town</title><meta name="description" content="旧"><link rel="canonical" href="https://s.pltown.online/"><meta name="robots" content="index,follow">`,
+    {
+      title: "关于力学的作品 · PL Town 作品库",
+      description: "新描述",
+      canonical: "https://s.pltown.online/q/%E5%8A%9B%E5%AD%A6",
+      robots: "index,follow,max-image-preview:large",
+    },
+  );
+  assert.match(patched, /<title>关于力学的作品 · PL Town 作品库<\/title>/);
+  assert.match(patched, /content="新描述"/);
+  assert.match(patched, /href="https:\/\/s\.pltown\.online\/q\/%E5%8A%9B%E5%AD%A6"/);
 });
 
 test("Google sitemap submit URL uses Search Console API", () => {

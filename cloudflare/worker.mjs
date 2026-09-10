@@ -5,18 +5,25 @@
   buildStaticSitemapUrls,
   buildUrlSetXml,
   ensureSeoTables,
+  applyDocumentSeo,
   htmlResponse,
   isIndexNowKeyPath,
   maybeCanonicalRedirect,
+  normalizeTopicQuery,
+  parseTopicQuery,
   parseWorkId,
   parseWorksPage,
   renderHomeNoscript,
   renderNotFoundPage,
+  renderTopicCrawlBlock,
+  renderTopicPage,
   renderWorkPage,
+  topicPageMeta,
   renderWorksIndex,
   runSeoSubmission,
   siteOrigin,
   textResponse,
+  topicUrl,
   workUrl,
 } from "./seo.mjs";
 
@@ -447,6 +454,8 @@ async function handleSeoGet(request, env, url) {
   }
 
   if (pathname === "/") {
+    const homeQuery = normalizeTopicQuery(url.searchParams.get("q") || "");
+    if (homeQuery) return Response.redirect(topicUrl(origin, homeQuery), 301);
     const records = await queryAll(
       env,
       "SELECT id, name, userName, year, source, summary FROM data ORDER BY year DESC, id ASC LIMIT ?",
@@ -487,6 +496,33 @@ async function handleSeoGet(request, env, url) {
     const row = await env.DB.prepare("SELECT * FROM data WHERE id = ?").bind(workId).first();
     if (!row) return htmlResponse(renderNotFoundPage(origin), 404);
     return htmlResponse(renderWorkPage(origin, normalizeRecord(row)));
+  }
+
+  const topicQuery = parseTopicQuery(url.pathname) || parseTopicQuery(pathname);
+  if (topicQuery) {
+    const { sql, binds } = buildSearchQuery([topicQuery], { limit: SEO_CONSTANTS.TOPIC_PAGE_SIZE });
+    const records = (await queryAll(env, sql, binds)).map(normalizeRecord);
+    const lastmod = (await getGeneratedAt(env)) || new Date().toISOString();
+    if (env.ASSETS) {
+      const assetUrl = new URL("/", request.url);
+      const assetResponse = await env.ASSETS.fetch(new Request(assetUrl, request));
+      const html = await assetResponse.text();
+      const meta = topicPageMeta(topicQuery, records);
+      const withSeo = applyDocumentSeo(html, {
+        title: meta.title,
+        description: meta.description,
+        canonical: topicUrl(origin, topicQuery),
+        robots: meta.robots,
+      });
+      const crawlable = renderTopicCrawlBlock(origin, topicQuery, records);
+      const body = withSeo.includes("<footer>")
+        ? withSeo.replace("<footer>", `${crawlable}\n<footer>`)
+        : withSeo.includes("</body>")
+          ? withSeo.replace("</body>", `${crawlable}\n</body>`)
+          : `${withSeo}${crawlable}`;
+      return htmlResponse(body, 200, { "cache-control": "public, max-age=600" });
+    }
+    return htmlResponse(renderTopicPage({ origin, query: topicQuery, records, lastmod }));
   }
 
   return null;
@@ -562,7 +598,7 @@ export default {
           totalRecords: Number(countRow?.total ?? 0),
           maxLimit: MAX_LIMIT,
           aiKeywordExpansion: Boolean(env?.GROQ_API_KEY),
-          endpoints: ["/api/meta", "/api/search?keywords=...", "/api/record?id=...", "/w/:id", "/works", "/sitemap.xml", "/robots.txt"],
+          endpoints: ["/api/meta", "/api/search?keywords=...", "/api/record?id=...", "/w/:id", "/q/:query", "/works", "/sitemap.xml", "/robots.txt"],
         });
       }
 
