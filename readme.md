@@ -72,6 +72,7 @@ npm run export-d1
 线上服务：`https://s.pltown.online`
 
 作品详情：`https://s.pltown.online/w/<作品ID>`
+主题检索：`https://s.pltown.online/q/<关键词>`，例如 `https://s.pltown.online/q/力学`（关于力学的作品）
 全部作品：`https://s.pltown.online/works`
 Sitemap：`https://s.pltown.online/sitemap.xml`
 
