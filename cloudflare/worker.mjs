@@ -26,6 +26,14 @@
   topicUrl,
   workUrl,
 } from "./seo.mjs";
+import {
+  ALL_MATCH_FIELDS,
+  MATCH_PRIORITY_FIELDS,
+  normalizeRecord,
+  parseArrayField,
+  tokenizeKeywords,
+  uniq,
+} from "./search-core.mjs";
 
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
@@ -54,72 +62,13 @@ const GENERIC_KEYWORDS = new Set([
   "模型",
 ]);
 
-// 与原 JS 内存检索一致的优先级定义：
-// name(1) > keyWords(2) > 学科(3) > userName(4) > source(5) > summary(6) > 未命中(7)
-const MATCH_PRIORITY_FIELDS = [
-  ["name"],
-  ["keyWords"],
-  ["primaryDiscipline", "secondaryDiscipline"],
-  ["userName"],
-  ["source"],
-  ["summary"],
-];
-const ALL_MATCH_FIELDS = [
-  "name",
-  "keyWords",
-  "primaryDiscipline",
-  "secondaryDiscipline",
-  "userName",
-  "source",
-  "summary",
-];
+// 学科字段的 SQL 列名（FTS 列过滤用）
 const AUTHOR_FTS_FIELDS = ["userName", "editorName"];
 
 function optionalNumber(value) {
   if (value == null || value === "") return NaN;
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : NaN;
-}
-
-function tokenizeKeywords(value) {
-  return String(value || "")
-    .split(/[,\s|，；;]+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function uniq(values) {
-  return Array.from(new Set(values.map((value) => String(value || "").trim()).filter(Boolean)));
-}
-
-function parseArrayField(value) {
-  if (Array.isArray(value)) {
-    return value.map((item) => String(item).trim()).filter(Boolean);
-  }
-  if (typeof value !== "string") return [];
-  const trimmed = value.trim();
-  if (!trimmed) return [];
-  try {
-    const parsed = JSON.parse(trimmed);
-    if (Array.isArray(parsed)) {
-      return parsed.map((item) => String(item).trim()).filter(Boolean);
-    }
-  } catch {
-    // 按 JSON 解析失败时回退到分隔符拆分
-  }
-  return trimmed
-    .split(/[,\n|，；;]/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function normalizeRecord(row) {
-  return {
-    ...row,
-    primaryDiscipline: parseArrayField(row.primaryDiscipline),
-    secondaryDiscipline: parseArrayField(row.secondaryDiscipline),
-    keyWords: parseArrayField(row.keyWords),
-  };
 }
 
 const CJK_RUN = /[\u3400-\u9fff\uF900-\uFAFF]+/g;

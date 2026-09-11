@@ -67,6 +67,7 @@ npm test
 npm run update-db
 npm run flexible-collect -- --take -50
 npm run export-d1
+npm run start:render
 ```
 
 线上服务：`https://s.pltown.online`
@@ -77,6 +78,18 @@ npm run export-d1
 Sitemap：`https://s.pltown.online/sitemap.xml`
 
 Worker Cron 每 6 小时：用 Google Search Console API 提交 sitemap，IndexNow 推送 Bing/Yandex/Naver/Seznam，百度普通收录主动推送。Google 需要 Worker Secret `GOOGLE_SA_JSON`，百度需要 `BAIDU_ZHANZHANG_TOKEN`。手动补提交用 Secret `SEO_SUBMIT_KEY` 调 `GET /api/seo/submit?key=`，不要复用公开的 IndexNow key。
+
+## Render 兜底后端
+
+当 D1 免费额度（每日 500 万行读取）耗尽时，前台会从 Cloudflare 自动回退到 Render 上运行的同构后端：
+
+- `render/server.mjs`：用仓库内 `data.db` 快照做内存检索，无需云数据库，同时提供 `/api/*`、`/w/:id`、`/q/:query`、`/works`、`sitemap.xml`、`robots.txt`
+- `render.yaml`：Render Blueprint，`plan: free`，启动命令 `node render/server.mjs`
+- 前端 `cloudflare/public/index.html` 顶部的 `FALLBACK_API`：填入 Render 服务地址（如 `https://pl-search-fallback.onrender.com`）后，请求会先试 Cloudflare，失败再试 Render
+
+搜索核心 `cloudflare/search-core.mjs` 由 Worker 与 Render 共用，保证两边排序一致。Render 侧为子串匹配，是 FTS 二字切词的超集。
+
+部署 Render：在 Render 控制台连接本仓库，使用仓库根目录的 `render.yaml` 创建 Blueprint，等待首次构建完成，再把生成的 `https://<service>.onrender.com` 填入 `FALLBACK_API` 并重新部署 Cloudflare Worker。
 
 ## 埋点与日志
 

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: pl-search-fallback
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node render/server.mjs
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22.11.0"
+      - key: DB_PATH
+        value: ./data.db

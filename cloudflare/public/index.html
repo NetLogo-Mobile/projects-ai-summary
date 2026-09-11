@@ -570,6 +570,9 @@ body.searched #crawl-index{display:none}
 'use strict';
 
 const API = '';
+/* D1 免费额度耗尽时自动回退到 Render 后端；留空表示只走 Cloudflare */
+const FALLBACK_API = '';
+const API_BASES = FALLBACK_API ? [API, FALLBACK_API] : [API];
 const LIMIT = 50;
 
 /* ---------- 状态 ---------- */
@@ -644,14 +647,22 @@ function toast(msg){
 }
 
 /* ---------- 数据请求 ---------- */
-async function fetchJSON(url, timeout = 12000){
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeout);
-  try{
-    const res = await fetch(url, {signal: ctrl.signal});
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return await res.json();
-  } finally { clearTimeout(t); }
+/* 依次尝试 Cloudflare 与 Render 兜底后端 */
+async function fetchJSON(path, timeout = 12000){
+  let lastError;
+  for (const base of API_BASES){
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeout);
+    try{
+      const res = await fetch(base + path, {signal: ctrl.signal});
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (data && data.error) throw new Error(String(data.error));
+      return data;
+    }catch(e){ lastError = e; }
+    finally { clearTimeout(t); }
+  }
+  throw lastError || new Error('request failed');
 }
 
 /* 埋点上报（fire-and-forget，不阻塞交互） */
@@ -668,7 +679,7 @@ function track(event, data = {}){
 
 async function loadMeta(){
   try{
-    const d = await fetchJSON(API + '/api/meta');
+    const d = await fetchJSON('/api/meta');
     if (d && d.totalRecords){
       state.total = d.totalRecords;
       $('heroSub').innerHTML = `共收录 <b>${d.totalRecords.toLocaleString('zh-CN')}</b> 篇社区作品 — 覆盖物理、数学、工程、文学与哲学`;
@@ -693,7 +704,7 @@ async function search(q, {push = true} = {}){
     if (q) rememberRecent(q);
   }
   try{
-    const d = await fetchJSON(`${API}/api/search?keywords=${encodeURIComponent(q)}&limit=${LIMIT}`);
+    const d = await fetchJSON(`/api/search?keywords=${encodeURIComponent(q)}&limit=${LIMIT}`);
     state.records = (d.records || []).filter(r => r && r.id && r.name);
     state.error = false;
     if (q) track('search', { q, count: state.records.length, aiExpanded: !!d.aiExpanded });
