@@ -65,7 +65,7 @@ jobs:
         run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --file="$D1_EXPORT_FILE" -y
 
       - name: Verify row count
-        run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --command "SELECT COUNT(*) AS total FROM data" -y
+        run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --command "SELECT value AS total FROM meta WHERE key = 'rowCount'" -y
 
       - name: Initialize analytics tables
         run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --file=./cloudflare/d1/analytics.sql -y
