@@ -26,6 +26,50 @@ const DATA_COLUMNS = [
   'source',
 ] as const;
 
+const FTS_COLUMNS = [
+  'id',
+  'name',
+  'keyWords',
+  'primaryDiscipline',
+  'secondaryDiscipline',
+  'userName',
+  'editorName',
+  'source',
+  'summary',
+] as const;
+
+const CJK_RUN = /[\u3400-\u9fff\uF900-\uFAFF]+/g;
+
+export function toFtsText(value: unknown): string {
+  const text = String(value ?? '');
+  if (!text) return '';
+  const tokens: string[] = [];
+  CJK_RUN.lastIndex = 0;
+  let last = 0;
+  let match: RegExpExecArray | null;
+  while ((match = CJK_RUN.exec(text))) {
+    pushLatinTokens(text.slice(last, match.index), tokens);
+    pushCjkTokens(match[0], tokens);
+    last = match.index + match[0].length;
+  }
+  pushLatinTokens(text.slice(last), tokens);
+  return tokens.join(' ');
+}
+
+function pushLatinTokens(value: string, tokens: string[]): void {
+  const parts = value.toLowerCase().match(/[a-z0-9_]+/g);
+  if (parts) tokens.push(...parts);
+}
+
+function pushCjkTokens(run: string, tokens: string[]): void {
+  for (let index = 0; index < run.length; index += 1) {
+    tokens.push(run[index]);
+  }
+  for (let index = 0; index < run.length - 1; index += 1) {
+    tokens.push(run.slice(index, index + 2));
+  }
+}
+
 interface RawRecord {
   id: string;
   name: string | null;
@@ -60,6 +104,13 @@ function insertStatement(rows: RawRecord[]): string {
   return `INSERT INTO data (${DATA_COLUMNS.join(', ')}) VALUES\n${values.join(',\n')};`;
 }
 
+function insertFtsStatement(rows: RawRecord[]): string {
+  const values = rows.map(
+    row => `(${FTS_COLUMNS.map((column) => sqlValue(column === 'id' ? row.id : toFtsText(row[column]))).join(', ')})`,
+  );
+  return `INSERT INTO data_fts (${FTS_COLUMNS.join(', ')}) VALUES\n${values.join(',\n')};`;
+}
+
 async function main(): Promise<void> {
   await initDatabase();
 
@@ -87,13 +138,35 @@ async function main(): Promise<void> {
   source TEXT
 );`,
     'CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT);',
+    'DROP TABLE IF EXISTS data_fts;',
     'DELETE FROM meta;',
     `INSERT INTO meta (key, value) VALUES ('generatedAt', ${sqlValue(generatedAt)});`,
+    `INSERT INTO meta (key, value) VALUES ('rowCount', ${sqlValue(String(rows.length))});`,
     'DELETE FROM data;',
   ];
 
   for (let index = 0; index < rows.length; index += INSERT_BATCH_SIZE) {
     statements.push(insertStatement(rows.slice(index, index + INSERT_BATCH_SIZE)));
+  }
+
+  statements.push(
+    'CREATE INDEX IF NOT EXISTS idx_data_year_id ON data(year, id);',
+    `CREATE VIRTUAL TABLE data_fts USING fts5(
+  id UNINDEXED,
+  name,
+  keyWords,
+  primaryDiscipline,
+  secondaryDiscipline,
+  userName,
+  editorName,
+  source,
+  summary,
+  tokenize = 'unicode61'
+);`,
+  );
+
+  for (let index = 0; index < rows.length; index += INSERT_BATCH_SIZE) {
+    statements.push(insertFtsStatement(rows.slice(index, index + INSERT_BATCH_SIZE)));
   }
 
   const outputPath = path.resolve(config.d1ExportFile);
@@ -103,7 +176,10 @@ async function main(): Promise<void> {
   console.log(`[D1] exported ${rows.length} record(s) to ${outputPath}`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const isExportCli = /exportD1Sql\.(ts|js)$/.test(String(process.argv[1] || '').replace(/\\/g, '/'));
+if (isExportCli) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

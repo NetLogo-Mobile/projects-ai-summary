@@ -26,6 +26,14 @@
   topicUrl,
   workUrl,
 } from "./seo.mjs";
+import {
+  ALL_MATCH_FIELDS,
+  MATCH_PRIORITY_FIELDS,
+  normalizeRecord,
+  parseArrayField,
+  tokenizeKeywords,
+  uniq,
+} from "./search-core.mjs";
 
 const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
@@ -54,25 +62,8 @@ const GENERIC_KEYWORDS = new Set([
   "模型",
 ]);
 
-// 与原 JS 内存检索一致的优先级定义：
-// name(1) > keyWords(2) > 学科(3) > userName(4) > source(5) > summary(6) > 未命中(7)
-const MATCH_PRIORITY_FIELDS = [
-  ["name"],
-  ["keyWords"],
-  ["primaryDiscipline", "secondaryDiscipline"],
-  ["userName"],
-  ["source"],
-  ["summary"],
-];
-const ALL_MATCH_FIELDS = [
-  "name",
-  "keyWords",
-  "primaryDiscipline",
-  "secondaryDiscipline",
-  "userName",
-  "source",
-  "summary",
-];
+// 学科字段的 SQL 列名（FTS 列过滤用）
+const AUTHOR_FTS_FIELDS = ["userName", "editorName"];
 
 function optionalNumber(value) {
   if (value == null || value === "") return NaN;
@@ -80,59 +71,54 @@ function optionalNumber(value) {
   return Number.isFinite(parsed) ? parsed : NaN;
 }
 
-function tokenizeKeywords(value) {
-  return String(value || "")
-    .split(/[,\s|，；;]+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+const CJK_RUN = /[\u3400-\u9fff\uF900-\uFAFF]+/g;
+
+export function ftsQuote(value) {
+  return `"${String(value).replace(/"/g, '""')}"`;
 }
 
-function uniq(values) {
-  return Array.from(new Set(values.map((value) => String(value || "").trim()).filter(Boolean)));
-}
-
-function parseArrayField(value) {
-  if (Array.isArray(value)) {
-    return value.map((item) => String(item).trim()).filter(Boolean);
+export function keywordToFts(term) {
+  const text = String(term || "").trim();
+  if (!text) return ftsQuote("");
+  const parts = [];
+  CJK_RUN.lastIndex = 0;
+  let last = 0;
+  let match;
+  while ((match = CJK_RUN.exec(text))) {
+    const latin = text.slice(last, match.index);
+    const latinQuery = latinToFts(latin);
+    if (latinQuery) parts.push(latinQuery);
+    parts.push(cjkToFts(match[0]));
+    last = match.index + match[0].length;
   }
-  if (typeof value !== "string") return [];
-  const trimmed = value.trim();
-  if (!trimmed) return [];
-  try {
-    const parsed = JSON.parse(trimmed);
-    if (Array.isArray(parsed)) {
-      return parsed.map((item) => String(item).trim()).filter(Boolean);
-    }
-  } catch {
-    // 按 JSON 解析失败时回退到分隔符拆分
+  const latinQuery = latinToFts(text.slice(last));
+  if (latinQuery) parts.push(latinQuery);
+  if (parts.length === 0) return ftsQuote(text);
+  return parts.length === 1 ? parts[0] : `(${parts.join(" AND ")})`;
+}
+
+function latinToFts(value) {
+  const words = String(value).toLowerCase().match(/[a-z0-9_]+/g) || [];
+  if (words.length === 0) return "";
+  return words.map((word) => `${word}*`).join(" AND ");
+}
+
+function cjkToFts(run) {
+  if (run.length <= 2) return ftsQuote(run);
+  const grams = [];
+  for (let index = 0; index < run.length - 1; index += 1) {
+    grams.push(ftsQuote(run.slice(index, index + 2)));
   }
-  return trimmed
-    .split(/[,\n|，；;]/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+  return `(${grams.join(" + ")})`;
 }
 
-function normalizeRecord(row) {
-  return {
-    ...row,
-    primaryDiscipline: parseArrayField(row.primaryDiscipline),
-    secondaryDiscipline: parseArrayField(row.secondaryDiscipline),
-    keyWords: parseArrayField(row.keyWords),
-  };
+export function ftsOrQuery(terms) {
+  return terms.map(keywordToFts).join(" OR ");
 }
 
-// LIKE 模式需要转义通配符，保持与原 includesIgnoreCase 语义一致
-function likeParam(keyword) {
-  const escaped = String(keyword).toLowerCase().replace(/[\\%_]/g, (ch) => `\\${ch}`);
-  return `%${escaped}%`;
-}
-
-function likeCondition(field, patternExpr) {
-  return `LOWER(${field}) LIKE ${patternExpr} ESCAPE '\\'`;
-}
-
-function anyFieldMatch(patternExpr) {
-  return `(${ALL_MATCH_FIELDS.map((field) => likeCondition(field, patternExpr)).join(" OR ")})`;
+function ftsColumnQuery(columns, terms) {
+  const inner = ftsOrQuery(terms);
+  return columns.map((col) => `{${col}}: (${inner})`).join(" OR ");
 }
 
 export function buildSearchQuery(keywords, filters) {
@@ -141,19 +127,24 @@ export function buildSearchQuery(keywords, filters) {
   const paramBinds = [];
   const extraBinds = [];
   const hasKeywords = keywords.length > 0;
+  const hasAuthor = Boolean(filters.author);
+  const useFts = hasKeywords || hasAuthor;
+  const matchParts = [];
+
+  if (hasKeywords) matchParts.push(`(${ftsOrQuery(keywords)})`);
+  if (hasAuthor) matchParts.push(`(${ftsColumnQuery(AUTHOR_FTS_FIELDS, [filters.author])})`);
+
+  if (matchParts.length > 0) {
+    paramCols.push("? AS q");
+    paramBinds.push(matchParts.join(" AND "));
+    conditions.push("data_fts MATCH p.q");
+  }
 
   if (hasKeywords) {
     keywords.forEach((keyword, index) => {
       paramCols.push(`? AS k${index}`);
-      paramBinds.push(likeParam(keyword));
+      paramBinds.push(String(keyword).toLowerCase());
     });
-    conditions.push(`(${keywords.map((_, index) => anyFieldMatch(`p.k${index}`)).join(" OR ")})`);
-  }
-
-  if (filters.author) {
-    paramCols.push("? AS author");
-    paramBinds.push(likeParam(filters.author));
-    conditions.push(`(${likeCondition("userName", "p.author")} OR ${likeCondition("editorName", "p.author")})`);
   }
 
   if (Number.isFinite(filters.year)) {
@@ -169,22 +160,26 @@ export function buildSearchQuery(keywords, filters) {
     extraBinds.push(filters.yearTo);
   }
 
-  const selectPrefix = paramCols.length > 0 ? "data.*" : "*";
-  let selectClause = selectPrefix;
+  let selectClause = useFts ? "data.*" : "*";
   if (hasKeywords) {
     const priorityConds = MATCH_PRIORITY_FIELDS.map((fields) =>
       keywords
-        .flatMap((_, index) => fields.map((field) => likeCondition(field, `p.k${index}`)))
+        .flatMap((_, index) => fields.map((field) => `instr(LOWER(data.${field}), p.k${index})`))
         .join(" OR "),
     );
     const priorityCase = priorityConds
       .map((cond, index) => `WHEN (${cond}) THEN ${index + 1}`)
       .join(" ");
-    const matchParts = keywords.map((_, index) => `CASE WHEN ${anyFieldMatch(`p.k${index}`)} THEN 1 ELSE 0 END`);
-    selectClause = `${selectPrefix}, CASE ${priorityCase} ELSE 7 END AS _priority, ${matchParts.join(" + ")} AS _matchCount`;
+    const matchCountParts = keywords.map((_, index) => {
+      const hit = ALL_MATCH_FIELDS.map((field) => `instr(LOWER(data.${field}), p.k${index})`).join(" OR ");
+      return `CASE WHEN (${hit}) THEN 1 ELSE 0 END`;
+    });
+    selectClause = `data.*, CASE ${priorityCase} ELSE 7 END AS _priority, ${matchCountParts.join(" + ")} AS _matchCount`;
   }
 
-  const fromClause = paramCols.length > 0 ? `data, (SELECT ${paramCols.join(", ")}) AS p` : "data";
+  const fromClause = useFts
+    ? `data JOIN data_fts ON data.id = data_fts.id, (SELECT ${paramCols.join(", ")}) AS p`
+    : "data";
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
   const orderClause = hasKeywords
     ? "ORDER BY _priority ASC, _matchCount DESC, year DESC, readability ASC, id ASC"
@@ -264,6 +259,7 @@ async function queryAll(env, sql, binds = []) {
 }
 
 let cachedGeneratedAt;
+let cachedRowCount;
 async function getGeneratedAt(env) {
   if (cachedGeneratedAt !== undefined) return cachedGeneratedAt;
   try {
@@ -273,6 +269,23 @@ async function getGeneratedAt(env) {
     cachedGeneratedAt = null;
   }
   return cachedGeneratedAt;
+}
+
+async function getRowCount(env) {
+  if (cachedRowCount !== undefined) return cachedRowCount;
+  try {
+    const row = await env.DB.prepare("SELECT value FROM meta WHERE key = 'rowCount'").first();
+    const parsed = Number(row?.value);
+    if (Number.isFinite(parsed)) {
+      cachedRowCount = parsed;
+      return cachedRowCount;
+    }
+  } catch {
+    // fall through to COUNT(*)
+  }
+  const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM data").first();
+  cachedRowCount = Number(countRow?.total ?? 0);
+  return cachedRowCount;
 }
 
 /* ============ 埋点 / 错误日志（D1 持久化） ============ */
@@ -422,19 +435,19 @@ async function handleSeoGet(request, env, url) {
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
 
   if (pathname === "/sitemap.xml") {
-    const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM data").first();
+    const total = await getRowCount(env);
     const lastmod = (await getGeneratedAt(env)) || new Date().toISOString();
     return textResponse(
-      buildSitemapIndexXml(origin, Number(countRow?.total ?? 0), lastmod),
+      buildSitemapIndexXml(origin, total, lastmod),
       "application/xml; charset=utf-8",
     );
   }
 
   if (pathname === "/sitemap-static.xml") {
-    const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM data").first();
+    const total = await getRowCount(env);
     const lastmod = (await getGeneratedAt(env)) || new Date().toISOString();
     return textResponse(
-      buildUrlSetXml(buildStaticSitemapUrls(origin, Number(countRow?.total ?? 0), lastmod), lastmod),
+      buildUrlSetXml(buildStaticSitemapUrls(origin, total, lastmod), lastmod),
       "application/xml; charset=utf-8",
     );
   }
@@ -479,8 +492,7 @@ async function handleSeoGet(request, env, url) {
     if (url.searchParams.has("page") && page <= 1) {
       return Response.redirect(`${origin}/works`, 301);
     }
-    const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM data").first();
-    const total = Number(countRow?.total ?? 0);
+    const total = await getRowCount(env);
     const offset = (page - 1) * SEO_CONSTANTS.WORKS_PAGE_SIZE;
     const records = await queryAll(
       env,
@@ -591,11 +603,10 @@ export default {
       }
 
       if (url.pathname === "/api/meta") {
-        const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM data").first();
         return ok({
           service: "pl-search-cloudflare",
           generatedAt: await getGeneratedAt(env),
-          totalRecords: Number(countRow?.total ?? 0),
+          totalRecords: await getRowCount(env),
           maxLimit: MAX_LIMIT,
           aiKeywordExpansion: Boolean(env?.GROQ_API_KEY),
           endpoints: ["/api/meta", "/api/search?keywords=...", "/api/record?id=...", "/w/:id", "/q/:query", "/works", "/sitemap.xml", "/robots.txt"],
