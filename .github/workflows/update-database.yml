@@ -58,6 +58,9 @@ jobs:
       - name: Collect new records
         run: npm run update-db
 
+      - name: Debug query response
+        run: node scripts/debug-query.cjs
+
       - name: Export D1 SQL
         run: npm run export-d1
 
