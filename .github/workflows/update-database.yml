@@ -58,6 +58,9 @@ jobs:
       - name: Collect new records
         run: npm run update-db
 
+      - name: Count backlog
+        run: node scripts/count-backlog.cjs
+
       - name: Debug query response
         run: node scripts/debug-query.cjs
 
