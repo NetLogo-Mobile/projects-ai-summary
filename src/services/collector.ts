@@ -82,44 +82,61 @@ export async function collectByTypeWithOptions(
     `[collectByTypeWithOptions] 参数: 类型=${discussionType}, pageSize=${config.collectPageSize}, batchSize=${config.collectBatchSize}, analyzeConcurrency=${config.collectAnalyzeConcurrency}, insertConcurrency=${config.collectInsertConcurrency}, pageDelayMs=${config.collectPageDelayMs}, batchDelayMs=${config.collectBatchDelayMs}`
   );
   
-  // 自动分页获取数据（plweb API需要用负数绕过单次返回限制）
+  // 社区 API 的 Skip 分页已失效（会反复返回同一页），改用 Query.From 游标翻页：
+  // 每页 From=上一页末条摘要ID、Skip=0，按摘要 ID 去重，游标未推进时停止。
+  // 参考 https://github.com/NetLogo-Mobile/plweb-skill docs/finding.md
   let allItems: any[] = [];
+  const seenIds = new Set<string>();
   const takeAbsolute = Math.abs(take);
   const singlePageSize = config.collectPageSize;
-  
-  let currentSkip = skip;
+
+  let cursor: string | null = null;
   let remaining = takeAbsolute;
-  
+
   while (remaining > 0) {
     const currentTake = Math.min(remaining, singlePageSize);
-    // 使用负数来绕过API限制
+    // plweb 的 query 会把 Take 取负发送，这里传负值让服务端收到正数
     const takeValue = -currentTake;
-    console.log(`[collectByTypeWithOptions] 分页获取: skip=${currentSkip}, take=${takeValue}`);
-    
-    let list;
+    console.log(`[collectByTypeWithOptions] 分页获取: from=${cursor ?? '(第一页)'}, take=${currentTake}`);
+
+    let list: any;
     try {
-      list = await user.projects.query(discussionType, { take: takeValue, skip: currentSkip, ExcludeTags: ["小作品"]});
+      list = await user.projects.query(discussionType, { take: takeValue, skip: 0, from: cursor, ExcludeTags: ["小作品"]});
     } catch (error) {
-      console.error(`[collectByTypeWithOptions] 分页获取失败，跳过: skip=${currentSkip}, take=${takeValue}`, error instanceof Error ? error.message : String(error));
-      // 如果是第一次尝试就失败，或者已经是最后一批，则跳出循环
-      if (currentSkip === skip || remaining <= singlePageSize) {
-        break;
-      }
-      // 否则继续下一批
-      currentSkip += singlePageSize;
-      continue;
+      console.error(`[collectByTypeWithOptions] 分页获取失败，跳过: from=${cursor ?? '(第一页)'}, take=${currentTake}`, error instanceof Error ? error.message : String(error));
+      break;
     }
-    
-    const items = list.Data.$values ?? [];
-    
+
+    const items: any[] = list.Data.$values ?? [];
+
     if (items.length === 0) {
       console.log(`[collectByTypeWithOptions] 已到数据末尾`);
       break;
     }
-    
-    allItems = allItems.concat(items);
-    remaining -= items.length;
-    currentSkip += currentTake;
+
+    const beforeCount = allItems.length;
+    let lastId: string | null = null;
+    for (const item of items) {
+      if (typeof item.ID !== 'string' || !item.ID) {
+        console.error(`[collectByTypeWithOptions] 返回项缺少摘要 ID，停止翻页`);
+        lastId = null;
+        break;
+      }
+      lastId = item.ID;
+      if (seenIds.has(item.ID)) {
+        continue;
+      }
+      seenIds.add(item.ID);
+      allItems.push(item);
+      remaining -= 1;
+    }
+
+    // 游标未推进（整页全是重复数据）或缺少有效游标时停止
+    if (lastId == null || allItems.length === beforeCount) {
+      console.log(`[collectByTypeWithOptions] 游标未推进或数据重复，停止翻页`);
+      break;
+    }
+    cursor = lastId;
     
     // 分页间延迟，避免频繁请求
     if (remaining > 0 && config.collectPageDelayMs > 0) {
