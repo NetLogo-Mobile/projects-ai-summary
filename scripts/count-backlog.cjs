@@ -13,7 +13,7 @@ const CUTOFF = new Date('2026-10-08T00:00:00+08:00').getTime();
     let sinceCutoff = 0;
     let oldestSeen = null;
     for (let page = 0; page < 100; page++) {
-      const { items } = await queryExperiments(session, category, cursor, 50, null);
+      const { items } = await queryExperiments(session, category, cursor, 20, null);
       if (items.length === 0) break;
       for (const it of items) {
         total++;
