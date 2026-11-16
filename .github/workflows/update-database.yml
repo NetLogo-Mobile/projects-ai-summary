@@ -9,11 +9,6 @@ on:
         description: '本次采集条数（留空使用 vars.TAKE）'
         required: false
         type: string
-      debug:
-        description: '运行调试脚本（临时）'
-        required: false
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -72,14 +67,6 @@ jobs:
         env:
           TAKE: ${{ env.TAKE_RESOLVED }}
         run: npm run update-db
-
-      - name: Count backlog
-        if: ${{ github.event.inputs.debug == 'true' }}
-        run: node scripts/count-backlog.cjs
-
-      - name: Debug query response
-        if: ${{ github.event.inputs.debug == 'true' }}
-        run: node scripts/debug-query.cjs
 
       - name: Export D1 SQL
         run: npm run export-d1
