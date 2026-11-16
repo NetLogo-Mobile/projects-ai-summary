@@ -1,32 +1,23 @@
-const pl = require('plweb');
+const { config } = require('../dist/config');
+const { login, queryExperiments, getSummary } = require('../dist/pl/client');
 const dotenv = require('dotenv');
 dotenv.config();
 
-pl.setConfig({
-  baseURL: process.env.PL_BASE_URL || 'https://physics-api-cn.turtlesim.com',
-  timeout: 10000,
-  consolelog: false,
-  consoleResponse: false,
-  consoleError: true,
-  checkHttpsAgent: false
-});
-
 (async () => {
-  const user = new pl.User();
-  user.username = process.env.PL_USERNAME;
-  user.password = process.env.PL_PASSWORD;
-  await user.user.login();
+  const session = await login(config.plUsername, config.plPassword);
+  console.log('[DEBUG] 登录成功');
 
-  const resp = await user.projects.query('Experiment', { take: -5, skip: 0, from: null });
-  console.log('[DEBUG] top-level keys:', Object.keys(resp));
-  console.log('[DEBUG] Status/Message:', resp.Status, resp.Message);
-  console.log('[DEBUG] typeof Data:', typeof resp.Data, 'isArray:', Array.isArray(resp.Data));
-  if (resp.Data && !Array.isArray(resp.Data)) {
-    console.log('[DEBUG] Data keys:', Object.keys(resp.Data));
-    console.log('[DEBUG] Data.$values length:', (resp.Data.$values || []).length);
-  }
-  const rows = Array.isArray(resp.Data) ? resp.Data : (resp.Data && resp.Data.$values) || [];
-  console.log('[DEBUG] rows length:', rows.length);
-  console.log('[DEBUG] first row sample:', JSON.stringify(rows[0]).slice(0, 500));
-  console.log('[DEBUG] raw first page JSON:', JSON.stringify(resp).slice(0, 2000));
+  const page1 = await queryExperiments(session, 'Experiment', null, 5, ['小作品']);
+  console.log('[DEBUG] 第一页 rows:', page1.items.length);
+  console.log('[DEBUG] first row:', JSON.stringify(page1.items[0]).slice(0, 300));
+  const lastId = page1.items[page1.items.length - 1].ID;
+  console.log('[DEBUG] 游标 lastId:', lastId);
+
+  const page2 = await queryExperiments(session, 'Experiment', lastId, 5, ['小作品']);
+  const ids1 = new Set(page1.items.map(i => i.ID));
+  const dup = page2.items.filter(i => ids1.has(i.ID)).length;
+  console.log('[DEBUG] 第二页 rows:', page2.items.length, '与第一页重复:', dup);
+
+  const s = await getSummary(session, page1.items[0].ID, 'Experiment');
+  console.log('[DEBUG] GetSummary OK, Description type:', Array.isArray(s.Data.Description) ? 'array' : typeof s.Data.Description, 'User:', s.Data.User && s.Data.User.Nickname);
 })().catch((e) => { console.error('[DEBUG] FAILED:', e.message); process.exit(1); });

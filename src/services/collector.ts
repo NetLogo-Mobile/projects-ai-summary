@@ -1,4 +1,4 @@
-import { createUser } from '../pl/client';
+import { login, queryExperiments, getSummary, PlSession } from '../pl/client';
 import { analyzeContent, analyzeContentWithModel } from './analyse';
 import { insertOne, queryById } from '../db/repository';
 import { config } from '../config';
@@ -76,7 +76,7 @@ export async function collectByTypeWithOptions(
   model?: string,
   take: number = -100
 ): Promise<{ inserted: number; skipped: number }> {
-  const user = await createUser();
+  const session: PlSession = await login(config.plUsername, config.plPassword);
   const resolvedModel = model ?? config.model;
   console.log(
     `[collectByTypeWithOptions] 参数: 类型=${discussionType}, pageSize=${config.collectPageSize}, batchSize=${config.collectBatchSize}, analyzeConcurrency=${config.collectAnalyzeConcurrency}, insertConcurrency=${config.collectInsertConcurrency}, pageDelayMs=${config.collectPageDelayMs}, batchDelayMs=${config.collectBatchDelayMs}`
@@ -95,19 +95,17 @@ export async function collectByTypeWithOptions(
 
   while (remaining > 0) {
     const currentTake = Math.min(remaining, singlePageSize);
-    // plweb 的 query 会把 Take 取负发送，这里传负值让服务端收到正数
-    const takeValue = -currentTake;
     console.log(`[collectByTypeWithOptions] 分页获取: from=${cursor ?? '(第一页)'}, take=${currentTake}`);
 
-    let list: any;
+    let page: { items: any[] };
     try {
-      list = await user.projects.query(discussionType, { take: takeValue, skip: 0, from: cursor, ExcludeTags: ["小作品"]});
+      page = await queryExperiments(session, discussionType as 'Experiment' | 'Discussion', cursor, currentTake, ["小作品"]);
     } catch (error) {
       console.error(`[collectByTypeWithOptions] 分页获取失败，跳过: from=${cursor ?? '(第一页)'}, take=${currentTake}`, error instanceof Error ? error.message : String(error));
       break;
     }
 
-    const items: any[] = list.Data.$values ?? [];
+    const items: any[] = page.items;
 
     if (items.length === 0) {
       console.log(`[collectByTypeWithOptions] 已到数据末尾`);
@@ -171,7 +169,7 @@ export async function collectByTypeWithOptions(
 
       let summary;
       try {
-        summary = await user.projects.getSummary(item.ID, discussionType);
+        summary = await getSummary(session, item.ID, discussionType as 'Experiment' | 'Discussion');
       } catch (error) {
         console.error(`[collectByTypeWithOptions] 获取摘要失败，跳过ID: ${item.ID}`, error instanceof Error ? error.message : String(error));
         batchSkipped += 1;
