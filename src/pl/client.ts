@@ -44,13 +44,18 @@ async function plPost<T>(path: string, body: unknown, session?: PlSession): Prom
   // Transient network failures (timeouts, DNS) are common on shared CI runners and
   // previously aborted the whole collect run. Retry once after a short backoff;
   // business-level errors (Status != 200) are not retried, since they are deterministic.
-  try {
-    return await plPostOnce<T>(path, body, headers);
-  } catch (error) {
-    if (!isRetriable(error)) throw error;
-    console.warn(`[pl] ${path} 网络失败，2s 后重试一次:`, error instanceof Error ? error.message : String(error));
-    await new Promise((r) => setTimeout(r, 2000));
-    return plPostOnce<T>(path, body, headers);
+  // Login throttling on the community API can hang for minutes; use exponential
+  // backoff so a temporary cooldown does not kill the whole run.
+  const backoffMs = [5000, 15000, 30000, 60000];
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await plPostOnce<T>(path, body, headers);
+    } catch (error) {
+      if (!isRetriable(error) || attempt >= backoffMs.length) throw error;
+      const wait = backoffMs[attempt];
+      console.warn(`[pl] ${path} 网络失败，${wait / 1000}s 后第 ${attempt + 1}/${backoffMs.length} 次重试:`, error instanceof Error ? error.message : String(error));
+      await new Promise((r) => setTimeout(r, wait));
+    }
   }
 }
 
