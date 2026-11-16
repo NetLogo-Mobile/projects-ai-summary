@@ -68,15 +68,18 @@ function toRecord(
  * @param model - AI模型名称，如果未提供则使用配置中的默认模型
  * @param take - 获取的记录数，负数表示绕过API限制的数量（-100获取100条，-300分3次各100条）
  *              默认为-100（获取最近100条）
+ * @param session - 复用的登录会话；不传则自行登录。多次采集应共享同一个会话，
+ *                  避免对每个分区重复登录（社区 API 会对频繁登录限流/超时）。
  * @returns 收集结果统计
  */
 export async function collectByTypeWithOptions(
   discussionType: string,
   skip: number = 0, 
   model?: string,
-  take: number = -100
+  take: number = -100,
+  session?: PlSession
 ): Promise<{ inserted: number; skipped: number }> {
-  const session: PlSession = await login(config.plUsername, config.plPassword);
+  const plSession: PlSession = session ?? await login(config.plUsername, config.plPassword);
   const resolvedModel = model ?? config.model;
   console.log(
     `[collectByTypeWithOptions] 参数: 类型=${discussionType}, pageSize=${config.collectPageSize}, batchSize=${config.collectBatchSize}, analyzeConcurrency=${config.collectAnalyzeConcurrency}, insertConcurrency=${config.collectInsertConcurrency}, pageDelayMs=${config.collectPageDelayMs}, batchDelayMs=${config.collectBatchDelayMs}`
@@ -99,7 +102,7 @@ export async function collectByTypeWithOptions(
 
     let page: { items: any[] };
     try {
-      page = await queryExperiments(session, discussionType as 'Experiment' | 'Discussion', cursor, currentTake, ["小作品"]);
+      page = await queryExperiments(plSession, discussionType as 'Experiment' | 'Discussion', cursor, currentTake, ["小作品"]);
     } catch (error) {
       console.error(`[collectByTypeWithOptions] 分页获取失败，跳过: from=${cursor ?? '(第一页)'}, take=${currentTake}`, error instanceof Error ? error.message : String(error));
       break;
@@ -169,7 +172,7 @@ export async function collectByTypeWithOptions(
 
       let summary;
       try {
-        summary = await getSummary(session, item.ID, discussionType as 'Experiment' | 'Discussion');
+        summary = await getSummary(plSession, item.ID, discussionType as 'Experiment' | 'Discussion');
       } catch (error) {
         console.error(`[collectByTypeWithOptions] 获取摘要失败，跳过ID: ${item.ID}`, error instanceof Error ? error.message : String(error));
         batchSkipped += 1;
