@@ -14,6 +14,21 @@ export interface PlSession {
   authCode: string;
 }
 
+async function plPostOnce<T>(path: string, body: unknown, headers: Record<string, string>): Promise<T> {
+  const resp = await fetch(`${config.plBaseUrl}${path}`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(60000),
+  });
+
+  const data = (await resp.json()) as { Status: number; Message: string };
+  if (data.Status !== 200) {
+    throw new Error(`PL API ${path} 业务错误 Status=${data.Status} Message=${data.Message}`);
+  }
+  return data as T;
+}
+
 async function plPost<T>(path: string, body: unknown, session?: PlSession): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -26,18 +41,31 @@ async function plPost<T>(path: string, body: unknown, session?: PlSession): Prom
     headers['x-API-AuthCode'] = session.authCode;
   }
 
-  const resp = await fetch(`${config.plBaseUrl}${path}`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(30000),
-  });
-
-  const data = (await resp.json()) as { Status: number; Message: string };
-  if (data.Status !== 200) {
-    throw new Error(`PL API ${path} 业务错误 Status=${data.Status} Message=${data.Message}`);
+  // Transient network failures (timeouts, DNS) are common on shared CI runners and
+  // previously aborted the whole collect run. Retry once after a short backoff;
+  // business-level errors (Status != 200) are not retried, since they are deterministic.
+  try {
+    return await plPostOnce<T>(path, body, headers);
+  } catch (error) {
+    if (!isRetriable(error)) throw error;
+    console.warn(`[pl] ${path} 网络失败，2s 后重试一次:`, error instanceof Error ? error.message : String(error));
+    await new Promise((r) => setTimeout(r, 2000));
+    return plPostOnce<T>(path, body, headers);
   }
-  return data as T;
+}
+
+function isRetriable(error: unknown): boolean {
+  if (error instanceof Error) {
+    // AbortSignal.timeout rejects with a DOMException named "TimeoutError".
+    if (error.name === 'TimeoutError' || error.name === 'AbortError') return true;
+    const cause = (error as { cause?: { code?: string } }).cause;
+    const code = cause?.code;
+    if (code && ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EAI_AGAIN', 'ENOTFOUND', 'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT'].includes(code)) {
+      return true;
+    }
+    return /fetch failed|network|socket hang up/i.test(error.message);
+  }
+  return false;
 }
 
 export async function login(username: string, password: string): Promise<PlSession> {
