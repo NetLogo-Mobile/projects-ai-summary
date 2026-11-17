@@ -4,9 +4,11 @@ import path from 'path';
 import { config } from '../config';
 import { all, initDatabase } from '../db/client';
 
-// 单条 INSERT 语句的行数。D1 对单条 SQL 语句有 100KB 上限，
-// 平均每行约 1-2KB，20 行一批可以留出足够的安全余量。
-const INSERT_BATCH_SIZE = 20;
+// D1 对单条 SQL 语句有 100KB 上限（超出报 SQLITE_TOOBIG），因此除了行数上限外，
+// 还要按语句字节数分批：FTS 语句里的中文分词（unigram + bigram）会让单行文本
+// 膨胀约 4 倍，仅按行数分批会让 FTS 语句贴线超限。字节上限留 10KB 余量。
+export const INSERT_BATCH_SIZE = 20;
+export const INSERT_MAX_BYTES = 90 * 1024;
 
 const DATA_COLUMNS = [
   'id',
@@ -70,7 +72,7 @@ function pushCjkTokens(run: string, tokens: string[]): void {
   }
 }
 
-interface RawRecord {
+export interface RawRecord {
   id: string;
   name: string | null;
   contentLength: number | null;
@@ -88,6 +90,60 @@ interface RawRecord {
   source: string | null;
 }
 
+export function buildStatements(
+  header: string,
+  rows: RawRecord[],
+  renderRow: (row: RawRecord) => string,
+): string[] {
+  const statements: string[] = [];
+  let batch: string[] = [];
+  let batchBytes = Buffer.byteLength(header, 'utf8');
+
+  const flush = (): void => {
+    if (batch.length === 0) return;
+    statements.push(`${header}\n${batch.join(',\n')};`);
+    batch = [];
+    batchBytes = Buffer.byteLength(header, 'utf8');
+  };
+
+  for (const row of rows) {
+    const value = renderRow(row);
+    // 每行预算包含 ",\n" 连接符，与最终语句的字节数精确一致
+    const valueBytes = Buffer.byteLength(value, 'utf8') + 2;
+    if (batch.length >= INSERT_BATCH_SIZE || batchBytes + valueBytes > INSERT_MAX_BYTES) {
+      flush();
+      if (valueBytes > INSERT_MAX_BYTES) {
+        console.warn(
+          `[D1] id=${row.id} 序列化后 ${valueBytes} 字节，超过单条语句 ${INSERT_MAX_BYTES} 字节上限，将以单独语句导入`,
+        );
+      }
+    }
+    batch.push(value);
+    batchBytes += valueBytes;
+  }
+  flush();
+
+  return statements;
+}
+
+function dataInsertStatements(rows: RawRecord[]): string[] {
+  const header = `INSERT INTO data (${DATA_COLUMNS.join(', ')}) VALUES`;
+  return buildStatements(
+    header,
+    rows,
+    row => `(${DATA_COLUMNS.map(column => sqlValue(row[column])).join(', ')})`,
+  );
+}
+
+function ftsInsertStatements(rows: RawRecord[]): string[] {
+  const header = `INSERT INTO data_fts (${FTS_COLUMNS.join(', ')}) VALUES`;
+  return buildStatements(
+    header,
+    rows,
+    row => `(${FTS_COLUMNS.map((column) => sqlValue(column === 'id' ? row.id : toFtsText(row[column]))).join(', ')})`,
+  );
+}
+
 function sqlValue(value: unknown): string {
   if (value === null || value === undefined) return 'NULL';
   if (typeof value === 'number') return Number.isFinite(value) ? String(value) : 'NULL';
@@ -95,20 +151,6 @@ function sqlValue(value: unknown): string {
     .replace(/\0/g, '')
     .replace(/'/g, "''");
   return `'${text}'`;
-}
-
-function insertStatement(rows: RawRecord[]): string {
-  const values = rows.map(
-    row => `(${DATA_COLUMNS.map(column => sqlValue(row[column])).join(', ')})`,
-  );
-  return `INSERT INTO data (${DATA_COLUMNS.join(', ')}) VALUES\n${values.join(',\n')};`;
-}
-
-function insertFtsStatement(rows: RawRecord[]): string {
-  const values = rows.map(
-    row => `(${FTS_COLUMNS.map((column) => sqlValue(column === 'id' ? row.id : toFtsText(row[column]))).join(', ')})`,
-  );
-  return `INSERT INTO data_fts (${FTS_COLUMNS.join(', ')}) VALUES\n${values.join(',\n')};`;
 }
 
 async function main(): Promise<void> {
@@ -145,9 +187,7 @@ async function main(): Promise<void> {
     'DELETE FROM data;',
   ];
 
-  for (let index = 0; index < rows.length; index += INSERT_BATCH_SIZE) {
-    statements.push(insertStatement(rows.slice(index, index + INSERT_BATCH_SIZE)));
-  }
+  statements.push(...dataInsertStatements(rows));
 
   statements.push(
     'CREATE INDEX IF NOT EXISTS idx_data_year_id ON data(year, id);',
@@ -165,9 +205,7 @@ async function main(): Promise<void> {
 );`,
   );
 
-  for (let index = 0; index < rows.length; index += INSERT_BATCH_SIZE) {
-    statements.push(insertFtsStatement(rows.slice(index, index + INSERT_BATCH_SIZE)));
-  }
+  statements.push(...ftsInsertStatements(rows));
 
   const outputPath = path.resolve(config.d1ExportFile);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
