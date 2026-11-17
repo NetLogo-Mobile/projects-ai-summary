@@ -72,10 +72,36 @@ jobs:
         run: npm run export-d1
 
       - name: Import into Cloudflare D1
+        id: d1_import
+        continue-on-error: true
         run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --file="$D1_EXPORT_FILE" -y
 
-      - name: Verify row count
-        run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --command "SELECT value AS total FROM meta WHERE key = 'rowCount'" -y
+      # wrangler can exit non-zero with "Not currently importing anything" even when the
+      # import either completed or the remote already holds this exact snapshot. Treat the
+      # remote row count as the source of truth: pass when it matches the local database.
+      - name: Verify D1 row count
+        run: |
+          EXPECTED=$(node -e "
+            const fs = require('fs');
+            require('sql.js')().then(SQL => {
+              const db = new SQL.Database(fs.readFileSync(process.env.DB_PATH));
+              const r = db.exec('SELECT COUNT(*) FROM data');
+              process.stdout.write(String(r[0].values[0][0]));
+            });
+          ")
+          ACTUAL=$(npx wrangler d1 execute "$D1_DATABASE_ID" --remote --json --command "SELECT value AS total FROM meta WHERE key = 'rowCount'" | node -e "
+            let s = '';
+            process.stdin.on('data', d => s += d).on('end', () => {
+              const rows = JSON.parse(s);
+              process.stdout.write(String(rows[0].results[0].total));
+            });
+          ")
+          echo "本地 data 行数: $EXPECTED"
+          echo "D1 记录行数:   $ACTUAL"
+          if [ "$EXPECTED" != "$ACTUAL" ]; then
+            echo "::error::D1 行数与本地不一致，导入未完成（wrangler 退出码: ${{ steps.d1_import.outcome }}）"
+            exit 1
+          fi
 
       - name: Initialize analytics tables
         run: npx wrangler d1 execute "$D1_DATABASE_ID" --remote --file=./cloudflare/d1/analytics.sql -y
