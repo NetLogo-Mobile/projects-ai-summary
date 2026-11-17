@@ -147,6 +147,10 @@ export async function collectByTypeWithOptions(
   
   let inserted = 0;
   let skipped = 0;
+  // 只有"确实发起了分析但全部失败"才视为管道故障（例如模型无权限）；
+  // 没有候选作品、或候选都已入库时，不应报错。
+  let analyzeAttempts = 0;
+  let analyzeFailures = 0;
   
   const items = allItems;
   const batchSize = config.collectBatchSize;
@@ -202,6 +206,7 @@ export async function collectByTypeWithOptions(
     // 并发调用API分析（当前批）
     if (sourcesToAnalyze.length > 0) {
       console.log(`[collectByTypeWithOptions] 第 ${batchNum} 批: 开始并发分析 ${sourcesToAnalyze.length} 条记录...`);
+      analyzeAttempts += sourcesToAnalyze.length;
       const analyzeTasks = sourcesToAnalyze.map(({ item, summary, text }) => async () => {
         console.log(`[collectByTypeWithOptions] 分析ID: ${item.ID}`);
         try {
@@ -222,6 +227,7 @@ export async function collectByTypeWithOptions(
       const insertTasks: (() => Promise<void>)[] = [];
       for (const result of analyzeResults) {
         if (result.error || !result.llm) {
+          analyzeFailures += 1;
           batchSkipped += 1;
           continue;
         }
@@ -254,6 +260,14 @@ export async function collectByTypeWithOptions(
     }
   }
 
-  console.log(`[collectByTypeWithOptions] 完成! 插入: ${inserted}, 跳过: ${skipped}`);
+  console.log(`[collectByTypeWithOptions] 完成! 插入: ${inserted}, 跳过: ${skipped}, 分析失败: ${analyzeFailures}/${analyzeAttempts}`);
+
+  if (analyzeAttempts > 0 && analyzeFailures === analyzeAttempts) {
+    throw new Error(
+      `[collectByTypeWithOptions] 类型=${discussionType} 所有 AI 分析均失败 (${analyzeFailures}/${analyzeAttempts})，` +
+      `通常是模型无权限或配额耗尽；本次未写入任何记录。`,
+    );
+  }
+
   return { inserted, skipped };
 }
